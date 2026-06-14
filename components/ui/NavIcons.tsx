@@ -30,20 +30,16 @@ export function ProfileIcon({ size = 22, color = "currentColor" }: IconProps) {
 }
 
 export function AgencyIcon({ size = 22, color = "currentColor" }: IconProps) {
+  // Building: body y=3..22, parapet at y=7, floor-1 windows y=9..12, floor-2 windows y=14..17, door y=18..22
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      {/* Building body */}
-      <rect x="3" y="5" width="18" height="16" rx="1" stroke={color} strokeWidth={1.8}/>
-      {/* Roof parapet */}
-      <path d="M3 9h18" stroke={color} strokeWidth={1.2}/>
-      {/* Floor 1 windows */}
-      <rect x="6"  y="11" width="3" height="2.5" rx="0.4" fill={color} fillOpacity="0.5"/>
-      <rect x="15" y="11" width="3" height="2.5" rx="0.4" fill={color} fillOpacity="0.5"/>
-      {/* Floor 2 windows */}
-      <rect x="6"  y="15.5" width="3" height="2.5" rx="0.4" fill={color} fillOpacity="0.5"/>
-      <rect x="15" y="15.5" width="3" height="2.5" rx="0.4" fill={color} fillOpacity="0.5"/>
-      {/* Central door */}
-      <rect x="10.5" y="16" width="3" height="5" rx="0.4" stroke={color} strokeWidth={1.2}/>
+      <rect x="3" y="3" width="18" height="19" rx="1" stroke={color} strokeWidth={1.8}/>
+      <line x1="3" y1="7" x2="21" y2="7" stroke={color} strokeWidth={1.2}/>
+      <rect x="5.5" y="9"  width="4" height="3" rx="0.5" stroke={color} strokeWidth={1.2}/>
+      <rect x="14.5" y="9"  width="4" height="3" rx="0.5" stroke={color} strokeWidth={1.2}/>
+      <rect x="5.5" y="14" width="4" height="3" rx="0.5" stroke={color} strokeWidth={1.2}/>
+      <rect x="14.5" y="14" width="4" height="3" rx="0.5" stroke={color} strokeWidth={1.2}/>
+      <rect x="10" y="18" width="4" height="4" rx="0.5" stroke={color} strokeWidth={1.2}/>
     </svg>
   );
 }

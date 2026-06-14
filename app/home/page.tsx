@@ -198,7 +198,10 @@ export default async function HomePage() {
           })
         ) : (
           <div className="card text-center py-8">
-            <p className="text-2xl mb-2">📭</p>
+            <svg width="40" height="40" viewBox="0 0 40 40" fill="none" className="mx-auto mb-3" aria-hidden="true">
+              <rect x="4" y="10" width="32" height="22" rx="2.5" stroke="#0E9E92" strokeWidth={2}/>
+              <path d="M4 13l16 11 16-11" stroke="#0E9E92" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
             <p className="font-heading font-semibold text-petrol-400 mb-1">No reviews yet</p>
             <p className="text-xs text-sage-400 font-body leading-relaxed">
               Your reputation starts here. Complete a tenancy to get your first review.

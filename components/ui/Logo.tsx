@@ -6,7 +6,7 @@ interface LogoProps {
   showTagline?: boolean;
 }
 
-export function Logo({ size = 32, showWordmark = true, showTagline = true }: LogoProps) {
+export function Logo({ size = 32, showWordmark = true, showTagline = false }: LogoProps) {
   const fontSize = Math.round(size * 0.5);
   const tagSize  = Math.max(11, Math.round(size * 0.32));
 
