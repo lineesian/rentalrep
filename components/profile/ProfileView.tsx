@@ -54,7 +54,7 @@ export function ProfileView({ profile, score, reviews, isOwner, fetchError }: Pr
     <div>
       {/* ── Header — Petrol Ink ── */}
       <div className="bg-petrol-400 px-5 pt-12 pb-6">
-        <Link href="/search" className="text-mint-400 text-xl block mb-4" aria-label="Back to search">←</Link>
+        <Link href="/home" className="text-mint-400 text-xl block mb-4" aria-label="Back to home">←</Link>
 
         <div className="flex gap-4 items-start">
           <Avatar name={profile.full_name} avatarUrl={profile.avatar_url} size="lg" />
