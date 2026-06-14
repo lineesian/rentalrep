@@ -32,9 +32,18 @@ export function ProfileIcon({ size = 22, color = "currentColor" }: IconProps) {
 export function AgencyIcon({ size = 22, color = "currentColor" }: IconProps) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <rect x="2" y="7" width="20" height="14" rx="1" stroke={color} strokeWidth={1.8}/>
-      <path d="M7 7V5a2 2 0 012-2h6a2 2 0 012 2v2" stroke={color} strokeWidth={1.8} strokeLinecap="round"/>
-      <path d="M12 12v4M9 14h6" stroke={color} strokeWidth={1.8} strokeLinecap="round"/>
+      {/* Building body */}
+      <rect x="3" y="5" width="18" height="16" rx="1" stroke={color} strokeWidth={1.8}/>
+      {/* Roof parapet */}
+      <path d="M3 9h18" stroke={color} strokeWidth={1.2}/>
+      {/* Floor 1 windows */}
+      <rect x="6"  y="11" width="3" height="2.5" rx="0.4" fill={color} fillOpacity="0.5"/>
+      <rect x="15" y="11" width="3" height="2.5" rx="0.4" fill={color} fillOpacity="0.5"/>
+      {/* Floor 2 windows */}
+      <rect x="6"  y="15.5" width="3" height="2.5" rx="0.4" fill={color} fillOpacity="0.5"/>
+      <rect x="15" y="15.5" width="3" height="2.5" rx="0.4" fill={color} fillOpacity="0.5"/>
+      {/* Central door */}
+      <rect x="10.5" y="16" width="3" height="5" rx="0.4" stroke={color} strokeWidth={1.2}/>
     </svg>
   );
 }

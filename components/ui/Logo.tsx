@@ -2,10 +2,11 @@ interface LogoProps {
   size?: number;
   /** Show wordmark ("RentalRep") beside the icon. Default true. */
   showWordmark?: boolean;
+  /** Show tagline beneath wordmark. Default true. */
+  showTagline?: boolean;
 }
 
-export function Logo({ size = 32, showWordmark = true }: LogoProps) {
-  // Scale the wordmark font relative to icon size
+export function Logo({ size = 32, showWordmark = true, showTagline = true }: LogoProps) {
   const fontSize = Math.round(size * 0.5);
   const tagSize  = Math.max(11, Math.round(size * 0.32));
 
@@ -43,19 +44,21 @@ export function Logo({ size = 32, showWordmark = true }: LogoProps) {
             <span style={{ color: "#ffffff" }}>Rental</span>
             <span style={{ color: "#2FD4C0" }}>Rep</span>
           </div>
-          <div
-            style={{
-              fontSize: tagSize,
-              fontFamily: "Plus Jakarta Sans, sans-serif",
-              fontWeight: 500,
-              color: "#2FD4C0",
-              letterSpacing: "0.04em",
-              marginTop: 2,
-              opacity: 0.85,
-            }}
-          >
-            Rate. Trust. Rent with Confidence.
-          </div>
+          {showTagline && (
+            <div
+              style={{
+                fontSize: tagSize,
+                fontFamily: "Plus Jakarta Sans, sans-serif",
+                fontWeight: 500,
+                color: "#2FD4C0",
+                letterSpacing: "0.04em",
+                marginTop: 2,
+                opacity: 0.85,
+              }}
+            >
+              Rate. Trust. Rent with Confidence.
+            </div>
+          )}
         </div>
       )}
     </div>

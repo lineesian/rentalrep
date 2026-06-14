@@ -74,9 +74,12 @@ export default async function HomePage() {
 
   return (
     <div className="screen">
-      {/* ── Top header ── */}
-      <div className="bg-petrol-400 px-4 pt-safe-or-3 pb-3 flex items-center justify-between" style={{ paddingTop: "max(12px, env(safe-area-inset-top))" }}>
-          <Logo size={32} />
+      {/* ── Top header — slim app bar ── */}
+      <div
+        className="bg-petrol-400 px-4 flex items-center justify-between"
+        style={{ paddingTop: "max(12px, env(safe-area-inset-top))", paddingBottom: 12 }}
+      >
+        <Logo size={28} showTagline={false} />
           {/* Tappable avatar with white border + shadow — uploads photo */}
           <AvatarUpload
             userId={user.id}

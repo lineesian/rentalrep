@@ -25,11 +25,18 @@ export function RateTenantIcon({ size = 28 }: IconProps) {
 export function RateAgencyIcon({ size = 28 }: IconProps) {
   return (
     <svg width={size} height={size} viewBox="0 0 32 32" fill="none" aria-hidden="true">
-      <rect x="3" y="11" width="26" height="18" rx="1.5" fill="#E6F9F8" stroke="#0E9E92" strokeWidth={1.8}/>
-      <path d="M9 11V8a2 2 0 012-2h10a2 2 0 012 2v3" stroke="#0E9E92" strokeWidth={1.8} strokeLinecap="round"/>
-      <rect x="13" y="18" width="6" height="11" rx="1" fill="#F4B53F"/>
-      <rect x="7"  y="16" width="4" height="4" rx="0.5" fill="#0E9E92" fillOpacity="0.4"/>
-      <rect x="21" y="16" width="4" height="4" rx="0.5" fill="#0E9E92" fillOpacity="0.4"/>
+      {/* Building body */}
+      <rect x="6" y="8" width="20" height="21" rx="1.5" fill="#E6F9F8" stroke="#0E9E92" strokeWidth={1.8}/>
+      {/* Roof parapet line */}
+      <path d="M6 12h20" stroke="#0E9E92" strokeWidth={1.2}/>
+      {/* Floor 1 windows */}
+      <rect x="9"  y="14" width="4" height="3" rx="0.5" fill="#0E9E92" fillOpacity="0.5"/>
+      <rect x="19" y="14" width="4" height="3" rx="0.5" fill="#0E9E92" fillOpacity="0.5"/>
+      {/* Floor 2 windows */}
+      <rect x="9"  y="20" width="4" height="3" rx="0.5" fill="#0E9E92" fillOpacity="0.5"/>
+      <rect x="19" y="20" width="4" height="3" rx="0.5" fill="#0E9E92" fillOpacity="0.5"/>
+      {/* Central door */}
+      <rect x="14" y="22" width="4" height="7" rx="0.5" fill="#F4B53F"/>
     </svg>
   );
 }
