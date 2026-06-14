@@ -75,9 +75,8 @@ export default async function HomePage() {
   return (
     <div className="screen">
       {/* ── Top header ── */}
-      <div className="bg-petrol-400 px-5 pt-12 pb-6">
-        <div className="flex items-center justify-between">
-          <Logo size={30} />
+      <div className="bg-petrol-400 px-4 pt-safe-or-3 pb-3 flex items-center justify-between" style={{ paddingTop: "max(12px, env(safe-area-inset-top))" }}>
+          <Logo size={32} />
           {/* Tappable avatar with white border + shadow — uploads photo */}
           <AvatarUpload
             userId={user.id}
@@ -85,7 +84,6 @@ export default async function HomePage() {
             avatarUrl={profile?.avatar_url}
             variant="header"
           />
-        </div>
       </div>
 
       <div className="px-4 pt-4">

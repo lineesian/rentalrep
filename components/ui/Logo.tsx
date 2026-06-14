@@ -7,7 +7,7 @@ interface LogoProps {
 export function Logo({ size = 32, showWordmark = true }: LogoProps) {
   // Scale the wordmark font relative to icon size
   const fontSize = Math.round(size * 0.5);
-  const tagSize  = Math.round(size * 0.28);
+  const tagSize  = Math.max(11, Math.round(size * 0.32));
 
   return (
     <div className="flex items-center gap-2 select-none">
