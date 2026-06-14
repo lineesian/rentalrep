@@ -1,0 +1,18 @@
+{
+  "name": "RentalRep",
+  "short_name": "RentalRep",
+  "description": "South Africa's rental reputation platform.",
+  "start_url": "/home",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#07312C",
+  "theme_color": "#0E9E92",
+  "icons": [
+    {
+      "src": "/icon.png",
+      "sizes": "any",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
