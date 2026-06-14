@@ -79,7 +79,7 @@ export default async function HomePage() {
         className="bg-petrol-400 px-4 flex items-center justify-between"
         style={{ paddingTop: "max(10px, env(safe-area-inset-top))", paddingBottom: 10 }}
       >
-        <Logo size={28} showTagline={false} />
+        <Logo size={28} />
           {/* Tappable avatar with white border + shadow — uploads photo */}
           <AvatarUpload
             userId={user.id}
