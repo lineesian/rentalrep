@@ -6,9 +6,9 @@ interface LogoProps {
   showTagline?: boolean;
 }
 
-export function Logo({ size = 32, showWordmark = true, showTagline = false }: LogoProps) {
+export function Logo({ size = 32, showWordmark = true, showTagline = true }: LogoProps) {
   const fontSize = Math.round(size * 0.5);
-  const tagSize  = Math.max(11, Math.round(size * 0.32));
+  const tagSize  = 11;
 
   return (
     <div className="flex items-center gap-2 select-none">

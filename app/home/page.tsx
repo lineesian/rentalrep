@@ -77,7 +77,7 @@ export default async function HomePage() {
       {/* ── Top header — slim app bar ── */}
       <div
         className="bg-petrol-400 px-4 flex items-center justify-between"
-        style={{ paddingTop: "max(12px, env(safe-area-inset-top))", paddingBottom: 12 }}
+        style={{ paddingTop: "max(10px, env(safe-area-inset-top))", paddingBottom: 10 }}
       >
         <Logo size={28} showTagline={false} />
           {/* Tappable avatar with white border + shadow — uploads photo */}
