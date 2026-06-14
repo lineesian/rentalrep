@@ -57,7 +57,7 @@ function VerifyOTPInner() {
         <span className="text-3xl">💬</span>
       </div>
       <h1 className="font-heading font-bold text-2xl text-petrol-400 text-center mb-2">Enter your OTP</h1>
-      <p className="text-sm text-gray-400 text-center mb-8">
+      <p className="text-sm text-sage-400 text-center mb-8">
         We sent a 6-digit code to <strong className="text-petrol-400">{phone}</strong>
       </p>
 
@@ -91,7 +91,7 @@ function VerifyOTPInner() {
         {loading ? "Verifying…" : "Verify & continue"}
       </button>
 
-      <p className="text-center text-sm text-gray-400 mt-6">
+      <p className="text-center text-sm text-sage-400 mt-6">
         Didn&apos;t receive it?{" "}
         <button className="text-teal-400 font-semibold">Resend OTP</button>
       </p>

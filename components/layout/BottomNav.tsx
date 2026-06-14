@@ -20,13 +20,13 @@ export function BottomNav({ profileId }: BottomNavProps) {
   return (
     <nav className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[375px] bg-white border-t border-gray-100 flex z-50 pb-safe">
       {NAV.map(({ href, label, icon, match }) => {
-        const active = pathname === href || pathname.startsWith(match);
+        const active = pathname != null && (pathname === href || pathname.startsWith(match));
         return (
           <Link
             key={label}
             href={href}
             className={`flex-1 flex flex-col items-center gap-0.5 py-2 pt-3 text-[10px] font-medium font-body transition-colors ${
-              active ? "text-teal-400" : "text-gray-400"
+              active ? "text-mint-400" : "text-sage-400"
             }`}
           >
             <span className="text-xl leading-none">{icon}</span>

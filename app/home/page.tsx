@@ -32,52 +32,48 @@ export default async function HomePage() {
     .limit(3);
 
   const score = scoreRow?.overall ?? 0;
-  const name = profile?.full_name ?? "Welcome";
+  const name  = profile?.full_name ?? "Welcome";
+  const role  = profile?.role ?? "member";
 
   return (
     <div className="screen">
-      {/* Header */}
+      {/* ── Top header — Petrol Ink ── */}
       <div className="bg-petrol-400 px-5 pt-12 pb-5">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Logo size={30} />
-            <div>
-              <p className="font-heading font-bold text-[17px] text-white leading-none">RentalRep</p>
-              <p className="text-[9px] text-teal-400 font-medium tracking-wide mt-0.5">
-                Rate. Trust. Rent with Confidence.
-              </p>
-            </div>
-          </div>
+          <Logo size={30} />
           <Avatar name={name} size="sm" />
         </div>
       </div>
 
       <div className="px-4 pt-0">
-        {/* Reputation card */}
-        <div className="bg-petrol-400 rounded-3xl p-5 mt-0 mb-4 border border-teal-400/30">
+        {/* ── Reputation card — Petrol Ink ── */}
+        <div className="bg-petrol-400 rounded-3xl p-5 mt-0 mb-4 border border-teal-400/20">
           <div className="flex items-start justify-between">
             <div>
-              <p className="text-teal-300 text-xs font-medium mb-1">Your Reputation</p>
+              <p className="text-mint-300 text-xs font-medium mb-1 font-body">Your Reputation</p>
               <h2 className="font-heading font-bold text-xl text-white mb-2">{name}</h2>
-              <span className="badge-verified">✓ Verified {profile?.role ?? "member"}</span>
+              <span className="inline-flex items-center gap-1 bg-teal-400/20 text-mint-400 text-xs font-semibold px-2.5 py-1 rounded-full">
+                ✓ Verified {role.charAt(0).toUpperCase() + role.slice(1)}
+              </span>
             </div>
-            <ScoreRing score={score > 0 ? score : 0} size={88} />
+            <ScoreRing score={score} size={88} />
           </div>
+
           <div className="mt-4 pt-4 border-t border-white/10 flex gap-6">
             {[
-              { v: scoreRow?.review_count ?? 0, l: "Reviews" },
-              { v: "–", l: "Properties" },
+              { v: String(scoreRow?.review_count ?? 0), l: "Reviews" },
+              { v: "–",                                  l: "Properties" },
               { v: score > 0 ? `${Math.round(score * 10)}%` : "–", l: "Trust Score" },
             ].map(({ v, l }) => (
               <div key={l}>
                 <p className="font-heading font-bold text-base text-gold-400">{v}</p>
-                <p className="text-[11px] text-teal-300">{l}</p>
+                <p className="text-[11px] text-mint-300 font-body">{l}</p>
               </div>
             ))}
           </div>
         </div>
 
-        {/* Quick actions */}
+        {/* ── Quick actions ── */}
         <div className="grid grid-cols-3 gap-3 mb-6">
           {[
             { label: "Rate a Landlord", icon: "🏠", href: "/review/new?type=landlord" },
@@ -95,7 +91,7 @@ export default async function HomePage() {
           ))}
         </div>
 
-        {/* Recent reviews */}
+        {/* ── Recent reviews ── */}
         <p className="section-label">Recent Reviews</p>
 
         {recentReviews && recentReviews.length > 0 ? (
@@ -107,12 +103,14 @@ export default async function HomePage() {
                   <Avatar name={reviewer?.full_name ?? "?"} avatarUrl={reviewer?.avatar_url} size="sm" />
                   <div className="flex-1 min-w-0">
                     <p className="font-semibold text-sm text-petrol-400 truncate">{reviewer?.full_name ?? "Anonymous"}</p>
-                    <p className="text-xs text-gray-400">{reviewer?.suburb} · {new Date(r.created_at).toLocaleDateString("en-ZA", { month: "short", year: "numeric" })}</p>
+                    <p className="text-xs text-sage-400 font-body">
+                      {reviewer?.suburb} · {new Date(r.created_at).toLocaleDateString("en-ZA", { month: "short", year: "numeric" })}
+                    </p>
                   </div>
                   <span className="font-heading font-bold text-sm text-teal-400">{(r.overall * 2).toFixed(1)}/10</span>
                 </div>
                 <StarRow value={r.overall} size="sm" />
-                <p className="text-xs text-gray-500 mt-2 leading-relaxed line-clamp-3">{r.body}</p>
+                <p className="text-xs text-sage-400 font-body mt-2 leading-relaxed line-clamp-3">{r.body}</p>
               </div>
             );
           })
@@ -120,7 +118,7 @@ export default async function HomePage() {
           <div className="card text-center py-8">
             <p className="text-2xl mb-2">📭</p>
             <p className="font-heading font-semibold text-petrol-400 mb-1">No reviews yet</p>
-            <p className="text-xs text-gray-400">Reviews from landlords and tenants will appear here.</p>
+            <p className="text-xs text-sage-400 font-body">Reviews from landlords and tenants will appear here.</p>
           </div>
         )}
       </div>

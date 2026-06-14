@@ -8,7 +8,7 @@ import { StarRow } from "@/components/ui/StarRow";
 import type { Profile, ReputationScore, ReviewWithReviewer } from "@/lib/types";
 
 interface Props {
-  profile: Profile;
+  profile: Profile | null;
   score: ReputationScore | null;
   reviews: ReviewWithReviewer[];
   isOwner: boolean;
@@ -29,41 +29,53 @@ const TENANT_CATS = [
 ] as const;
 
 export function ProfileView({ profile, score, reviews, isOwner }: Props) {
+  if (!profile) {
+    return (
+      <div className="flex flex-col items-center justify-center px-6 py-20 text-center">
+        <p className="text-3xl mb-3">😕</p>
+        <p className="font-heading font-semibold text-petrol-400 mb-1">Profile not found</p>
+        <p className="text-xs text-sage-400 font-body">This profile may have been removed or doesn&apos;t exist.</p>
+      </div>
+    );
+  }
+
   const cats = profile.role === "tenant" ? TENANT_CATS : LANDLORD_CATS;
+  const roleLabel = profile.role.charAt(0).toUpperCase() + profile.role.slice(1);
 
   return (
     <div>
-      {/* Header */}
+      {/* ── Header — Petrol Ink ── */}
       <div className="bg-petrol-400 px-5 pt-12 pb-6">
-        <Link href="/search" className="text-teal-400 text-xl block mb-4">←</Link>
+        <Link href="/search" className="text-mint-400 text-xl block mb-4" aria-label="Back to search">←</Link>
+
         <div className="flex gap-4 items-start">
           <Avatar name={profile.full_name} avatarUrl={profile.avatar_url} size="lg" />
           <div className="flex-1 min-w-0">
-            <h1 className="font-heading font-bold text-xl text-white mb-1 truncate">{profile.full_name}</h1>
-            <span className="badge-verified mb-2">
-              ✓ Verified {profile.role.charAt(0).toUpperCase() + profile.role.slice(1)}
+            <h1 className="font-heading font-bold text-xl text-white mb-1.5 truncate">{profile.full_name}</h1>
+            <span className="inline-flex items-center gap-1 bg-teal-400/20 text-mint-400 text-xs font-semibold px-2.5 py-1 rounded-full mb-2">
+              ✓ Verified {roleLabel}
             </span>
-            <p className="text-xs text-teal-300 mt-1.5">
-              📍 {[profile.suburb, profile.city].filter(Boolean).join(", ")}
+            <p className="text-xs text-mint-300 font-body mt-1.5">
+              📍 {[profile.suburb, profile.city].filter(Boolean).join(", ") || "South Africa"}
             </p>
           </div>
           <ScoreRing score={score?.overall ?? 0} size={72} strokeWidth={6} />
         </div>
 
-        <div className="flex gap-5 mt-5 pt-4 border-t border-white/10">
+        <div className="flex gap-6 mt-5 pt-4 border-t border-white/10">
           <div>
             <p className="font-heading font-bold text-base text-gold-400">{score?.review_count ?? 0}</p>
-            <p className="text-[11px] text-teal-300">Reviews</p>
+            <p className="text-[11px] text-mint-300 font-body">Reviews</p>
           </div>
           <div>
             <p className="font-heading font-bold text-base text-gold-400">{score?.overall?.toFixed(1) ?? "–"}</p>
-            <p className="text-[11px] text-teal-300">Overall score</p>
+            <p className="text-[11px] text-mint-300 font-body">Overall score</p>
           </div>
         </div>
       </div>
 
       <div className="px-4 pt-4">
-        {/* Score breakdown */}
+        {/* ── Score breakdown ── */}
         {score && (
           <div className="card mb-4">
             <p className="section-label mb-4">Score Breakdown</p>
@@ -75,7 +87,7 @@ export function ProfileView({ profile, score, reviews, isOwner }: Props) {
           </div>
         )}
 
-        {/* Reviews */}
+        {/* ── Reviews ── */}
         <p className="section-label">
           Reviews {reviews.length > 0 && `(${reviews.length})`}
         </p>
@@ -84,7 +96,7 @@ export function ProfileView({ profile, score, reviews, isOwner }: Props) {
           <div className="card text-center py-8 mb-4">
             <p className="text-2xl mb-2">📭</p>
             <p className="font-heading font-semibold text-petrol-400 mb-1">No reviews yet</p>
-            <p className="text-xs text-gray-400">Be the first to leave a verified review.</p>
+            <p className="text-xs text-sage-400 font-body">Be the first to leave a verified review.</p>
           </div>
         ) : (
           reviews.map((r) => (
@@ -97,21 +109,21 @@ export function ProfileView({ profile, score, reviews, isOwner }: Props) {
                 />
                 <div className="flex-1 min-w-0">
                   <p className="font-semibold text-sm text-petrol-400 truncate">{r.reviewer?.full_name ?? "Anonymous"}</p>
-                  <p className="text-xs text-gray-400">
+                  <p className="text-xs text-sage-400 font-body">
                     {r.reviewer?.suburb} · {new Date(r.created_at).toLocaleDateString("en-ZA", { month: "short", year: "numeric" })}
                   </p>
                 </div>
                 <StarRow value={r.overall} size="sm" />
               </div>
-              <p className="text-xs text-gray-500 leading-relaxed">{r.body}</p>
+              <p className="text-xs text-sage-400 font-body leading-relaxed">{r.body}</p>
 
               {r.reply && (
                 <div className="mt-3">
                   <span className="inline-block bg-gold-50 border border-gold-300 text-gold-600 text-[11px] font-semibold px-2 py-0.5 rounded-lg mb-2">
-                    💬 {profile.role.charAt(0).toUpperCase() + profile.role.slice(1)} Reply
+                    💬 {roleLabel} Reply
                   </span>
                   <div className="bg-gold-50 border-l-2 border-gold-400 rounded-r-xl pl-3 pr-3 py-2.5">
-                    <p className="text-xs text-gold-800 leading-relaxed">"{r.reply}"</p>
+                    <p className="text-xs text-gold-800 font-body leading-relaxed">"{r.reply}"</p>
                   </div>
                 </div>
               )}

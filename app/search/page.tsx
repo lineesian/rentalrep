@@ -94,13 +94,13 @@ export default function SearchPage() {
           <div className="text-center py-16">
             <p className="text-4xl mb-3">🔍</p>
             <p className="font-heading font-semibold text-petrol-400 mb-1">Search RentalRep</p>
-            <p className="text-xs text-gray-400">Find landlords, tenants and agencies across South Africa</p>
+            <p className="text-xs text-sage-400">Find landlords, tenants and agencies across South Africa</p>
           </div>
         )}
 
         {/* State: loading */}
         {isPending && (
-          <div className="text-center py-10 text-gray-400 text-sm">Searching…</div>
+          <div className="text-center py-10 text-sage-400 text-sm">Searching…</div>
         )}
 
         {/* State: results */}
@@ -110,7 +110,7 @@ export default function SearchPage() {
             {results.length === 0 ? (
               <div className="text-center py-10">
                 <p className="text-3xl mb-2">😕</p>
-                <p className="text-sm text-gray-400">No results found for &ldquo;{query}&rdquo;</p>
+                <p className="text-sm text-sage-400">No results found for &ldquo;{query}&rdquo;</p>
               </div>
             ) : (
               results.map((p) => (
@@ -125,7 +125,7 @@ export default function SearchPage() {
                       <p className="font-heading font-semibold text-[15px] text-petrol-400 truncate">{p.full_name}</p>
                       {p.verified && <span className="text-teal-400 text-sm">✓</span>}
                     </div>
-                    <p className="text-xs text-gray-400 mb-1 capitalize">{p.role} · {p.suburb ?? p.city}</p>
+                    <p className="text-xs text-sage-400 mb-1 capitalize">{p.role} · {p.suburb ?? p.city}</p>
                     {p.verified && <span className="badge-verified text-[10px]">✓ Verified Lease</span>}
                   </div>
                   <div className="score-badge flex-shrink-0">

@@ -53,7 +53,7 @@ export default function RegisterPage() {
       <div className="bg-petrol-400 px-5 pt-14 pb-8 flex flex-col items-center text-center">
         <Logo size={44} />
         <h1 className="font-heading font-bold text-2xl text-white mt-4 mb-1">Create account</h1>
-        <p className="text-sm text-teal-300">Join South Africa&apos;s rental trust network</p>
+        <p className="text-sm text-mint-300 font-body">Join South Africa&apos;s rental trust network</p>
       </div>
 
       <div className="px-5 pt-6">
@@ -67,31 +67,31 @@ export default function RegisterPage() {
               className={`flex flex-col items-center gap-1 py-3 rounded-xl border text-center transition-all ${
                 role === r.value
                   ? "border-teal-400 bg-teal-50 text-petrol-400"
-                  : "border-gray-100 bg-white text-gray-400"
+                  : "border-gray-100 bg-white text-sage-400"
               }`}
             >
               <span className="text-2xl">{r.icon}</span>
               <span className="font-heading font-semibold text-xs">{r.label}</span>
-              <span className="text-[10px] leading-tight text-gray-400">{r.desc}</span>
+              <span className="text-[10px] leading-tight text-sage-400">{r.desc}</span>
             </button>
           ))}
         </div>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <div>
-            <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide block mb-1.5">Full name</label>
+            <label className="text-xs font-semibold text-sage-400 uppercase tracking-wide block mb-1.5">Full name</label>
             <input className="input" placeholder="Thabo Khumalo" value={fullName} onChange={(e) => setFullName(e.target.value)} required />
           </div>
           <div>
-            <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide block mb-1.5">Email address</label>
+            <label className="text-xs font-semibold text-sage-400 uppercase tracking-wide block mb-1.5">Email address</label>
             <input type="email" className="input" placeholder="you@example.com" value={email} onChange={(e) => setEmail(e.target.value)} required autoComplete="email" />
           </div>
           <div>
-            <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide block mb-1.5">Password</label>
+            <label className="text-xs font-semibold text-sage-400 uppercase tracking-wide block mb-1.5">Password</label>
             <input type="password" className="input" placeholder="Min. 8 characters" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={8} autoComplete="new-password" />
           </div>
           <div>
-            <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide block mb-1.5">Suburb</label>
+            <label className="text-xs font-semibold text-sage-400 uppercase tracking-wide block mb-1.5">Suburb</label>
             <input className="input" placeholder="e.g. Sandton, Rosebank…" value={suburb} onChange={(e) => setSuburb(e.target.value)} />
           </div>
 
@@ -106,15 +106,15 @@ export default function RegisterPage() {
           </button>
         </form>
 
-        <p className="text-center text-xs text-gray-400 mt-4 mb-6">
+        <p className="text-center text-xs text-sage-400 mt-4 mb-6">
           By signing up you agree to our{" "}
-          <span className="text-teal-400 font-semibold">Terms of Service</span> and{" "}
-          <span className="text-teal-400 font-semibold">Privacy Policy</span>.
+          <span className="text-mint-400 font-semibold">Terms of Service</span> and{" "}
+          <span className="text-mint-400 font-semibold">Privacy Policy</span>.
         </p>
 
-        <p className="text-center text-sm text-gray-400 mb-8">
+        <p className="text-center text-sm text-sage-400 mb-8">
           Already have an account?{" "}
-          <Link href="/auth/login" className="text-teal-400 font-semibold">Sign in</Link>
+          <Link href="/auth/login" className="text-mint-400 font-semibold">Sign in</Link>
         </p>
       </div>
     </div>

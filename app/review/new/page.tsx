@@ -39,7 +39,7 @@ function StepIndicator({ step }: { step: Step }) {
           {n < 3 && <div className={`w-6 h-0.5 rounded ${step > n ? "bg-teal-400" : "bg-white/10"}`} />}
         </div>
       ))}
-      <span className="text-xs text-teal-300 ml-1">
+      <span className="text-xs text-mint-300 ml-1">
         {["Verify Lease", "Rate", "Review"][step - 1]}
       </span>
     </div>
@@ -114,7 +114,7 @@ function ReviewFlow() {
       <div className="screen flex flex-col items-center justify-center px-6 text-center">
         <div className="w-20 h-20 rounded-full bg-teal-50 flex items-center justify-center text-4xl mb-5">✓</div>
         <h2 className="font-heading font-bold text-2xl text-petrol-400 mb-2">Review Submitted!</h2>
-        <p className="text-sm text-gray-400 mb-6 leading-relaxed">
+        <p className="text-sm text-sage-400 mb-6 leading-relaxed">
           Your verified review has been published and will help build trust in the South African rental community.
         </p>
         <span className="badge-verified text-sm px-4 py-2 mb-8">✓ Verified Tenancy Review</span>
@@ -129,9 +129,9 @@ function ReviewFlow() {
     <div className="screen">
       <div className="bg-petrol-400 px-5 pt-12 pb-6">
         <button onClick={() => step > 1 ? setStep((s) => (s - 1) as Step) : router.back()}
-          className="text-teal-400 text-xl block mb-3">←</button>
+          className="text-mint-400 text-xl block mb-3">←</button>
         <h1 className="font-heading font-bold text-xl text-white mb-1">Write a Review</h1>
-        <p className="text-sm text-teal-300">Reviewing: {revieweeName} · {roleLabel}</p>
+        <p className="text-sm text-mint-300">Reviewing: {revieweeName} · {roleLabel}</p>
         <StepIndicator step={step} />
       </div>
 
@@ -142,7 +142,7 @@ function ReviewFlow() {
             <div className="card text-center py-8 mb-4">
               <div className="text-5xl mb-4">📄</div>
               <h2 className="font-heading font-semibold text-lg text-petrol-400 mb-2">Confirm Your Tenancy</h2>
-              <p className="text-sm text-gray-400 leading-relaxed mb-6">
+              <p className="text-sm text-sage-400 leading-relaxed mb-6">
                 Upload your signed lease to verify the rental relationship. Your personal details stay private.
               </p>
               {!leaseUploaded ? (
@@ -157,7 +157,7 @@ function ReviewFlow() {
                   <span className="text-xl text-teal-400">✓</span>
                   <div>
                     <p className="text-sm font-semibold text-teal-400">Lease_document.pdf</p>
-                    <p className="text-xs text-gray-400">Verified · Tenancy confirmed</p>
+                    <p className="text-xs text-sage-400">Verified · Tenancy confirmed</p>
                   </div>
                 </div>
               )}
@@ -175,7 +175,7 @@ function ReviewFlow() {
               <h2 className="font-heading font-semibold text-[15px] text-petrol-400 mb-4">Rate each category</h2>
               {cats.map(({ key, label, required }) => (
                 <div key={key} className="mb-4">
-                  <p className="text-xs font-medium text-gray-500 mb-2">
+                  <p className="text-xs font-medium text-sage-400 mb-2">
                     {label} {required && <span className="text-red-400">*</span>}
                   </p>
                   <div className="flex items-center gap-3">
@@ -198,7 +198,7 @@ function ReviewFlow() {
           <div>
             <div className="card mb-4">
               <h2 className="font-heading font-semibold text-[15px] text-petrol-400 mb-1">Write your review</h2>
-              <p className="text-xs text-gray-400 mb-3">Minimum {MIN_CHARS} characters · Be honest and constructive</p>
+              <p className="text-xs text-sage-400 mb-3">Minimum {MIN_CHARS} characters · Be honest and constructive</p>
               <textarea
                 rows={9}
                 className="w-full px-3 py-3 rounded-xl border border-gray-200 text-sm font-body text-petrol-400 outline-none focus:border-teal-400 transition-colors resize-none"
@@ -206,7 +206,7 @@ function ReviewFlow() {
                 value={body}
                 onChange={(e) => setBody(e.target.value)}
               />
-              <p className={`text-xs text-right mt-1 ${body.length >= MIN_CHARS ? "text-teal-400" : "text-gray-400"}`}>
+              <p className={`text-xs text-right mt-1 ${body.length >= MIN_CHARS ? "text-teal-400" : "text-sage-400"}`}>
                 {body.length}/{MIN_CHARS}
                 {body.length < MIN_CHARS && ` (${MIN_CHARS - body.length} more needed)`}
               </p>
@@ -217,7 +217,7 @@ function ReviewFlow() {
                 <span className="text-2xl">🏅</span>
                 <div>
                   <p className="font-heading font-semibold text-sm text-petrol-400">Verified Tenancy Badge</p>
-                  <p className="text-xs text-gray-500">This review will display your verified lease badge</p>
+                  <p className="text-xs text-sage-400">This review will display your verified lease badge</p>
                 </div>
               </div>
             )}

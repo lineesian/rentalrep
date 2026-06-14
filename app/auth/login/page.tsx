@@ -49,8 +49,8 @@ export default function LoginPage() {
     <div className="screen flex flex-col">
       <div className="bg-petrol-400 px-5 pt-14 pb-10 flex flex-col items-center text-center">
         <Logo size={48} />
-        <h1 className="font-heading font-bold text-2xl text-white mt-4 mb-1">Welcome back</h1>
-        <p className="text-sm text-teal-300">Sign in to your RentalRep account</p>
+        <h1 className="font-heading font-bold text-2xl text-white mt-5 mb-1">Welcome back</h1>
+        <p className="text-sm text-mint-300 font-body">Sign in to your RentalRep account</p>
       </div>
 
       <div className="px-5 pt-6 flex-1">
@@ -64,7 +64,7 @@ export default function LoginPage() {
               className={`flex-1 py-2 rounded-lg text-sm font-semibold font-body transition-all ${
                 method === m
                   ? "bg-white text-petrol-400 shadow-sm"
-                  : "text-gray-400"
+                  : "text-sage-400"
               }`}
             >
               {m === "email" ? "Email" : "Phone / OTP"}
@@ -76,7 +76,7 @@ export default function LoginPage() {
           {method === "email" ? (
             <>
               <div>
-                <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide block mb-1.5">
+                <label className="text-xs font-semibold text-sage-400 uppercase tracking-wide block mb-1.5">
                   Email address
                 </label>
                 <input
@@ -90,7 +90,7 @@ export default function LoginPage() {
                 />
               </div>
               <div>
-                <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide block mb-1.5">
+                <label className="text-xs font-semibold text-sage-400 uppercase tracking-wide block mb-1.5">
                   Password
                 </label>
                 <input
@@ -106,11 +106,11 @@ export default function LoginPage() {
             </>
           ) : (
             <div>
-              <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide block mb-1.5">
+              <label className="text-xs font-semibold text-sage-400 uppercase tracking-wide block mb-1.5">
                 South African mobile number
               </label>
               <div className="flex gap-2">
-                <span className="input w-16 text-center text-gray-400 flex-shrink-0">+27</span>
+                <span className="input w-16 text-center text-sage-400 flex-shrink-0">+27</span>
                 <input
                   type="tel"
                   className="input flex-1"
@@ -121,7 +121,7 @@ export default function LoginPage() {
                   autoComplete="tel"
                 />
               </div>
-              <p className="text-xs text-gray-400 mt-2">We'll send a one-time PIN via SMS.</p>
+              <p className="text-xs text-sage-400 mt-2">We'll send a one-time PIN via SMS.</p>
             </div>
           )}
 
@@ -136,9 +136,9 @@ export default function LoginPage() {
           </button>
         </form>
 
-        <p className="text-center text-sm text-gray-400 mt-6">
+        <p className="text-center text-sm text-sage-400 mt-6">
           Don&apos;t have an account?{" "}
-          <Link href="/auth/register" className="text-teal-400 font-semibold">
+          <Link href="/auth/register" className="text-mint-400 font-semibold">
             Sign up
           </Link>
         </p>

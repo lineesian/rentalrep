@@ -43,10 +43,10 @@ export default function AgencyPage() {
   ];
 
   const ACTIVITY = [
-    { icon: "✓", text: "New lease uploaded: Thabo S. · Melville", time: "2h ago",    color: "#0E9E92" },
-    { icon: "★", text: "Review received from Kefilwe N. — 8.5/10", time: "Yesterday", color: "#F4B53F" },
-    { icon: "🔍", text: "Tenant screened: Sipho M. · Score: 9.1",  time: "2 days ago", color: "#0E9E92" },
-    { icon: "⚠️", text: "Review flagged for moderation",           time: "3 days ago", color: "#e8855c" },
+    { icon: "✓", text: "New lease uploaded: Thabo S. · Melville",  time: "2h ago",     color: "#0E9E92" },
+    { icon: "★", text: "Review received from Kefilwe N. — 8.5/10", time: "Yesterday",  color: "#F4B53F" },
+    { icon: "🔍", text: "Tenant screened: Sipho M. · Score: 9.1",  time: "2 days ago", color: "#2FD4C0" },
+    { icon: "⚠️", text: "Review flagged for moderation",            time: "3 days ago", color: "#F4B53F" },
   ];
 
   return (
@@ -64,7 +64,7 @@ export default function AgencyPage() {
           {[["48", "Leases"], ["4.1y", "Avg Tenancy"], ["94%", "On-Time Pay"]].map(([v, l]) => (
             <div key={l}>
               <p className="font-heading font-bold text-sm text-gold-400">{v}</p>
-              <p className="text-[10px] text-teal-300">{l}</p>
+              <p className="text-[10px] text-mint-300">{l}</p>
             </div>
           ))}
         </div>
@@ -92,7 +92,7 @@ export default function AgencyPage() {
                 <Avatar name={result.full_name} avatarUrl={result.avatar_url} size="md" />
                 <div className="flex-1">
                   <p className="font-heading font-semibold text-[15px] text-petrol-400">{result.full_name}</p>
-                  {result.suburb && <p className="text-xs text-gray-400">{result.suburb}</p>}
+                  {result.suburb && <p className="text-xs text-sage-400">{result.suburb}</p>}
                   {result.verified && <span className="badge-verified text-[10px] mt-1">✓ Verified</span>}
                 </div>
                 <div className="score-badge text-base">
@@ -110,7 +110,7 @@ export default function AgencyPage() {
           ) : (
             <div className="card text-center py-6 mb-4">
               <p className="text-2xl mb-2">😕</p>
-              <p className="text-sm text-gray-400">No tenant found for &ldquo;{query}&rdquo;</p>
+              <p className="text-sm text-sage-400">No tenant found for &ldquo;{query}&rdquo;</p>
             </div>
           )
         )}
@@ -130,7 +130,7 @@ export default function AgencyPage() {
             </div>
             <div className="flex-1">
               <p className="text-sm text-petrol-400 font-medium leading-snug">{a.text}</p>
-              <p className="text-xs text-gray-400 mt-0.5">{a.time}</p>
+              <p className="text-xs text-sage-400 mt-0.5">{a.time}</p>
             </div>
           </div>
         ))}
