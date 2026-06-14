@@ -36,37 +36,72 @@ export function ScoreRing({ score, size = 90, strokeWidth = 8 }: ScoreRingProps)
       />
       {/* Inner accent ring — Sun Gold */}
       <circle cx={cx} cy={cy} r={r * 0.54} fill="none" stroke="#F4B53F" strokeWidth={1.5} />
-      {/* Score value */}
-      <text
-        x={cx} y={cy + 1}
-        textAnchor="middle"
-        dominantBaseline="middle"
-        style={{
-          transform: `rotate(90deg)`,
-          transformOrigin: `${cx}px ${cy}px`,
-          fontFamily: "Outfit, sans-serif",
-          fontWeight: 700,
-          fontSize: large ? "18px" : "13px",
-          fill: "#07312C",
-        }}
-      >
-        {score > 0 ? score.toFixed(1) : "–"}
-      </text>
-      {score > 0 && (
-        <text
-          x={cx} y={cy + (large ? 14 : 10)}
-          textAnchor="middle"
-          dominantBaseline="middle"
-          style={{
-            transform: `rotate(90deg)`,
-            transformOrigin: `${cx}px ${cy}px`,
-            fontFamily: "Plus Jakarta Sans, sans-serif",
-            fontSize: large ? "9px" : "7px",
-            fill: "#5E7470",
-          }}
-        >
-          /10
-        </text>
+      {/* Score value or empty-state label */}
+      {score > 0 ? (
+        <>
+          <text
+            x={cx} y={cy + 1}
+            textAnchor="middle"
+            dominantBaseline="middle"
+            style={{
+              transform: `rotate(90deg)`,
+              transformOrigin: `${cx}px ${cy}px`,
+              fontFamily: "Outfit, sans-serif",
+              fontWeight: 700,
+              fontSize: large ? "18px" : "13px",
+              fill: "#07312C",
+            }}
+          >
+            {score.toFixed(1)}
+          </text>
+          <text
+            x={cx} y={cy + (large ? 14 : 10)}
+            textAnchor="middle"
+            dominantBaseline="middle"
+            style={{
+              transform: `rotate(90deg)`,
+              transformOrigin: `${cx}px ${cy}px`,
+              fontFamily: "Plus Jakarta Sans, sans-serif",
+              fontSize: large ? "9px" : "7px",
+              fill: "#5E7470",
+            }}
+          >
+            /10
+          </text>
+        </>
+      ) : (
+        <>
+          <text
+            x={cx} y={cy - (large ? 5 : 3)}
+            textAnchor="middle"
+            dominantBaseline="middle"
+            style={{
+              transform: `rotate(90deg)`,
+              transformOrigin: `${cx}px ${cy}px`,
+              fontFamily: "Outfit, sans-serif",
+              fontWeight: 700,
+              fontSize: large ? "13px" : "9px",
+              fill: "#5E7470",
+            }}
+          >
+            No
+          </text>
+          <text
+            x={cx} y={cy + (large ? 8 : 5)}
+            textAnchor="middle"
+            dominantBaseline="middle"
+            style={{
+              transform: `rotate(90deg)`,
+              transformOrigin: `${cx}px ${cy}px`,
+              fontFamily: "Outfit, sans-serif",
+              fontWeight: 700,
+              fontSize: large ? "13px" : "9px",
+              fill: "#5E7470",
+            }}
+          >
+            reviews
+          </text>
+        </>
       )}
     </svg>
   );

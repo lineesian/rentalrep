@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { Avatar } from "@/components/ui/Avatar";
+import { AvatarUpload } from "@/components/ui/AvatarUpload";
 import { ScoreRing } from "@/components/ui/ScoreRing";
 import { ScoreBar } from "@/components/ui/ScoreBar";
 import { StarRow } from "@/components/ui/StarRow";
@@ -57,7 +58,16 @@ export function ProfileView({ profile, score, reviews, isOwner, fetchError }: Pr
         <Link href="/home" className="text-mint-400 text-xl block mb-4" aria-label="Back to home">←</Link>
 
         <div className="flex gap-4 items-start">
-          <Avatar name={profile.full_name} avatarUrl={profile.avatar_url} size="lg" />
+          {isOwner ? (
+            <AvatarUpload
+              userId={profile.id}
+              name={profile.full_name}
+              avatarUrl={profile.avatar_url}
+              variant="profile"
+            />
+          ) : (
+            <Avatar name={profile.full_name} avatarUrl={profile.avatar_url} size="lg" />
+          )}
           <div className="flex-1 min-w-0">
             <h1 className="font-heading font-bold text-xl text-white mb-1.5 truncate">{profile.full_name}</h1>
             <span className="inline-flex items-center gap-1 bg-teal-400/20 text-mint-400 text-xs font-semibold px-2.5 py-1 rounded-full mb-2">
