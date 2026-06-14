@@ -57,7 +57,10 @@ export default function SearchPage() {
       <div className="bg-petrol-400 px-5 pt-12 pb-5">
         <h1 className="font-heading font-bold text-2xl text-white mb-4">Explore</h1>
         <div className="flex items-center gap-3 bg-white/10 border border-white/15 rounded-xl px-4 py-3">
-          <span className="text-base">🔍</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" className="flex-shrink-0">
+            <circle cx="10.5" cy="10.5" r="6.5" stroke="white" strokeWidth={1.8} strokeOpacity="0.6"/>
+            <path d="M15.5 15.5L21 21" stroke="white" strokeWidth={1.8} strokeLinecap="round" strokeOpacity="0.6"/>
+          </svg>
           <input
             className="flex-1 bg-transparent text-white placeholder:text-white/40 text-sm outline-none font-body"
             placeholder="Search landlords, tenants or properties"
@@ -73,14 +76,14 @@ export default function SearchPage() {
 
       <div className="px-4 pt-4">
         {/* Filter chips */}
-        <div className="flex gap-2 overflow-x-auto no-scrollbar pb-1 mb-4">
+        <div className="flex gap-2 overflow-x-auto pb-1 mb-4" style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}>
           {FILTERS.map(({ label, value }) => (
             <button
               key={value}
               onClick={() => handleFilter(value)}
               className={`flex-shrink-0 px-4 py-1.5 rounded-full text-sm font-semibold font-body transition-all border ${
                 filter === value
-                  ? "bg-petrol-400 text-white border-petrol-400"
+                  ? "bg-teal-400 text-white border-teal-400"
                   : "bg-white text-petrol-400 border-gray-100"
               }`}
             >
@@ -92,7 +95,10 @@ export default function SearchPage() {
         {/* State: idle */}
         {!searched && !query && (
           <div className="text-center py-16">
-            <p className="text-4xl mb-3">🔍</p>
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" className="mx-auto mb-3" aria-hidden="true">
+              <circle cx="10.5" cy="10.5" r="6.5" stroke="#0E9E92" strokeWidth={1.8}/>
+              <path d="M15.5 15.5L21 21" stroke="#0E9E92" strokeWidth={1.8} strokeLinecap="round"/>
+            </svg>
             <p className="font-heading font-semibold text-petrol-400 mb-1">Search RentalRep</p>
             <p className="text-xs text-sage-400">Find landlords, tenants and agencies across South Africa</p>
           </div>

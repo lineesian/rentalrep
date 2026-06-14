@@ -75,7 +75,7 @@
 
   /* ── Section labels ─────────────────────────────────────── */
   .section-label {
-    @apply font-heading text-xs font-semibold text-petrol-400 uppercase tracking-widest mb-3;
+    @apply font-heading text-xs font-semibold text-petrol-400 tracking-widest mb-3;
   }
 
   /* ── Form field labels ──────────────────────────────────── */

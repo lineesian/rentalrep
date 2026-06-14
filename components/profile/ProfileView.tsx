@@ -86,8 +86,19 @@ export function ProfileView({ profile, score, reviews, isOwner, fetchError }: Pr
             <p className="text-[11px] text-mint-300 font-body">Reviews</p>
           </div>
           <div>
-            <p className="font-heading font-bold text-base text-gold-400">{score?.overall?.toFixed(1) ?? "–"}</p>
-            <p className="text-[11px] text-mint-300 font-body">Overall score</p>
+            {score && score.overall > 0 ? (
+              <>
+                <p className="font-heading font-bold text-base text-gold-400">{score.overall.toFixed(1)}</p>
+                <p className="text-[11px] text-mint-300 font-body">Overall score</p>
+              </>
+            ) : (
+              <>
+                <span className="inline-flex items-center bg-teal-400/20 text-mint-400 text-[10px] font-semibold px-2 py-0.5 rounded-full font-body">
+                  New
+                </span>
+                <p className="text-[11px] text-mint-300 font-body mt-0.5">Overall score</p>
+              </>
+            )}
           </div>
         </div>
       </div>
@@ -112,7 +123,10 @@ export function ProfileView({ profile, score, reviews, isOwner, fetchError }: Pr
 
         {reviews.length === 0 ? (
           <div className="card text-center py-8 mb-4">
-            <p className="text-2xl mb-2">📭</p>
+            <svg width="40" height="40" viewBox="0 0 40 40" fill="none" className="mx-auto mb-3" aria-hidden="true">
+              <rect x="4" y="10" width="32" height="22" rx="2.5" stroke="#0E9E92" strokeWidth={2}/>
+              <path d="M4 13l16 11 16-11" stroke="#0E9E92" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
             <p className="font-heading font-semibold text-petrol-400 mb-1">No reviews yet</p>
             <p className="text-xs text-sage-400 font-body">Be the first to leave a verified review.</p>
           </div>

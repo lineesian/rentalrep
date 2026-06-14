@@ -115,8 +115,13 @@ export default function AgencyPage() {
           )
         )}
 
-        <button className="w-full py-4 rounded-2xl border-2 border-dashed border-teal-400 bg-teal-50 text-teal-400 font-semibold text-sm mb-6">
-          📂 Bulk Upload Leases
+        <button className="w-full py-4 rounded-2xl border-2 border-dashed border-teal-400 bg-teal-50 text-teal-400 font-semibold text-sm mb-6 flex items-center justify-center gap-2">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" stroke="#0E9E92" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"/>
+            <polyline points="17 8 12 3 7 8" stroke="#0E9E92" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"/>
+            <line x1="12" y1="3" x2="12" y2="15" stroke="#0E9E92" strokeWidth={2} strokeLinecap="round"/>
+          </svg>
+          Bulk Upload Leases
         </button>
 
         <p className="section-label">Recent Activity</p>
