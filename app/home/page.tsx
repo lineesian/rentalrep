@@ -38,16 +38,16 @@ export default async function HomePage() {
   return (
     <div className="screen">
       {/* ── Top header — Petrol Ink ── */}
-      <div className="bg-petrol-400 px-5 pt-12 pb-5">
+      <div className="bg-petrol-400 px-5 pt-12 pb-6">
         <div className="flex items-center justify-between">
           <Logo size={30} />
           <Avatar name={name} size="sm" />
         </div>
       </div>
 
-      <div className="px-4 pt-0">
+      <div className="px-4 pt-4">
         {/* ── Reputation card — Petrol Ink ── */}
-        <div className="bg-petrol-400 rounded-3xl p-5 mt-0 mb-4 border border-teal-400/20">
+        <div className="bg-petrol-400 rounded-3xl p-5 mb-4 border border-teal-400/20">
           <div className="flex items-start justify-between">
             <div>
               <p className="text-mint-300 text-xs font-medium mb-1 font-body">Your Reputation</p>
