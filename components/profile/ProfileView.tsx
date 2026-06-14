@@ -12,6 +12,7 @@ interface Props {
   score: ReputationScore | null;
   reviews: ReviewWithReviewer[];
   isOwner: boolean;
+  fetchError?: string | null;
 }
 
 const LANDLORD_CATS = [
@@ -28,13 +29,20 @@ const TENANT_CATS = [
   { key: "fairness",        label: "Fairness" },
 ] as const;
 
-export function ProfileView({ profile, score, reviews, isOwner }: Props) {
+export function ProfileView({ profile, score, reviews, isOwner, fetchError }: Props) {
   if (!profile) {
     return (
       <div className="flex flex-col items-center justify-center px-6 py-20 text-center">
         <p className="text-3xl mb-3">😕</p>
         <p className="font-heading font-semibold text-petrol-400 mb-1">Profile not found</p>
-        <p className="text-xs text-sage-400 font-body">This profile may have been removed or doesn&apos;t exist.</p>
+        <p className="text-xs text-sage-400 font-body">
+          This profile may have been removed or doesn&apos;t exist.
+        </p>
+        {fetchError && (
+          <p className="text-[10px] text-red-400 font-mono mt-4 max-w-xs break-all">
+            {fetchError}
+          </p>
+        )}
       </div>
     );
   }
