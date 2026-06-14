@@ -74,14 +74,25 @@ export default function SearchPage() {
         </div>
       </div>
 
-      <div className="px-4 pt-4">
-        {/* Filter chips */}
-        <div className="flex gap-2 overflow-x-auto pb-1 mb-4" style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}>
+      <div className="pt-4">
+        {/* Filter chips — negative margin so scroll reaches screen edge */}
+        <div
+          className="flex gap-2 pb-1 mb-4"
+          style={{
+            overflowX: "auto",
+            WebkitOverflowScrolling: "touch",
+            scrollbarWidth: "none",
+            msOverflowStyle: "none",
+            paddingLeft: 16,
+            paddingRight: 16,
+          }}
+        >
           {FILTERS.map(({ label, value }) => (
             <button
               key={value}
               onClick={() => handleFilter(value)}
-              className={`flex-shrink-0 px-4 py-1.5 rounded-full text-sm font-semibold font-body transition-all border ${
+              style={{ flexShrink: 0 }}
+              className={`px-4 py-1.5 rounded-full text-sm font-semibold font-body transition-all border ${
                 filter === value
                   ? "bg-teal-400 text-white border-teal-400"
                   : "bg-white text-petrol-400 border-gray-100"
@@ -91,6 +102,8 @@ export default function SearchPage() {
             </button>
           ))}
         </div>
+
+      <div className="px-4">
 
         {/* State: idle */}
         {!searched && !query && (
@@ -142,6 +155,7 @@ export default function SearchPage() {
             )}
           </>
         )}
+      </div>
       </div>
 
       <BottomNav />

@@ -97,7 +97,7 @@ function ReviewFlow() {
   const params = useSearchParams();
   const router = useRouter();
   const revieweeId  = params.get("revieweeId") ?? "";
-  const role        = params.get("role") ?? "landlord";
+  const role        = params.get("role") ?? params.get("type") ?? "landlord";
   const roleLabel   = getRoleLabel(role);
   const cats        = getCats(role);
 
