@@ -82,7 +82,7 @@ export default async function HomePage() {
           {[
             { label: "Rate a Landlord", icon: "🏠", href: "/review/new?type=landlord" },
             { label: "Rate a Tenant",   icon: "👤", href: "/review/new?type=tenant" },
-            { label: "My Profile",      icon: "⭐", href: "/profile" },
+            { label: "My Profile",      icon: "⭐", href: `/profile/${user.id}` },
           ].map(({ label, icon, href }) => (
             <Link
               key={label}
@@ -125,7 +125,7 @@ export default async function HomePage() {
         )}
       </div>
 
-      <BottomNav />
+      <BottomNav profileId={user.id} />
     </div>
   );
 }
