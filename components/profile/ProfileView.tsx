@@ -71,7 +71,7 @@ export function ProfileView({ profile, score, reviews, isOwner, fetchError }: Pr
           <div className="flex-1 min-w-0">
             <h1 className="font-heading font-bold text-xl text-white mb-1.5 truncate">{profile.full_name}</h1>
             <span className="inline-flex items-center gap-1 bg-teal-400/20 text-mint-400 text-xs font-semibold px-2.5 py-1 rounded-full mb-2">
-              ✓ Verified {roleLabel}
+              <span style={{ color: "#F4B53F" }}>✓</span> Verified {roleLabel}
             </span>
             <p className="text-xs text-mint-300 font-body mt-1.5">
               📍 {[profile.suburb, profile.city].filter(Boolean).join(", ") || "South Africa"}

@@ -97,7 +97,7 @@ export default async function HomePage() {
               <p className="text-mint-300 text-xs font-medium mb-1 font-body">Your Reputation</p>
               <h2 className="font-heading font-bold text-xl text-white mb-2">{name}</h2>
               <span className="inline-flex items-center gap-1 bg-teal-400/20 text-mint-400 text-xs font-semibold px-2.5 py-1 rounded-full">
-                ✓ Verified {roleLabel}
+                <span style={{ color: "#F4B53F" }}>✓</span> Verified {roleLabel}
               </span>
             </div>
             <ScoreRing score={score} size={88} />
