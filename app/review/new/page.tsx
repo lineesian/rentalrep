@@ -303,7 +303,7 @@ function ReviewFlow() {
           </svg>
           <input
             className="flex-1 bg-transparent text-petrol-400 placeholder:text-sage-400 text-sm outline-none font-body"
-            placeholder={`Search for a ${roleLabel(role).toLowerCase()} by name…`}
+            placeholder={`Search for ${role === "agency" ? "an" : "a"} ${roleLabel(role).toLowerCase()} by name…`}
             value={searchQuery}
             onChange={(e) => handleSearch(e.target.value)}
             autoFocus
@@ -330,7 +330,7 @@ function ReviewFlow() {
               <circle cx="10.5" cy="10.5" r="6.5" stroke="#0E9E92" strokeWidth={1.8}/>
               <path d="M15.5 15.5L21 21" stroke="#0E9E92" strokeWidth={1.8} strokeLinecap="round"/>
             </svg>
-            <p className="font-heading font-semibold text-petrol-400 mb-1">Find a {roleLabel(role)}</p>
+            <p className="font-heading font-semibold text-petrol-400 mb-1">Find {role === "agency" ? "an" : "a"} {roleLabel(role)}</p>
             <p className="text-xs text-sage-400">Search by name to find who you&apos;d like to review</p>
           </div>
         )}
