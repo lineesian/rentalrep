@@ -5,6 +5,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { Avatar } from "@/components/ui/Avatar";
 import { StarRow } from "@/components/ui/StarRow";
+import { getReviewWindowStatus, formatDateZA } from "@/lib/reviewWindow";
 import type { Profile, ProfileWithScore } from "@/lib/types";
 
 type Step = 1 | 2 | 3 | 4;
@@ -194,8 +195,10 @@ function ReviewFlow() {
   const [done,       setDone]       = useState(false);
 
   // Derived
-  const isProperty  = role === "property";
-  const step1Ready  = !!address && !!leaseStart && !!leaseEnd && !!leaseFile;
+  const isProperty   = role === "property";
+  const windowStatus = leaseEnd ? getReviewWindowStatus(leaseEnd) : null;
+  const windowOpen   = windowStatus?.status === "open";
+  const step1Ready   = !!address && !!leaseStart && !!leaseEnd && !!leaseFile && windowOpen;
   const step2Ready  = isProperty
     ? true  // address already confirmed from step 1
     : searchMode === "search"
@@ -248,6 +251,30 @@ function ReviewFlow() {
     }
     if (!user) { router.push("/auth/login"); return; }
     console.log("[submit] step 0 — user:", user.id);
+
+    // ── 0b. Server-side window validation ───────────────────────
+    // Catches anyone who bypassed the UI check (e.g. direct API calls).
+    try {
+      console.log("[submit] step 0b — validating review window server-side");
+      const gateRes = await fetch("/api/reviews", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ lease_end: leaseEnd }),
+      });
+      if (!gateRes.ok) {
+        const gateBody = await gateRes.json().catch(() => ({}));
+        const msg = (gateBody as { message?: string }).message ?? "Review window is closed for this tenancy.";
+        console.warn("[submit] step 0b — window check failed:", msg);
+        setError(msg);
+        setSubmitting(false);
+        return;
+      }
+      console.log("[submit] step 0b — window check passed");
+    } catch (e) {
+      // Non-fatal: if the endpoint is unreachable, allow submission to proceed.
+      // The client-side check already ran; this is a belt-and-suspenders guard.
+      console.warn("[submit] step 0b — window check threw (skipping):", e);
+    }
 
     // ── 1. Upload lease file to storage (non-fatal) ─────────────
     // If the storage bucket is unavailable, we continue without a document_url
@@ -483,7 +510,7 @@ function ReviewFlow() {
           <input className="input mb-4" placeholder="e.g. 12 Oak Avenue, Melville"
             value={address} onChange={(e) => setAddress(e.target.value)} />
 
-          <div className="grid grid-cols-2 gap-3 mb-4">
+          <div className="grid grid-cols-2 gap-3 mb-3">
             <div>
               <label className="field-label">Start Date *</label>
               <input type="date" className="input" value={leaseStart} onChange={(e) => setLeaseStart(e.target.value)} />
@@ -493,6 +520,47 @@ function ReviewFlow() {
               <input type="date" className="input" value={leaseEnd} onChange={(e) => setLeaseEnd(e.target.value)} />
             </div>
           </div>
+
+          {/* ── Review window status ── */}
+          {windowStatus && windowStatus.status === "too_early" && (
+            <div className="flex items-start gap-2.5 bg-amber-50 border border-amber-300 rounded-xl px-3 py-3 mb-4">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="flex-shrink-0 mt-0.5" aria-hidden="true">
+                <circle cx="12" cy="12" r="10" stroke="#F4B53F" strokeWidth={1.8}/>
+                <path d="M12 8v4M12 16h.01" stroke="#F4B53F" strokeWidth={2} strokeLinecap="round"/>
+              </svg>
+              <p className="text-xs text-amber-700 font-body leading-relaxed">
+                <span className="font-semibold">Review window not open yet.</span>{" "}
+                You can submit your review from{" "}
+                <span className="font-semibold">{formatDateZA(windowStatus.opensOn)}</span>,
+                which is 14 days before the lease end date.
+              </p>
+            </div>
+          )}
+
+          {windowStatus && windowStatus.status === "expired" && (
+            <div className="flex items-start gap-2.5 bg-red-50 border border-red-200 rounded-xl px-3 py-3 mb-4">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="flex-shrink-0 mt-0.5" aria-hidden="true">
+                <circle cx="12" cy="12" r="10" stroke="#ef4444" strokeWidth={1.8}/>
+                <path d="M15 9l-6 6M9 9l6 6" stroke="#ef4444" strokeWidth={1.8} strokeLinecap="round"/>
+              </svg>
+              <p className="text-xs text-red-700 font-body leading-relaxed">
+                <span className="font-semibold">Review window closed.</span>{" "}
+                Reviews must be submitted within 90 days of the lease end date.
+                This window closed on{" "}
+                <span className="font-semibold">{formatDateZA(windowStatus.closedOn)}</span>.
+              </p>
+            </div>
+          )}
+
+          {windowStatus && windowStatus.status === "open" && (
+            <div className="inline-flex items-center gap-1.5 mb-4 text-xs font-semibold text-teal-400">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <circle cx="12" cy="12" r="10" stroke="#0E9E92" strokeWidth={1.8}/>
+                <path d="M7 12.5l3.5 3.5 6.5-7" stroke="#0E9E92" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+              Review window open
+            </div>
+          )}
 
           <label className="field-label">Lease Document *</label>
           {leaseFile ? (
@@ -523,10 +591,15 @@ function ReviewFlow() {
           <p className="text-xs text-sage-400 mt-2">Stored securely · used only for verification</p>
         </div>
 
-        {step1Ready
-          ? <PrimaryBtn onClick={() => setStep(2)}>Continue →</PrimaryBtn>
-          : <GhostBtn>Fill in all fields to continue</GhostBtn>
-        }
+        {step1Ready ? (
+          <PrimaryBtn onClick={() => setStep(2)}>Continue →</PrimaryBtn>
+        ) : windowStatus?.status === "too_early" ? (
+          <GhostBtn>Review window opens {formatDateZA(windowStatus.opensOn)}</GhostBtn>
+        ) : windowStatus?.status === "expired" ? (
+          <GhostBtn>Review window closed</GhostBtn>
+        ) : (
+          <GhostBtn>Fill in all fields to continue</GhostBtn>
+        )}
       </div>
     </div>
   );
