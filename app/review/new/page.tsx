@@ -178,26 +178,23 @@ function ReviewFlow() {
 
     if (uploadErr) { setError(uploadErr.message); setSubmitting(false); return; }
 
-    // 2a. On-platform: create a lease row linking both real profiles
-    let leaseId: string | null = null;
-    if (reviewee) {
-      const isLandlord = role === "landlord";
-      const { data: leaseRow, error: leaseErr } = await supabase
-        .from("leases")
-        .insert({
-          landlord_id:      isLandlord ? reviewee.id : user.id,
-          tenant_id:        isLandlord ? user.id : reviewee.id,
-          property_address: address,
-          start_date:       leaseStart,
-          end_date:         leaseEnd,
-          document_url:     filePath,
-        } as never)
-        .select("id")
-        .single();
-      if (leaseErr) { setError(leaseErr.message); setSubmitting(false); return; }
-      leaseId = (leaseRow as { id: string }).id;
-    }
-    // 2b. Off-platform: no lease row — guest_name/guest_email go straight on the review.
+    // 2. Always create a lease row.
+    // landlord_id is nullable (migration 008) so guest reviewees are handled with null.
+    const isLandlordRole = role === "landlord";
+    const { data: leaseRow, error: leaseErr } = await supabase
+      .from("leases")
+      .insert({
+        landlord_id:      isLandlordRole ? (reviewee?.id ?? null) : user.id,
+        tenant_id:        isLandlordRole ? user.id : (reviewee?.id ?? user.id),
+        property_address: address,
+        start_date:       leaseStart,
+        end_date:         leaseEnd,
+        document_url:     filePath,
+      } as never)
+      .select("id")
+      .single();
+    if (leaseErr) { setError(leaseErr.message); setSubmitting(false); return; }
+    const leaseId = (leaseRow as { id: string }).id;
 
     // 3. Build structured body (category notes + free text)
     const noteLines = cats
@@ -210,7 +207,7 @@ function ReviewFlow() {
     const payload: Record<string, unknown> = {
       reviewer_id:     user.id,
       reviewee_id:     reviewee?.id ?? null,   // null for guests — allowed after migration 007
-      lease_id:        leaseId,                // null for guests
+      lease_id:        leaseId,                // always set — lease row created above
       overall,
       body:            fullBody,
       anonymous,
