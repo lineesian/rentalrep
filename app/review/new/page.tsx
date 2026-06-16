@@ -244,7 +244,7 @@ function ReviewFlow() {
       </p>
       {revieweeName && (
         <p className="text-xs text-sage-400 mb-8">
-          Once verified it will appear on {revieweeName + "'s"} profile.
+          {`Once verified it will appear on ${revieweeName}'s profile.`}
         </p>
       )}
       <button className="btn-primary w-full" onClick={() => router.push("/home")}>
@@ -493,12 +493,10 @@ function ReviewFlow() {
                 <button key={v} onClick={() => setRecommend((r) => r === v ? null : v)}
                   className={`flex-1 py-2 rounded-xl text-sm font-semibold border-2 transition-colors capitalize ${
                     recommend === v
-                      ? v === "yes"  ? "bg-teal-400 text-white border-teal-400"
-                      : v === "no"   ? "bg-red-400 text-white border-red-400"
-                      :                "bg-gold-400 text-petrol-400 border-gold-400"
-                      : "bg-white text-sage-400 border-gray-100"
+                      ? "bg-teal-400 text-white border-teal-400"
+                      : "bg-white text-teal-400 border-teal-400"
                   }`}>
-                  {v === "yes" ? "👍 Yes" : v === "no" ? "👎 No" : "🤔 Maybe"}
+                  {v === "yes" ? "Yes" : v === "no" ? "No" : "Maybe"}
                 </button>
               ))}
             </div>
