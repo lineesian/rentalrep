@@ -24,12 +24,12 @@ const LANDLORD_CATS: Cat[] = [
 ];
 
 const TENANT_CATS: Cat[] = [
-  { key: "payment_history",       label: "Payment Reliability",   placeholder: "e.g. Did they pay rent on time every month?" },
-  { key: "property_care",         label: "Property Care",          placeholder: "e.g. Did they keep the property clean and undamaged?" },
-  { key: "communication",         label: "Communication",          placeholder: "e.g. Were they easy to reach and responsive?" },
-  { key: "compliance_with_lease", label: "Lease Compliance",       placeholder: "e.g. Did they follow the terms of the lease?" },
-  { key: "vacating_conduct",      label: "Vacating Conduct",       placeholder: "e.g. Did they leave the property in good condition?" },
-  { key: "neighbour_relations",   label: "Neighbour Relations",    placeholder: "e.g. Were there any complaints from neighbours?" },
+  { key: "payment_history",       label: "Rent Payment",           placeholder: "e.g. Did they pay on time, every time?" },
+  { key: "property_care",         label: "Property Care",          placeholder: "e.g. Did they keep the property clean and in good condition?" },
+  { key: "communication",         label: "Communication",          placeholder: "e.g. Were they responsive and easy to reach?" },
+  { key: "compliance_with_lease", label: "Lease Compliance",       placeholder: "e.g. Did they follow the lease terms throughout?" },
+  { key: "vacating_conduct",      label: "Departure & Handover",   placeholder: "e.g. Did they leave the property clean and undamaged?" },
+  { key: "neighbour_relations",   label: "Neighbourly Conduct",    placeholder: "e.g. Were they considerate of neighbours?" },
 ];
 
 const AGENCY_CATS: Cat[] = [
@@ -157,11 +157,19 @@ function GhostBtn({ children }: { children: React.ReactNode }) {
 
 // ── Main flow ──────────────────────────────────────────────────
 
+function reviewBodyPlaceholder(role: string): string {
+  if (role === "tenant")   return "Tell us about your experience with this tenant. How was their communication, payment reliability, and the condition they left the property in?";
+  if (role === "property") return "Describe your experience living at this property. What made it stand out — positively or negatively?";
+  if (role === "agency" || role === "agent") return "Tell us about your experience with this agency or agent. Were they professional, transparent, and helpful throughout the process?";
+  return "Describe your overall experience. What made it positive or negative? How did they handle issues? Would you recommend them?";
+}
+
 function ReviewFlow() {
-  const params   = useSearchParams();
-  const router   = useRouter();
-  const role     = params.get("role") ?? params.get("type") ?? "landlord";
-  const cats     = catsForRole(role);
+  const params        = useSearchParams();
+  const router        = useRouter();
+  const role          = params.get("role") ?? params.get("type") ?? "landlord"; // reviewee type
+  const reviewerRole  = params.get("from") ?? "tenant";                          // who is writing
+  const cats          = catsForRole(role);
   const supabase = createClient();
   const fileRef  = useRef<HTMLInputElement>(null);
 
@@ -383,17 +391,19 @@ function ReviewFlow() {
     const tenancyKey = computeTenancyKey(user.id, revieweeId, address);
 
     const payload: Record<string, unknown> = {
-      reviewer_id:     user.id,
-      reviewee_id:     revieweeId,
-      property_id:     propertyId,
-      lease_id:        leaseId,
-      tenancy_key:     tenancyKey,
+      reviewer_id:   user.id,
+      reviewee_id:   revieweeId,
+      property_id:   propertyId,
+      lease_id:      leaseId,
+      tenancy_key:   tenancyKey,
+      reviewer_role: reviewerRole,
+      reviewee_role: isProperty ? "property" : role,
       overall,
-      body:            fullBody,
+      body:          fullBody,
       anonymous,
       would_recommend: recommend,
-      guest_name:      (!isProperty && !reviewee) ? guestName : null,
-      guest_email:     (!isProperty && !reviewee) ? guestEmail : null,
+      guest_name:    (!isProperty && !reviewee) ? guestName : null,
+      guest_email:   (!isProperty && !reviewee) ? guestEmail : null,
     };
     cats.forEach(({ key }) => { if (ratings[key]) payload[key] = ratings[key]; });
     if (!payload.communication) payload.communication = overall;
@@ -858,7 +868,7 @@ function ReviewFlow() {
           <p className="text-xs text-sage-400 mb-3">Minimum {MIN_BODY} characters · Be honest and constructive</p>
           <textarea rows={8}
             className="w-full px-3 py-3 rounded-xl border border-gray-200 text-sm font-body text-petrol-400 outline-none focus:border-teal-400 transition-colors resize-none"
-            placeholder="Describe your overall experience. What made it positive or negative? How did they handle issues? Would you recommend them?"
+            placeholder={reviewBodyPlaceholder(role)}
             value={body}
             onChange={(e) => setBody(e.target.value.slice(0, MAX_BODY))}
           />

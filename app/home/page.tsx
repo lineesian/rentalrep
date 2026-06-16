@@ -31,24 +31,24 @@ function actionCards(role: UserRole, userId: string) {
 
   if (role === "landlord") {
     return [
-      { label: "Rate a Tenant",  Icon: RateTenantIcon,   href: "/review/new?type=tenant" },
-      { label: "Rate an Agency", Icon: RateAgencyIcon,   href: "/review/new?type=agency" },
+      { label: "Rate a Tenant",  Icon: RateTenantIcon,   href: "/review/new?type=tenant&from=landlord" },
+      { label: "Rate an Agency", Icon: RateAgencyIcon,   href: "/review/new?type=agency&from=landlord" },
       myProfile,
     ];
   }
   if (role === "agency") {
     return [
       { label: "Screen a Tenant", Icon: ScreenTenantIcon, href: "/agency" },
-      { label: "Rate a Landlord", Icon: RateLandlordIcon, href: "/review/new?type=landlord" },
+      { label: "Rate a Landlord", Icon: RateLandlordIcon, href: "/review/new?type=landlord&from=agency" },
       myProfile,
     ];
   }
   // tenant — 4 quick-action cards (profile is always in bottom nav)
   return [
-    { label: "Rate a Landlord", Icon: RateLandlordIcon, href: "/review/new?type=landlord" },
-    { label: "Rate an Agent",   Icon: RateAgentIcon,    href: "/review/new?type=agent" },
-    { label: "Rate an Agency",  Icon: RateAgencyIcon,   href: "/review/new?type=agency" },
-    { label: "Rate a Property", Icon: RatePropertyIcon, href: "/review/new?type=property" },
+    { label: "Rate a Landlord", Icon: RateLandlordIcon, href: "/review/new?type=landlord&from=tenant" },
+    { label: "Rate an Agent",   Icon: RateAgentIcon,    href: "/review/new?type=agent&from=tenant" },
+    { label: "Rate an Agency",  Icon: RateAgencyIcon,   href: "/review/new?type=agency&from=tenant" },
+    { label: "Rate a Property", Icon: RatePropertyIcon, href: "/review/new?type=property&from=tenant" },
   ];
 }
 

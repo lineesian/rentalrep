@@ -107,6 +107,9 @@ export type Review = {
   safety_security: number | null;
   noise_levels: number | null;
   location_amenities: number | null;
+  // Direction metadata (role of each party at time of writing)
+  reviewer_role: "tenant" | "landlord" | "agency" | "agent" | null;
+  reviewee_role: "tenant" | "landlord" | "agency" | "agent" | "property" | null;
   // Meta
   would_recommend: "yes" | "no" | "maybe" | null;
   anonymous: boolean;
