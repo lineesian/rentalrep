@@ -77,10 +77,10 @@ export function ProfileView({ profile, score, reviews, isOwner, fetchError }: Pr
   return (
     <div>
       {/* ── Header — Petrol Ink ── */}
-      <div className="bg-petrol-400 px-5 pt-12 pb-6">
-        <Link href="/home" className="text-mint-400 text-xl block mb-4" aria-label="Back to home">←</Link>
+      <div className="bg-petrol-400 px-5 pt-10 pb-4">
+        <Link href="/home" className="text-mint-400 text-xl block mb-3" aria-label="Back to home">←</Link>
 
-        <div className="flex gap-4 items-start">
+        <div className="flex gap-3 items-center">
           {isOwner ? (
             <AvatarUpload
               userId={profile.id}
@@ -92,18 +92,18 @@ export function ProfileView({ profile, score, reviews, isOwner, fetchError }: Pr
             <Avatar name={profile.full_name} avatarUrl={profile.avatar_url} size="lg" />
           )}
           <div className="flex-1 min-w-0">
-            <h1 className="font-heading font-bold text-xl text-white mb-1.5 truncate">{profile.full_name}</h1>
-            <span className="inline-flex items-center gap-1 bg-teal-400/20 text-mint-400 text-xs font-semibold px-2.5 py-1 rounded-full mb-2">
+            <h1 className="font-heading font-bold text-lg text-white mb-1 truncate">{profile.full_name}</h1>
+            <span className="inline-flex items-center gap-1 bg-teal-400/20 text-mint-400 text-xs font-semibold px-2 py-0.5 rounded-full">
               <span style={{ color: "#F4B53F" }}>✓</span> Verified {roleLabel}
             </span>
-            <p className="text-xs text-mint-300 font-body mt-1.5">
+            <p className="text-xs text-mint-300 font-body mt-1">
               📍 {[profile.suburb, profile.city].filter(Boolean).join(", ") || "South Africa"}
             </p>
           </div>
-          <ScoreRing score={score?.overall ?? 0} size={72} strokeWidth={6} />
+          <ScoreRing score={score?.overall ?? 0} size={64} strokeWidth={5} />
         </div>
 
-        <div className="flex gap-6 mt-5 pt-4 border-t border-white/10">
+        <div className="flex gap-6 mt-3 pt-3 border-t border-white/10">
           <div>
             <p className="font-heading font-bold text-base text-gold-400">{score?.review_count ?? 0}</p>
             <p className="text-[11px] text-mint-300 font-body">Reviews</p>
