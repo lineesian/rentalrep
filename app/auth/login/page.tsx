@@ -31,7 +31,6 @@ export default function LoginPage() {
         setLoading(false);
         return;
       }
-      // Check onboarding status
       const { data: profile } = await supabase
         .from("profiles")
         .select("onboarding_completed")
@@ -52,39 +51,58 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="screen flex flex-col">
-      <div className="bg-petrol-400 px-5 pt-14 pb-10 flex flex-col items-center text-center">
-        <Logo size={48} />
-        <h1 className="font-heading font-bold text-2xl text-white mt-5 mb-1">Welcome back</h1>
-        <p className="text-sm text-mint-300 font-body">Sign in to your RentalRep account</p>
-      </div>
+    <div className="screen flex flex-col items-center justify-center px-6" style={{ background: "#F5F8F7" }}>
+      <div className="w-full max-w-sm">
 
-      <div className="px-5 pt-6 flex-1">
+        {/* Logo */}
+        <div className="flex flex-col items-center mb-10">
+          <Logo size={48} showTagline={false} />
+          <p className="mt-3 text-[13px] font-body" style={{ color: "#5E7470" }}>
+            Rate. Trust. Rent with Confidence.
+          </p>
+        </div>
+
+        {/* Heading */}
+        <div className="text-center mb-8">
+          <h1
+            className="font-heading font-bold mb-2"
+            style={{ color: "#07312C", fontSize: 26, letterSpacing: "0.01em" }}
+          >
+            Welcome back
+          </h1>
+          <p className="font-body text-sm" style={{ color: "#5E7470" }}>
+            Sign in to your RentalRep account
+          </p>
+        </div>
+
         {/* Method toggle */}
-        <div className="flex bg-gray-100 rounded-xl p-1 mb-6">
+        <div
+          className="flex rounded-full p-1 mb-7"
+          style={{ background: "#E0EBEA" }}
+        >
           {(["email", "phone"] as Method[]).map((m) => (
             <button
               key={m}
               type="button"
               onClick={() => setMethod(m)}
-              className={`flex-1 py-2 rounded-lg text-sm font-semibold font-body transition-all ${
+              className="flex-1 py-2 rounded-full text-sm font-semibold font-body transition-all"
+              style={
                 method === m
-                  ? "bg-white text-petrol-400 shadow-sm"
-                  : "text-sage-400"
-              }`}
+                  ? { background: "#0E9E92", color: "white" }
+                  : { background: "transparent", color: "#5E7470" }
+              }
             >
               {m === "email" ? "Email" : "Phone / OTP"}
             </button>
           ))}
         </div>
 
+        {/* Form */}
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           {method === "email" ? (
             <>
               <div>
-                <label className="text-xs font-semibold text-sage-400 uppercase tracking-wide block mb-1.5">
-                  Email address
-                </label>
+                <label className="field-label">Email address</label>
                 <input
                   type="email"
                   className="input"
@@ -96,9 +114,7 @@ export default function LoginPage() {
                 />
               </div>
               <div>
-                <label className="text-xs font-semibold text-sage-400 uppercase tracking-wide block mb-1.5">
-                  Password
-                </label>
+                <label className="field-label">Password</label>
                 <input
                   type="password"
                   className="input"
@@ -112,9 +128,7 @@ export default function LoginPage() {
             </>
           ) : (
             <div>
-              <label className="text-xs font-semibold text-sage-400 uppercase tracking-wide block mb-1.5">
-                South African mobile number
-              </label>
+              <label className="field-label">South African mobile number</label>
               <div className="flex gap-2">
                 <span className="input w-16 text-center text-sage-400 flex-shrink-0">+27</span>
                 <input
@@ -127,7 +141,7 @@ export default function LoginPage() {
                   autoComplete="tel"
                 />
               </div>
-              <p className="text-xs text-sage-400 mt-2">We'll send a one-time PIN via SMS.</p>
+              <p className="text-xs text-sage-400 mt-2 font-body">We&apos;ll send a one-time PIN via SMS.</p>
             </div>
           )}
 
@@ -137,14 +151,19 @@ export default function LoginPage() {
             </div>
           )}
 
-          <button type="submit" className="btn-primary mt-2" disabled={loading}>
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full py-4 rounded-xl font-heading font-bold text-sm text-white mt-2 transition-opacity disabled:opacity-60"
+            style={{ background: "#07312C" }}
+          >
             {loading ? "Please wait…" : method === "email" ? "Sign in" : "Send OTP"}
           </button>
         </form>
 
-        <p className="text-center text-sm text-sage-400 mt-6">
+        <p className="text-center text-sm font-body mt-8 mb-4" style={{ color: "#5E7470" }}>
           Don&apos;t have an account?{" "}
-          <Link href="/auth/register" className="text-mint-400 font-semibold">
+          <Link href="/auth/register" className="font-semibold" style={{ color: "#0E9E92" }}>
             Sign up
           </Link>
         </p>
