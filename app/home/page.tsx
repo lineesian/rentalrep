@@ -54,7 +54,13 @@ export default async function HomePage() {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/auth/login");
 
-  const [{ data: profile }, { data: scoreRow }, { data: recentReviews }] = await Promise.all([
+  const [
+    { data: profile },
+    { data: scoreRow },
+    { data: recentReviews },
+    { count: reviewCount },
+    { count: leaseCount },
+  ] = await Promise.all([
     supabase.from("profiles").select("*").eq("id", user.id).single(),
     supabase.from("reputation_scores").select("*").eq("profile_id", user.id).maybeSingle(),
     supabase
@@ -63,6 +69,8 @@ export default async function HomePage() {
       .eq("reviewer_id", user.id)
       .order("created_at", { ascending: false })
       .limit(3),
+    supabase.from("reviews").select("*", { count: "exact", head: true }).eq("reviewer_id", user.id),
+    supabase.from("leases").select("*", { count: "exact", head: true }).eq("tenant_id", user.id),
   ]);
 
   const score     = scoreRow?.overall ?? 0;
@@ -104,16 +112,18 @@ export default async function HomePage() {
           </div>
 
           <div className="mt-4 pt-4 border-t border-white/10 flex gap-6">
-            {/* Reviews count */}
+            {/* Reviews written by the user */}
             <div>
               <p className="font-heading font-bold text-base text-gold-400">
-                {scoreRow?.review_count ?? 0}
+                {reviewCount ?? 0}
               </p>
               <p className="text-[11px] text-mint-300 font-body">Reviews</p>
             </div>
-            {/* Role-specific second stat */}
+            {/* Role-specific second stat (leases for tenants) */}
             <div>
-              <p className="font-heading font-bold text-base text-gold-400">–</p>
+              <p className="font-heading font-bold text-base text-gold-400">
+                {leaseCount ?? 0}
+              </p>
               <p className="text-[11px] text-mint-300 font-body">{statLabel}</p>
             </div>
             {/* Trust score — "New" badge when no reviews yet */}
