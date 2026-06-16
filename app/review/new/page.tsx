@@ -233,66 +233,125 @@ function ReviewFlow() {
     setSubmitting(true);
     setError(null);
 
-    const { data: { user } } = await supabase.auth.getUser();
+    console.log("[submit] step 0 — starting submission, role:", role);
+
+    // ── Auth check ──────────────────────────────────────────────
+    let user: { id: string } | null = null;
+    try {
+      const { data: { user: u } } = await supabase.auth.getUser();
+      user = u;
+    } catch (e) {
+      console.error("[submit] auth.getUser failed:", e);
+      setError("Authentication error. Please sign in again.");
+      setSubmitting(false);
+      return;
+    }
     if (!user) { router.push("/auth/login"); return; }
+    console.log("[submit] step 0 — user:", user.id);
 
-    // 1. Upload lease file to storage
-    const ext      = leaseFile!.name.split(".").pop() ?? "pdf";
-    const filePath = `${user.id}/${Date.now()}.${ext}`;
-    const { error: uploadErr } = await supabase.storage
-      .from("leases")
-      .upload(filePath, leaseFile!, { contentType: leaseFile!.type, upsert: false });
+    // ── 1. Upload lease file to storage (non-fatal) ─────────────
+    // If the storage bucket is unavailable, we continue without a document_url
+    // so the rest of the review still saves.
+    let filePath: string | null = null;
+    try {
+      const ext = leaseFile!.name.split(".").pop() ?? "pdf";
+      filePath  = `${user.id}/${Date.now()}.${ext}`;
+      console.log("[submit] step 1 — uploading to storage:", filePath);
+      const { error: uploadErr } = await supabase.storage
+        .from("leases")
+        .upload(filePath, leaseFile!, { contentType: leaseFile!.type, upsert: false });
+      if (uploadErr) {
+        console.warn("[submit] step 1 — storage upload error (non-fatal):", uploadErr.message);
+        filePath = null; // continue without document
+      } else {
+        console.log("[submit] step 1 — upload OK");
+      }
+    } catch (e) {
+      console.warn("[submit] step 1 — storage upload threw (non-fatal):", e);
+      filePath = null;
+    }
 
-    if (uploadErr) { setError(uploadErr.message); setSubmitting(false); return; }
-
-    // 2. For property reviews: find or create property record
+    // ── 2. Property record (property reviews only) ──────────────
     let propertyId: string | null = null;
     if (isProperty) {
-      const normalizedAddress = address.trim().toLowerCase();
-      const { data: existing } = await supabase
-        .from("properties")
-        .select("id")
-        .eq("normalized_address", normalizedAddress)
-        .maybeSingle();
-
-      if (existing) {
-        propertyId = (existing as { id: string }).id;
-      } else {
-        const { data: newProp, error: propErr } = await supabase
+      try {
+        const normalizedAddress = address.trim().toLowerCase();
+        console.log("[submit] step 2 — upserting property:", normalizedAddress);
+        const { data: existing } = await supabase
           .from("properties")
-          .insert({ address: address.trim(), normalized_address: normalizedAddress })
           .select("id")
-          .single();
-        if (propErr) { setError(propErr.message); setSubmitting(false); return; }
-        propertyId = (newProp as { id: string }).id;
+          .eq("normalized_address", normalizedAddress)
+          .maybeSingle();
+
+        if (existing) {
+          propertyId = (existing as { id: string }).id;
+          console.log("[submit] step 2 — existing property:", propertyId);
+        } else {
+          const { data: newProp, error: propErr } = await supabase
+            .from("properties")
+            .insert({ address: address.trim(), normalized_address: normalizedAddress })
+            .select("id")
+            .single();
+          if (propErr) {
+            console.error("[submit] step 2 — property insert error:", propErr);
+            setError(propErr.message);
+            setSubmitting(false);
+            return;
+          }
+          propertyId = (newProp as { id: string }).id;
+          console.log("[submit] step 2 — new property:", propertyId);
+        }
+      } catch (e) {
+        console.error("[submit] step 2 — property lookup threw:", e);
+        setError("Failed to save property. Please try again.");
+        setSubmitting(false);
+        return;
       }
     }
 
-    // 3. Always create a lease row
+    // ── 3. Lease row ────────────────────────────────────────────
+    console.log("[submit] step 3 — inserting lease");
     const isLandlordRole = role === "landlord";
-    const { data: leaseRow, error: leaseErr } = await supabase
-      .from("leases")
-      .insert({
-        landlord_id:      isLandlordRole ? (reviewee?.id ?? null) : (isProperty ? null : user.id),
-        tenant_id:        isLandlordRole ? user.id : (reviewee?.id ?? user.id),
-        property_address: address,
-        start_date:       leaseStart,
-        end_date:         leaseEnd,
-        document_url:     filePath,
-      } as never)
-      .select("id")
-      .single();
-    if (leaseErr) { setError(leaseErr.message); setSubmitting(false); return; }
-    const leaseId = (leaseRow as { id: string }).id;
+    const leaseInsert = {
+      landlord_id:      isLandlordRole ? (reviewee?.id ?? null) : (isProperty ? null : user.id),
+      tenant_id:        isLandlordRole ? user.id : (reviewee?.id ?? user.id),
+      property_address: address,
+      start_date:       leaseStart,
+      end_date:         leaseEnd || null,
+      document_url:     filePath,
+    };
+    console.log("[submit] step 3 — lease payload:", leaseInsert);
 
-    // 4. Build review body
+    let leaseId: string | null = null;
+    try {
+      const { data: leaseRow, error: leaseErr } = await supabase
+        .from("leases")
+        .insert(leaseInsert as never)
+        .select("id")
+        .single();
+      if (leaseErr) {
+        console.error("[submit] step 3 — lease insert error:", leaseErr);
+        setError(leaseErr.message);
+        setSubmitting(false);
+        return;
+      }
+      leaseId = (leaseRow as { id: string }).id;
+      console.log("[submit] step 3 — lease OK:", leaseId);
+    } catch (e) {
+      console.error("[submit] step 3 — lease insert threw:", e);
+      setError("Failed to save lease. Please try again.");
+      setSubmitting(false);
+      return;
+    }
+
+    // ── 4. Build and insert review ──────────────────────────────
+    console.log("[submit] step 4 — building review payload");
     const noteLines = cats
       .filter((c) => catNotes[c.key]?.trim())
       .map((c) => `${c.label}: ${catNotes[c.key].trim()}`)
       .join("\n");
-    const fullBody = noteLines ? `${noteLines}\n\n${body}` : body;
-    const overall  = Math.max(1, Math.min(5, avgStars || 1));
-
+    const fullBody   = noteLines ? `${noteLines}\n\n${body}` : body;
+    const overall    = Math.max(1, Math.min(5, avgStars || 1));
     const revieweeId = isProperty ? null : (reviewee?.id ?? null);
     const tenancyKey = computeTenancyKey(user.id, revieweeId, address);
 
@@ -302,7 +361,6 @@ function ReviewFlow() {
       property_id:     propertyId,
       lease_id:        leaseId,
       tenancy_key:     tenancyKey,
-      // status defaults to 'pending_reveal' in DB; check_and_publish_review handles transitions
       overall,
       body:            fullBody,
       anonymous,
@@ -314,24 +372,45 @@ function ReviewFlow() {
     if (!payload.communication) payload.communication = overall;
     if (!payload.fairness)      payload.fairness      = overall;
 
-    const { data: insertedReview, error: reviewErr } = await supabase
-      .from("reviews")
-      .insert(payload as never)
-      .select("id")
-      .single();
-    if (reviewErr) { setError(reviewErr.message); setSubmitting(false); return; }
+    console.log("[submit] step 4 — review payload:", payload);
 
-    // Trigger publish check — reveals both reviews if a counterpart exists,
-    // or publishes immediately for property reviews / solo types with no tenancy_key.
-    // Non-fatal: if the function isn't deployed yet, the nightly cron will catch it.
+    let insertedId: string | null = null;
     try {
-      await supabase.rpc("check_and_publish_review", {
-        p_review_id: (insertedReview as { id: string }).id,
-      });
-    } catch {
-      // Swallow — review is saved; cron will handle the reveal transition.
+      const { data: insertedReview, error: reviewErr } = await supabase
+        .from("reviews")
+        .insert(payload as never)
+        .select("id")
+        .single();
+      if (reviewErr) {
+        console.error("[submit] step 4 — review insert error:", reviewErr);
+        setError(reviewErr.message);
+        setSubmitting(false);
+        return;
+      }
+      insertedId = (insertedReview as { id: string }).id;
+      console.log("[submit] step 4 — review OK:", insertedId);
+    } catch (e) {
+      console.error("[submit] step 4 — review insert threw:", e);
+      setError("Failed to save review. Please try again.");
+      setSubmitting(false);
+      return;
     }
 
+    // ── 5. Publish check (non-fatal) ────────────────────────────
+    if (insertedId) {
+      try {
+        console.log("[submit] step 5 — calling check_and_publish_review");
+        const { error: rpcErr } = await supabase.rpc("check_and_publish_review", {
+          p_review_id: insertedId,
+        });
+        if (rpcErr) console.warn("[submit] step 5 — rpc error (non-fatal):", rpcErr.message);
+        else        console.log("[submit] step 5 — rpc OK");
+      } catch (e) {
+        console.warn("[submit] step 5 — rpc threw (non-fatal):", e);
+      }
+    }
+
+    console.log("[submit] done — showing success screen");
     setDone(true);
   }
 
