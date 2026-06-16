@@ -59,8 +59,8 @@ export default async function HomePage() {
     supabase.from("reputation_scores").select("*").eq("profile_id", user.id).maybeSingle(),
     supabase
       .from("reviews")
-      .select("*, reviewer:profiles!reviewer_id(full_name, avatar_url, suburb)")
-      .eq("reviewee_id", user.id)
+      .select("*, reviewee:profiles!reviewee_id(full_name, avatar_url)")
+      .eq("reviewer_id", user.id)
       .order("created_at", { ascending: false })
       .limit(3),
   ]);
@@ -160,39 +160,24 @@ export default async function HomePage() {
 
         {recentReviews && recentReviews.length > 0 ? (
           recentReviews.map((r) => {
-            const reviewer = r.reviewer as {
-              full_name: string;
-              avatar_url: string | null;
-              suburb: string | null;
-            } | null;
+            const reviewee = r.reviewee as { full_name: string; avatar_url: string | null } | null;
+            const subjectName = reviewee?.full_name ?? r.guest_name ?? "Unknown";
+            const snippet = (r.body as string).slice(0, 100) + ((r.body as string).length > 100 ? "…" : "");
             return (
               <div key={r.id} className="card mb-3">
                 <div className="flex items-center gap-3 mb-2">
-                  <Avatar
-                    name={reviewer?.full_name ?? "?"}
-                    avatarUrl={reviewer?.avatar_url}
-                    size="sm"
-                  />
+                  <Avatar name={subjectName} avatarUrl={reviewee?.avatar_url} size="sm" />
                   <div className="flex-1 min-w-0">
-                    <p className="font-semibold text-sm text-petrol-400 truncate">
-                      {reviewer?.full_name ?? "Anonymous"}
-                    </p>
+                    <p className="font-semibold text-sm text-petrol-400 truncate">{subjectName}</p>
                     <p className="text-xs text-sage-400 font-body">
-                      {reviewer?.suburb} ·{" "}
                       {new Date(r.created_at).toLocaleDateString("en-ZA", {
-                        month: "short",
-                        year: "numeric",
+                        day: "numeric", month: "short", year: "numeric",
                       })}
                     </p>
                   </div>
-                  <span className="font-heading font-bold text-sm text-teal-400">
-                    {(r.overall * 2).toFixed(1)}/10
-                  </span>
+                  <StarRow value={r.overall} size="sm" />
                 </div>
-                <StarRow value={r.overall} size="sm" />
-                <p className="text-xs text-sage-400 font-body mt-2 leading-relaxed line-clamp-3">
-                  {r.body}
-                </p>
+                <p className="text-xs text-sage-400 font-body leading-relaxed">{snippet}</p>
               </div>
             );
           })
