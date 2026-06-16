@@ -323,9 +323,14 @@ function ReviewFlow() {
 
     // Trigger publish check — reveals both reviews if a counterpart exists,
     // or publishes immediately for property reviews / solo types with no tenancy_key.
-    await supabase.rpc("check_and_publish_review", {
-      p_review_id: (insertedReview as { id: string }).id,
-    });
+    // Non-fatal: if the function isn't deployed yet, the nightly cron will catch it.
+    try {
+      await supabase.rpc("check_and_publish_review", {
+        p_review_id: (insertedReview as { id: string }).id,
+      });
+    } catch {
+      // Swallow — review is saved; cron will handle the reveal transition.
+    }
 
     setDone(true);
   }
