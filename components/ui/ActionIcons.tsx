@@ -48,6 +48,27 @@ export function ScreenTenantIcon({ size = 28 }: IconProps) {
   );
 }
 
+export function RateAgentIcon({ size = 28 }: IconProps) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 32 32" fill="none" aria-hidden="true">
+      <circle cx="16" cy="11" r="5.5" stroke="#0E9E92" strokeWidth={1.8} fill="#E6F9F8"/>
+      <path d="M6 27c0-5.523 4.477-10 10-10s10 4.477 10 10" stroke="#0E9E92" strokeWidth={1.8} strokeLinecap="round"/>
+      <path d="M22 6l1.5 1.5 2.5-2.5" stroke="#F4B53F" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  );
+}
+
+export function RatePropertyIcon({ size = 28 }: IconProps) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 32 32" fill="none" aria-hidden="true">
+      <path d="M4 14L16 5l12 9V28H4V14z" fill="#E6F9F8" stroke="#0E9E92" strokeWidth={1.8} strokeLinejoin="round"/>
+      <rect x="12" y="19" width="8" height="9" rx="1" stroke="#0E9E92" strokeWidth={1.5}/>
+      <rect x="8"  y="15" width="4" height="4" rx="0.5" fill="#F4B53F"/>
+      <rect x="20" y="15" width="4" height="4" rx="0.5" fill="#F4B53F"/>
+    </svg>
+  );
+}
+
 export function MyProfileIcon({ size = 28 }: IconProps) {
   return (
     <svg width={size} height={size} viewBox="0 0 32 32" fill="none" aria-hidden="true">

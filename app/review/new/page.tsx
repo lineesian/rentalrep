@@ -22,6 +22,15 @@ const LANDLORD_CATS: Cat[] = [
   { key: "privacy_boundaries", label: "Privacy & Boundaries", placeholder: "e.g. Did they respect your privacy?" },
 ];
 
+const TENANT_CATS: Cat[] = [
+  { key: "payment_history",       label: "Payment Reliability",   placeholder: "e.g. Did they pay rent on time every month?" },
+  { key: "property_care",         label: "Property Care",          placeholder: "e.g. Did they keep the property clean and undamaged?" },
+  { key: "communication",         label: "Communication",          placeholder: "e.g. Were they easy to reach and responsive?" },
+  { key: "compliance_with_lease", label: "Lease Compliance",       placeholder: "e.g. Did they follow the terms of the lease?" },
+  { key: "vacating_conduct",      label: "Vacating Conduct",       placeholder: "e.g. Did they leave the property in good condition?" },
+  { key: "neighbour_relations",   label: "Neighbour Relations",    placeholder: "e.g. Were there any complaints from neighbours?" },
+];
+
 const AGENCY_CATS: Cat[] = [
   { key: "communication",     label: "Communication",     placeholder: "e.g. Were they easy to reach?" },
   { key: "fairness",          label: "Responsiveness",    placeholder: "e.g. How quickly did they respond?" },
@@ -29,6 +38,24 @@ const AGENCY_CATS: Cat[] = [
   { key: "transparency",      label: "Transparency",      placeholder: "e.g. Were all fees disclosed upfront?" },
   { key: "value_for_money",   label: "Value for Money",   placeholder: "e.g. Were their fees reasonable?" },
   { key: "paperwork_quality", label: "Paperwork Quality", placeholder: "e.g. Were documents accurate and on time?" },
+];
+
+const AGENT_CATS: Cat[] = [
+  { key: "professionalism",    label: "Professionalism",    placeholder: "e.g. Were they professional throughout?" },
+  { key: "communication",      label: "Communication",       placeholder: "e.g. Were they easy to reach?" },
+  { key: "transparency",       label: "Transparency",        placeholder: "e.g. Were all terms explained clearly?" },
+  { key: "responsiveness",     label: "Responsiveness",      placeholder: "e.g. How quickly did they respond to queries?" },
+  { key: "paperwork_quality",  label: "Paperwork Quality",  placeholder: "e.g. Were all documents accurate and timely?" },
+  { key: "problem_resolution", label: "Problem Resolution", placeholder: "e.g. How well did they handle issues that arose?" },
+];
+
+const PROPERTY_CATS: Cat[] = [
+  { key: "condition_on_movein", label: "Condition on Move-in",   placeholder: "e.g. Was the property clean and ready when you arrived?" },
+  { key: "maintenance",         label: "Maintenance Quality",    placeholder: "e.g. Were repairs and maintenance handled promptly?" },
+  { key: "safety_security",     label: "Safety & Security",      placeholder: "e.g. Did the property feel safe? Were locks and gates secure?" },
+  { key: "noise_levels",        label: "Noise Levels",           placeholder: "e.g. How was the noise from neighbours or traffic?" },
+  { key: "value_for_money",     label: "Value for Money",        placeholder: "e.g. Was the rent fair for what you got?" },
+  { key: "location_amenities",  label: "Location & Amenities",  placeholder: "e.g. Were shops, transport and schools convenient?" },
 ];
 
 const MIN_BODY = 100;
@@ -43,12 +70,30 @@ function avgRating(r: Record<string, number>) {
 }
 
 function roleLabel(role: string) {
-  if (role === "agency") return "Agency";
-  if (role === "tenant") return "Tenant";
+  if (role === "agency")   return "Agency";
+  if (role === "agent")    return "Agent";
+  if (role === "tenant")   return "Tenant";
+  if (role === "property") return "Property";
   return "Landlord";
 }
 
-function article(role: string) { return role === "agency" ? "an" : "a"; }
+function article(role: string) { return ["agency", "agent"].includes(role) ? "an" : "a"; }
+
+function wouldRentText(role: string) {
+  if (role === "tenant")   return "Would you rent to this tenant again?";
+  if (role === "agency")   return "Would you use this agency again?";
+  if (role === "agent")    return "Would you use this agent again?";
+  if (role === "property") return "Would you live here again?";
+  return "Would you rent from this landlord again?";
+}
+
+function catsForRole(role: string): Cat[] {
+  if (role === "agency")   return AGENCY_CATS;
+  if (role === "agent")    return AGENT_CATS;
+  if (role === "tenant")   return TENANT_CATS;
+  if (role === "property") return PROPERTY_CATS;
+  return LANDLORD_CATS;
+}
 
 // ── Shared UI ──────────────────────────────────────────────────
 
@@ -100,26 +145,26 @@ function ReviewFlow() {
   const params   = useSearchParams();
   const router   = useRouter();
   const role     = params.get("role") ?? params.get("type") ?? "landlord";
-  const cats     = role === "agency" ? AGENCY_CATS : LANDLORD_CATS;
+  const cats     = catsForRole(role);
   const supabase = createClient();
   const fileRef  = useRef<HTMLInputElement>(null);
 
   const [step, setStep] = useState<Step>(1);
 
-  // Step 1 — lease details (stored in state; not yet written to DB)
+  // Step 1 — lease details
   const [address,    setAddress]    = useState("");
   const [leaseStart, setLeaseStart] = useState("");
   const [leaseEnd,   setLeaseEnd]   = useState("");
   const [leaseFile,  setLeaseFile]  = useState<File | null>(null);
 
-  // Step 2 — who are you rating
-  const [searchMode,   setSearchMode]   = useState<"search" | "manual">("search");
-  const [searchQuery,  setSearchQuery]  = useState("");
-  const [searchResults,setSearchResults]= useState<ProfileWithScore[]>([]);
-  const [searching,    startSearch]     = useTransition();
-  const [reviewee,     setReviewee]     = useState<Profile | null>(null);   // on-platform
-  const [guestName,    setGuestName]    = useState("");                      // off-platform
-  const [guestEmail,   setGuestEmail]   = useState("");
+  // Step 2 — who are you rating (not used for property reviews)
+  const [searchMode,    setSearchMode]    = useState<"search" | "manual">("search");
+  const [searchQuery,   setSearchQuery]   = useState("");
+  const [searchResults, setSearchResults] = useState<ProfileWithScore[]>([]);
+  const [searching,     startSearch]      = useTransition();
+  const [reviewee,      setReviewee]      = useState<Profile | null>(null);
+  const [guestName,     setGuestName]     = useState("");
+  const [guestEmail,    setGuestEmail]    = useState("");
 
   // Step 3 — ratings
   const [ratings,   setRatings]   = useState<Record<string, number>>({});
@@ -133,14 +178,19 @@ function ReviewFlow() {
   const [error,      setError]      = useState<string | null>(null);
   const [done,       setDone]       = useState(false);
 
-  // derived
+  // Derived
+  const isProperty  = role === "property";
   const step1Ready  = !!address && !!leaseStart && !!leaseEnd && !!leaseFile;
-  const step2Ready  = searchMode === "search" ? !!reviewee : (guestName.trim().length > 1 && guestEmail.includes("@"));
+  const step2Ready  = isProperty
+    ? true  // address already confirmed from step 1
+    : searchMode === "search"
+      ? !!reviewee
+      : guestName.trim().length > 1 && guestEmail.includes("@");
   const allRated    = cats.every((c) => ratings[c.key] >= 1);
   const avgStars    = avgRating(ratings);
   const bodyOk      = body.length >= MIN_BODY && body.length <= MAX_BODY;
 
-  const revieweeName = reviewee?.full_name ?? guestName;
+  const revieweeName = isProperty ? address : (reviewee?.full_name ?? guestName);
 
   // ── Step 2 search ──────────────────────────────────────────
 
@@ -149,10 +199,12 @@ function ReviewFlow() {
     setReviewee(null);
     if (!q.trim()) { setSearchResults([]); return; }
     startSearch(async () => {
+      // For agent type, search profiles with role=agency (individual agents at agencies)
+      const searchRole = role === "agent" ? "agency" : role;
       const { data } = await supabase
         .from("profiles")
         .select("*, reputation_scores(*)")
-        .eq("role", role)
+        .eq("role", searchRole)
         .ilike("full_name", `%${q}%`)
         .limit(15);
       setSearchResults((data ?? []) as ProfileWithScore[]);
@@ -178,13 +230,35 @@ function ReviewFlow() {
 
     if (uploadErr) { setError(uploadErr.message); setSubmitting(false); return; }
 
-    // 2. Always create a lease row.
-    // landlord_id is nullable (migration 008) so guest reviewees are handled with null.
+    // 2. For property reviews: find or create property record
+    let propertyId: string | null = null;
+    if (isProperty) {
+      const normalizedAddress = address.trim().toLowerCase();
+      const { data: existing } = await supabase
+        .from("properties")
+        .select("id")
+        .eq("normalized_address", normalizedAddress)
+        .maybeSingle();
+
+      if (existing) {
+        propertyId = (existing as { id: string }).id;
+      } else {
+        const { data: newProp, error: propErr } = await supabase
+          .from("properties")
+          .insert({ address: address.trim(), normalized_address: normalizedAddress })
+          .select("id")
+          .single();
+        if (propErr) { setError(propErr.message); setSubmitting(false); return; }
+        propertyId = (newProp as { id: string }).id;
+      }
+    }
+
+    // 3. Always create a lease row
     const isLandlordRole = role === "landlord";
     const { data: leaseRow, error: leaseErr } = await supabase
       .from("leases")
       .insert({
-        landlord_id:      isLandlordRole ? (reviewee?.id ?? null) : user.id,
+        landlord_id:      isLandlordRole ? (reviewee?.id ?? null) : (isProperty ? null : user.id),
         tenant_id:        isLandlordRole ? user.id : (reviewee?.id ?? user.id),
         property_address: address,
         start_date:       leaseStart,
@@ -196,7 +270,7 @@ function ReviewFlow() {
     if (leaseErr) { setError(leaseErr.message); setSubmitting(false); return; }
     const leaseId = (leaseRow as { id: string }).id;
 
-    // 3. Build structured body (category notes + free text)
+    // 4. Build review body
     const noteLines = cats
       .filter((c) => catNotes[c.key]?.trim())
       .map((c) => `${c.label}: ${catNotes[c.key].trim()}`)
@@ -206,14 +280,15 @@ function ReviewFlow() {
 
     const payload: Record<string, unknown> = {
       reviewer_id:     user.id,
-      reviewee_id:     reviewee?.id ?? null,   // null for guests — allowed after migration 007
-      lease_id:        leaseId,                // always set — lease row created above
+      reviewee_id:     isProperty ? null : (reviewee?.id ?? null),
+      property_id:     propertyId,
+      lease_id:        leaseId,
       overall,
       body:            fullBody,
       anonymous,
       would_recommend: recommend,
-      guest_name:      reviewee ? null : guestName,
-      guest_email:     reviewee ? null : guestEmail,
+      guest_name:      (!isProperty && !reviewee) ? guestName : null,
+      guest_email:     (!isProperty && !reviewee) ? guestEmail : null,
     };
     cats.forEach(({ key }) => { if (ratings[key]) payload[key] = ratings[key]; });
     if (!payload.communication) payload.communication = overall;
@@ -241,7 +316,9 @@ function ReviewFlow() {
       </p>
       {revieweeName && (
         <p className="text-xs text-sage-400 mb-8">
-          {`Once verified it will appear on ${revieweeName}'s profile.`}
+          {isProperty
+            ? `Once verified it will appear on the property page for ${revieweeName}.`
+            : `Once verified it will appear on ${revieweeName}'s profile.`}
         </p>
       )}
       <button className="btn-primary w-full" onClick={() => router.push("/home")}>
@@ -258,7 +335,9 @@ function ReviewFlow() {
         className="text-mint-400 text-xl block mb-3" aria-label="Back">←</button>
       <h1 className="font-heading font-bold text-xl text-white mb-0.5">Write a Review</h1>
       <p className="text-sm text-mint-300">
-        {revieweeName ? `Reviewing: ${revieweeName}` : `Reviewing: ${roleLabel(role)}`}
+        {revieweeName
+          ? (isProperty ? `Property: ${revieweeName.slice(0, 35)}${revieweeName.length > 35 ? "…" : ""}` : `Reviewing: ${revieweeName}`)
+          : `Reviewing: ${article(role)} ${roleLabel(role)}`}
       </p>
       <StepIndicator step={step} />
     </div>
@@ -325,14 +404,40 @@ function ReviewFlow() {
     </div>
   );
 
-  // ── Step 2 — Who are you rating ────────────────────────────
+  // ── Step 2 — Property confirmation (property reviews only) ─
+
+  if (step === 2 && isProperty) return (
+    <div className="screen">
+      {header}
+      <div className="px-4 pt-5 pb-24">
+        <div className="card mb-4">
+          <p className="font-heading font-semibold text-sm text-petrol-400 mb-4">Confirm property</p>
+          <div className="flex items-start gap-3 bg-teal-50 border border-teal-400/30 rounded-xl px-4 py-3">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" className="flex-shrink-0 mt-0.5" aria-hidden="true">
+              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" fill="#E6F9F8" stroke="#0E9E92" strokeWidth={1.8}/>
+              <circle cx="12" cy="9" r="2.5" stroke="#0E9E92" strokeWidth={1.5}/>
+            </svg>
+            <div>
+              <p className="font-semibold text-sm text-petrol-400">{address}</p>
+              <p className="text-xs text-sage-400 mt-0.5">Taken from your lease details</p>
+            </div>
+          </div>
+          <p className="text-xs text-sage-400 mt-3 font-body leading-relaxed">
+            Your review will be linked to this property address. Other tenants who lived here will also see this review.
+          </p>
+        </div>
+        <PrimaryBtn onClick={() => setStep(3)}>Confirm & Continue →</PrimaryBtn>
+      </div>
+    </div>
+  );
+
+  // ── Step 2 — Who are you rating (person reviews) ───────────
 
   if (step === 2) return (
     <div className="screen">
       {header}
       <div className="px-4 pt-5 pb-24">
 
-        {/* Toggle: Search ↔ Manual */}
         <div className="flex bg-gray-100 rounded-xl p-1 mb-4">
           {(["search", "manual"] as const).map((m) => (
             <button key={m} onClick={() => { setSearchMode(m); setReviewee(null); setSearchQuery(""); setSearchResults([]); }}
@@ -344,7 +449,6 @@ function ReviewFlow() {
           ))}
         </div>
 
-        {/* Search mode */}
         {searchMode === "search" && (
           <>
             <div className="flex items-center gap-3 bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 mb-4">
@@ -417,7 +521,6 @@ function ReviewFlow() {
           </>
         )}
 
-        {/* Manual mode — off-platform */}
         {searchMode === "manual" && (
           <div className="card">
             <div className="flex items-start gap-3 bg-gold-50 border border-gold-300 rounded-xl px-3 py-3 mb-4">
@@ -482,9 +585,7 @@ function ReviewFlow() {
           ))}
 
           <div className="pt-4 border-t border-gray-100">
-            <p className="text-sm font-semibold text-petrol-400 mb-3">
-              Would you {role === "agency" ? "use this agency" : "rent from this landlord"} again?
-            </p>
+            <p className="text-sm font-semibold text-petrol-400 mb-3">{wouldRentText(role)}</p>
             <div className="flex gap-2">
               {(["yes", "no", "maybe"] as const).map((v) => (
                 <button key={v} onClick={() => setRecommend((r) => r === v ? null : v)}
@@ -515,14 +616,21 @@ function ReviewFlow() {
       {header}
       <div className="px-4 pt-5 pb-24">
 
-        {/* Summary card */}
         <div className="card mb-4 flex items-center gap-4">
-          {reviewee
-            ? <Avatar name={reviewee.full_name} avatarUrl={reviewee.avatar_url} size="sm" />
-            : <div className="w-9 h-9 rounded-full bg-teal-50 flex items-center justify-center text-teal-400 font-heading font-bold text-sm flex-shrink-0">
-                {guestName.charAt(0).toUpperCase()}
-              </div>
-          }
+          {isProperty ? (
+            <div className="w-9 h-9 rounded-full bg-teal-50 flex items-center justify-center flex-shrink-0">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" fill="#E6F9F8" stroke="#0E9E92" strokeWidth={1.8}/>
+                <circle cx="12" cy="9" r="2.5" stroke="#0E9E92" strokeWidth={1.5}/>
+              </svg>
+            </div>
+          ) : reviewee ? (
+            <Avatar name={reviewee.full_name} avatarUrl={reviewee.avatar_url} size="sm" />
+          ) : (
+            <div className="w-9 h-9 rounded-full bg-teal-50 flex items-center justify-center text-teal-400 font-heading font-bold text-sm flex-shrink-0">
+              {guestName.charAt(0).toUpperCase()}
+            </div>
+          )}
           <div className="flex-1 min-w-0">
             <p className="font-heading font-semibold text-sm text-petrol-400 truncate">{revieweeName}</p>
             <div className="flex items-center gap-2 mt-0.5">
@@ -564,7 +672,6 @@ function ReviewFlow() {
           </div>
         </div>
 
-        {/* Anonymous toggle */}
         <button onClick={() => setAnonymous((a) => !a)}
           className="card w-full flex items-center justify-between mb-4 text-left">
           <div>

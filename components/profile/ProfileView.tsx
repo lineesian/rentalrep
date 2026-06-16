@@ -167,6 +167,11 @@ export function ProfileView({ profile, score, reviews, isOwner, fetchError }: Pr
                   <p className="text-xs text-sage-400 font-body">
                     {r.reviewer?.suburb} · {new Date(r.created_at).toLocaleDateString("en-ZA", { month: "short", year: "numeric" })}
                   </p>
+                  {r.lease_id && (
+                    <span className="inline-flex items-center gap-0.5 mt-0.5 text-[10px] font-semibold text-teal-400">
+                      <span style={{ color: "#0E9E92" }}>✓</span> Verified Tenancy
+                    </span>
+                  )}
                 </div>
                 <StarRow value={r.overall} size="sm" />
               </div>

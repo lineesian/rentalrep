@@ -11,6 +11,8 @@ import {
   RateLandlordIcon,
   RateTenantIcon,
   RateAgencyIcon,
+  RateAgentIcon,
+  RatePropertyIcon,
   ScreenTenantIcon,
   MyProfileIcon,
 } from "@/components/ui/ActionIcons";
@@ -23,7 +25,7 @@ function secondaryStat(role: UserRole) {
   return "Leases";
 }
 
-// Role-aware action cards — each role sees 3 relevant actions
+// Role-aware action cards
 function actionCards(role: UserRole, userId: string) {
   const myProfile = { label: "My Profile", Icon: MyProfileIcon, href: `/profile/${userId}` };
 
@@ -36,16 +38,17 @@ function actionCards(role: UserRole, userId: string) {
   }
   if (role === "agency") {
     return [
-      { label: "Screen a Tenant",  Icon: ScreenTenantIcon, href: "/agency" },
-      { label: "Rate a Landlord",  Icon: RateLandlordIcon, href: "/review/new?type=landlord" },
+      { label: "Screen a Tenant", Icon: ScreenTenantIcon, href: "/agency" },
+      { label: "Rate a Landlord", Icon: RateLandlordIcon, href: "/review/new?type=landlord" },
       myProfile,
     ];
   }
-  // tenant (default)
+  // tenant — 4 quick-action cards (profile is always in bottom nav)
   return [
     { label: "Rate a Landlord", Icon: RateLandlordIcon, href: "/review/new?type=landlord" },
+    { label: "Rate an Agent",   Icon: RateAgentIcon,    href: "/review/new?type=agent" },
     { label: "Rate an Agency",  Icon: RateAgencyIcon,   href: "/review/new?type=agency" },
-    myProfile,
+    { label: "Rate a Property", Icon: RatePropertyIcon, href: "/review/new?type=property" },
   ];
 }
 
@@ -155,8 +158,8 @@ export default async function HomePage() {
           </div>
         </div>
 
-        {/* ── Role-aware action cards with SVG icons ── */}
-        <div className="grid grid-cols-3 gap-3 mb-8">
+        {/* ── Role-aware action cards ── */}
+        <div className={`grid gap-3 mb-8 ${cards.length === 4 ? "grid-cols-2" : "grid-cols-3"}`}>
           {cards.map(({ label, Icon, href }) => (
             <Link
               key={label}
@@ -192,6 +195,11 @@ export default async function HomePage() {
                         day: "numeric", month: "short", year: "numeric",
                       })}
                     </p>
+                    {r.lease_id && (
+                      <span className="inline-flex items-center gap-0.5 mt-0.5 text-[10px] font-semibold text-teal-400">
+                        <span style={{ color: "#0E9E92" }}>✓</span> Verified Tenancy
+                      </span>
+                    )}
                   </div>
                   <StarRow value={r.overall} size="sm" />
                 </div>
