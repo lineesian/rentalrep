@@ -54,6 +54,14 @@ export default async function HomePage() {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/auth/login");
 
+  // Guard: send new users through onboarding before they reach the dashboard
+  const { data: onboardCheck } = await supabase
+    .from("profiles")
+    .select("onboarding_completed")
+    .eq("id", user.id)
+    .maybeSingle();
+  if (onboardCheck && !onboardCheck.onboarding_completed) redirect("/onboarding");
+
   const [
     { data: profile },
     { data: scoreRow },

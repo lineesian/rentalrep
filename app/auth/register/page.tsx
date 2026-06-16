@@ -44,7 +44,7 @@ export default function RegisterPage() {
       return;
     }
 
-    router.push("/home");
+    router.push("/onboarding");
     router.refresh();
   }
 

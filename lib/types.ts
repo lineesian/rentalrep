@@ -40,6 +40,7 @@ export type Profile = {
   bio: string | null;
   email: string | null;
   is_guest: boolean;
+  onboarding_completed: boolean;
   created_at: string;
   updated_at: string;
 };

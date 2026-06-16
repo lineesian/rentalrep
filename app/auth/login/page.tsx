@@ -25,13 +25,19 @@ export default function LoginPage() {
     setLoading(true);
 
     if (method === "email") {
-      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      const { data: signInData, error } = await supabase.auth.signInWithPassword({ email, password });
       if (error) {
         setError(error.message);
         setLoading(false);
         return;
       }
-      router.push("/home");
+      // Check onboarding status
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("onboarding_completed")
+        .eq("id", signInData.user.id)
+        .maybeSingle();
+      router.push(profile?.onboarding_completed ? "/home" : "/onboarding");
       router.refresh();
     } else {
       const formatted = phone.startsWith("+") ? phone : `+27${phone.replace(/^0/, "")}`;
