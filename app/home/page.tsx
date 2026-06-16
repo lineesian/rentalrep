@@ -71,6 +71,7 @@ export default async function HomePage() {
     { data: recentReviews },
     { count: reviewCount },
     { count: leaseCount },
+    { data: pendingReviews },
   ] = await Promise.all([
     supabase.from("profiles").select("*").eq("id", user.id).single(),
     supabase.from("reputation_scores").select("*").eq("profile_id", user.id).maybeSingle(),
@@ -78,10 +79,12 @@ export default async function HomePage() {
       .from("reviews")
       .select("*, reviewee:profiles!reviewee_id(full_name, avatar_url)")
       .eq("reviewer_id", user.id)
+      .in("status", ["published", "expired"])
       .order("created_at", { ascending: false })
       .limit(3),
-    supabase.from("reviews").select("*", { count: "exact", head: true }).eq("reviewer_id", user.id),
+    supabase.from("reviews").select("*", { count: "exact", head: true }).eq("reviewer_id", user.id).in("status", ["published", "expired"]),
     supabase.from("leases").select("*", { count: "exact", head: true }).eq("tenant_id", user.id),
+    supabase.rpc("get_pending_review_info", { p_user_id: user.id }),
   ]);
 
   const score     = scoreRow?.overall ?? 0;
@@ -173,6 +176,42 @@ export default async function HomePage() {
             </Link>
           ))}
         </div>
+
+        {/* ── Pending Reviews nudge ── */}
+        {pendingReviews && pendingReviews.length > 0 && (
+          <div className="mb-6">
+            <p className="font-heading text-xs font-semibold text-petrol-400 tracking-widest mb-3">
+              Pending Reviews
+            </p>
+            {(pendingReviews as Array<{ review_id: string; property_address: string; days_remaining: number; submitted_at: string }>).map((pr) => (
+              <div key={pr.review_id} className="rounded-2xl border-2 border-gold-300 bg-gold-50 px-4 py-4 mb-3">
+                <div className="flex items-start gap-3">
+                  {/* Hourglass icon */}
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" className="flex-shrink-0 mt-0.5" aria-hidden="true">
+                    <path d="M12 6V12L16 14" stroke="#F4B53F" strokeWidth={2} strokeLinecap="round"/>
+                    <circle cx="12" cy="12" r="10" stroke="#F4B53F" strokeWidth={1.8}/>
+                  </svg>
+                  <div className="flex-1 min-w-0">
+                    <p className="font-heading font-semibold text-sm text-gold-700 mb-0.5">
+                      You have a review waiting
+                    </p>
+                    <p className="text-xs text-gold-700 font-body leading-relaxed mb-3">
+                      Someone reviewed you for <span className="font-semibold">{pr.property_address}</span>.
+                      Submit your review to reveal both simultaneously.{" "}
+                      <span className="font-semibold">{pr.days_remaining} day{pr.days_remaining !== 1 ? "s" : ""} remaining.</span>
+                    </p>
+                    <Link
+                      href="/review/new"
+                      className="inline-flex items-center gap-1.5 bg-gold-400 text-white text-xs font-semibold font-heading px-3 py-2 rounded-xl"
+                    >
+                      Submit your review →
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
 
         {/* ── Recent Reviews ── */}
         <p className="font-heading text-xs font-semibold text-petrol-400 tracking-widest mb-3">

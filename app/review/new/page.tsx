@@ -63,6 +63,21 @@ const MAX_BODY = 1000;
 
 // ── Helpers ────────────────────────────────────────────────────
 
+/**
+ * Canonical key linking both sides of the same tenancy.
+ * Sort the two user IDs so the key is identical regardless of who writes first.
+ * NULL for property reviews — no counterpart exists.
+ */
+function computeTenancyKey(
+  reviewerUid: string,
+  revieweeUid: string | null,
+  propertyAddress: string,
+): string | null {
+  if (!revieweeUid) return null;
+  const [a, b] = [reviewerUid, revieweeUid].sort();
+  return `${a}:${b}:${propertyAddress.trim().toLowerCase()}`;
+}
+
 function avgRating(r: Record<string, number>) {
   const v = Object.values(r).filter(Boolean);
   if (!v.length) return 0;
@@ -278,11 +293,16 @@ function ReviewFlow() {
     const fullBody = noteLines ? `${noteLines}\n\n${body}` : body;
     const overall  = Math.max(1, Math.min(5, avgStars || 1));
 
+    const revieweeId = isProperty ? null : (reviewee?.id ?? null);
+    const tenancyKey = computeTenancyKey(user.id, revieweeId, address);
+
     const payload: Record<string, unknown> = {
       reviewer_id:     user.id,
-      reviewee_id:     isProperty ? null : (reviewee?.id ?? null),
+      reviewee_id:     revieweeId,
       property_id:     propertyId,
       lease_id:        leaseId,
+      tenancy_key:     tenancyKey,
+      // status defaults to 'pending_reveal' in DB; check_and_publish_review handles transitions
       overall,
       body:            fullBody,
       anonymous,
@@ -294,38 +314,61 @@ function ReviewFlow() {
     if (!payload.communication) payload.communication = overall;
     if (!payload.fairness)      payload.fairness      = overall;
 
-    const { error: reviewErr } = await supabase.from("reviews").insert(payload as never);
+    const { data: insertedReview, error: reviewErr } = await supabase
+      .from("reviews")
+      .insert(payload as never)
+      .select("id")
+      .single();
     if (reviewErr) { setError(reviewErr.message); setSubmitting(false); return; }
+
+    // Trigger publish check — reveals both reviews if a counterpart exists,
+    // or publishes immediately for property reviews / solo types with no tenancy_key.
+    await supabase.rpc("check_and_publish_review", {
+      p_review_id: (insertedReview as { id: string }).id,
+    });
 
     setDone(true);
   }
 
   // ── Success ────────────────────────────────────────────────
 
-  if (done) return (
-    <div className="screen flex flex-col items-center justify-center px-6 text-center pb-10">
-      <div className="w-20 h-20 rounded-full bg-teal-50 flex items-center justify-center mb-5">
-        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <circle cx="12" cy="12" r="10" stroke="#0E9E92" strokeWidth={2}/>
-          <path d="M7 12.5l3.5 3.5 6.5-7" stroke="#0E9E92" strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round"/>
-        </svg>
+  if (done) {
+    const isPerson = !isProperty && !!revieweeName;
+    return (
+      <div className="screen flex flex-col items-center justify-center px-6 text-center pb-10">
+        <div className="w-20 h-20 rounded-full bg-teal-50 flex items-center justify-center mb-5">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <circle cx="12" cy="12" r="10" stroke="#0E9E92" strokeWidth={2}/>
+            <path d="M7 12.5l3.5 3.5 6.5-7" stroke="#0E9E92" strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </div>
+        <h2 className="font-heading font-bold text-2xl text-petrol-400 mb-2">Review Submitted!</h2>
+
+        {isPerson ? (
+          <>
+            <div className="bg-gold-50 border border-gold-300 rounded-2xl px-5 py-4 mb-6 text-left">
+              <p className="font-heading font-semibold text-sm text-gold-700 mb-1">Waiting for mutual reveal</p>
+              <p className="text-xs text-gold-700 font-body leading-relaxed">
+                Your review is saved privately. When {revieweeName} submits their review of you, both reviews
+                will be published simultaneously. If they don&apos;t submit within 90 days, yours will
+                go live automatically.
+              </p>
+            </div>
+          </>
+        ) : (
+          <p className="text-sm text-sage-400 mb-6 leading-relaxed">
+            {revieweeName
+              ? `Your review has been published on the property page for ${revieweeName}.`
+              : "Your review has been published."}
+          </p>
+        )}
+
+        <button className="btn-primary w-full" onClick={() => router.push("/home")}>
+          Back to Home
+        </button>
       </div>
-      <h2 className="font-heading font-bold text-2xl text-petrol-400 mb-2">Review Submitted!</h2>
-      <p className="text-sm text-sage-400 mb-3 leading-relaxed">
-        Your review has been submitted and is pending verification.
-      </p>
-      {revieweeName && (
-        <p className="text-xs text-sage-400 mb-8">
-          {isProperty
-            ? `Once verified it will appear on the property page for ${revieweeName}.`
-            : `Once verified it will appear on ${revieweeName}'s profile.`}
-        </p>
-      )}
-      <button className="btn-primary w-full" onClick={() => router.push("/home")}>
-        Back to Home
-      </button>
-    </div>
-  );
+    );
+  }
 
   // ── Shared header ──────────────────────────────────────────
 
