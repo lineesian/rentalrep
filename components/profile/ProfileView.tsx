@@ -200,7 +200,7 @@ export function ProfileView({ profile, score, reviews, isOwner, fetchError }: Pr
             <button
               onClick={handleSignOut}
               disabled={signingOut}
-              className="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl border-2 border-red-300 text-red-500 bg-white font-heading font-semibold text-sm transition-opacity disabled:opacity-60 active:bg-red-50"
+              className="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl border-2 border-teal-400 text-teal-400 bg-white font-heading font-semibold text-sm transition-opacity disabled:opacity-60 active:bg-teal-50"
             >
               <SignOutIcon />
               {signingOut ? "Signing out…" : "Sign Out"}
