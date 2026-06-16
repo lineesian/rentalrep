@@ -54,7 +54,7 @@ export default function RegisterPage() {
 
         {/* Logo */}
         <div className="flex flex-col items-center mb-10">
-          <Logo size={48} showTagline={false} />
+          <Logo size={48} showTagline={false} variant="light" />
           <p className="mt-3 text-[13px] font-body" style={{ color: "#5E7470" }}>
             Rate. Trust. Rent with Confidence.
           </p>

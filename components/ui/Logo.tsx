@@ -4,11 +4,17 @@ interface LogoProps {
   showWordmark?: boolean;
   /** Show tagline beneath wordmark. Default true. */
   showTagline?: boolean;
+  /**
+   * "dark" (default) — "Rental" in white, for use on dark/petrol backgrounds.
+   * "light" — "Rental" in Petrol Ink #07312C, for use on white/mist backgrounds.
+   */
+  variant?: "dark" | "light";
 }
 
-export function Logo({ size = 32, showWordmark = true, showTagline = true }: LogoProps) {
-  const fontSize = Math.round(size * 0.5);
-  const tagSize  = 11;
+export function Logo({ size = 32, showWordmark = true, showTagline = true, variant = "dark" }: LogoProps) {
+  const fontSize     = Math.round(size * 0.5);
+  const tagSize      = 11;
+  const rentalColor  = variant === "light" ? "#07312C" : "#ffffff";
 
   return (
     <div className="flex items-center gap-2 select-none">
@@ -41,7 +47,7 @@ export function Logo({ size = 32, showWordmark = true, showTagline = true }: Log
       {showWordmark && (
         <div className="leading-none">
           <div style={{ fontSize, fontFamily: "Outfit, sans-serif", fontWeight: 700, lineHeight: 1 }}>
-            <span style={{ color: "#ffffff" }}>Rental</span>
+            <span style={{ color: rentalColor }}>Rental</span>
             <span style={{ color: "#2FD4C0" }}>Rep</span>
           </div>
           {showTagline && (
