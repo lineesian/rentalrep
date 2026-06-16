@@ -1,11 +1,14 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Avatar } from "@/components/ui/Avatar";
 import { AvatarUpload } from "@/components/ui/AvatarUpload";
 import { ScoreRing } from "@/components/ui/ScoreRing";
 import { ScoreBar } from "@/components/ui/ScoreBar";
 import { StarRow } from "@/components/ui/StarRow";
+import { createClient } from "@/lib/supabase/client";
 import type { Profile, ReputationScore, ReviewWithReviewer } from "@/lib/types";
 
 interface Props {
@@ -30,7 +33,27 @@ const TENANT_CATS = [
   { key: "fairness",        label: "Fairness" },
 ] as const;
 
+function SignOutIcon() {
+  return (
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"/>
+      <polyline points="16 17 21 12 16 7" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"/>
+      <line x1="21" y1="12" x2="9" y2="12" stroke="currentColor" strokeWidth={2} strokeLinecap="round"/>
+    </svg>
+  );
+}
+
 export function ProfileView({ profile, score, reviews, isOwner, fetchError }: Props) {
+  const router    = useRouter();
+  const supabase  = createClient();
+  const [signingOut, setSigningOut] = useState(false);
+
+  async function handleSignOut() {
+    setSigningOut(true);
+    await supabase.auth.signOut();
+    router.push("/auth/login");
+    router.refresh();
+  }
   if (!profile) {
     return (
       <div className="flex flex-col items-center justify-center px-6 py-20 text-center">
@@ -170,6 +193,19 @@ export function ProfileView({ profile, score, reviews, isOwner, fetchError }: Pr
           >
             ✍️ Write a Review
           </Link>
+        )}
+
+        {isOwner && (
+          <div className="mt-6 mb-8">
+            <button
+              onClick={handleSignOut}
+              disabled={signingOut}
+              className="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl border-2 border-red-300 text-red-500 bg-white font-heading font-semibold text-sm transition-opacity disabled:opacity-60 active:bg-red-50"
+            >
+              <SignOutIcon />
+              {signingOut ? "Signing out…" : "Sign Out"}
+            </button>
+          </div>
         )}
       </div>
     </div>
