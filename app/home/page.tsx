@@ -17,6 +17,9 @@ import {
   MyProfileIcon,
 } from "@/components/ui/ActionIcons";
 import type { UserRole } from "@/lib/types";
+import type { Review } from "@/lib/types";
+import { calculateBadges } from "@/lib/badges";
+import { BadgePill } from "@/components/ui/BadgePill";
 
 // Role-aware secondary stat label
 function secondaryStat(role: UserRole) {
@@ -72,6 +75,7 @@ export default async function HomePage() {
     { count: reviewCount },
     { count: leaseCount },
     { data: pendingReviews },
+    { data: receivedReviews },
   ] = await Promise.all([
     supabase.from("profiles").select("*").eq("id", user.id).single(),
     supabase.from("reputation_scores").select("*").eq("profile_id", user.id).maybeSingle(),
@@ -85,6 +89,7 @@ export default async function HomePage() {
     supabase.from("reviews").select("*", { count: "exact", head: true }).eq("reviewer_id", user.id).in("status", ["published", "expired"]),
     supabase.from("leases").select("*", { count: "exact", head: true }).eq("tenant_id", user.id),
     supabase.rpc("get_pending_review_info", { p_user_id: user.id }),
+    supabase.from("reviews").select("*").eq("reviewee_id", user.id).in("status", ["published", "expired"]),
   ]);
 
   const score     = scoreRow?.overall ?? 0;
@@ -93,6 +98,9 @@ export default async function HomePage() {
   const roleLabel = role.charAt(0).toUpperCase() + role.slice(1);
   const cards     = actionCards(role, user.id);
   const statLabel = secondaryStat(role);
+  const badges    = profile
+    ? calculateBadges(profile, (receivedReviews ?? []) as Review[], reviewCount ?? 0)
+    : [];
 
   return (
     <div className="screen">
@@ -158,7 +166,21 @@ export default async function HomePage() {
                 </>
               )}
             </div>
+            {/* Badge count */}
+            <div>
+              <p className="font-heading font-bold text-base text-gold-400">{badges.length}</p>
+              <p className="text-[11px] text-mint-300 font-body">Badges</p>
+            </div>
           </div>
+
+          {/* ── Badge pills ── */}
+          {badges.length > 0 && (
+            <div className="flex gap-2 overflow-x-auto pt-3 mt-1 no-scrollbar">
+              {badges.map((b) => (
+                <BadgePill key={b.id} badge={b} dark />
+              ))}
+            </div>
+          )}
         </div>
 
         {/* ── Role-aware action cards ── */}

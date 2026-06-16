@@ -10,11 +10,14 @@ import { ScoreBar } from "@/components/ui/ScoreBar";
 import { StarRow } from "@/components/ui/StarRow";
 import { createClient } from "@/lib/supabase/client";
 import type { Profile, ReputationScore, ReviewWithReviewer } from "@/lib/types";
+import type { Badge } from "@/lib/badges";
+import { BadgePill } from "@/components/ui/BadgePill";
 
 interface Props {
   profile: Profile | null;
   score: ReputationScore | null;
   reviews: ReviewWithReviewer[];
+  badges?: Badge[];
   isOwner: boolean;
   fetchError?: string | null;
 }
@@ -43,7 +46,7 @@ function SignOutIcon() {
   );
 }
 
-export function ProfileView({ profile, score, reviews, isOwner, fetchError }: Props) {
+export function ProfileView({ profile, score, reviews, badges = [], isOwner, fetchError }: Props) {
   const router    = useRouter();
   const supabase  = createClient();
   const [signingOut, setSigningOut] = useState(false);
@@ -123,10 +126,23 @@ export function ProfileView({ profile, score, reviews, isOwner, fetchError }: Pr
               </>
             )}
           </div>
+          <div>
+            <p className="font-heading font-bold text-base text-gold-400">{badges.length}</p>
+            <p className="text-[11px] text-mint-300 font-body">Badges</p>
+          </div>
         </div>
       </div>
 
       <div className="px-4 pt-4">
+        {/* ── Badges ── */}
+        {badges.length > 0 && (
+          <div className="flex gap-2 overflow-x-auto pb-1 mb-4 no-scrollbar">
+            {badges.map((b) => (
+              <BadgePill key={b.id} badge={b} />
+            ))}
+          </div>
+        )}
+
         {/* ── Score breakdown ── */}
         {score && (
           <div className="card mb-4">

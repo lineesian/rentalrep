@@ -2,6 +2,7 @@ import { createClient } from "@/lib/supabase/server";
 import { notFound } from "next/navigation";
 import { ProfileView } from "@/components/profile/ProfileView";
 import { BottomNav } from "@/components/layout/BottomNav";
+import { calculateBadges } from "@/lib/badges";
 
 // Always fetch fresh — never serve a cached profile page
 export const dynamic = "force-dynamic";
@@ -15,11 +16,12 @@ export default async function ProfilePage({ params }: { params: { id: string } }
   // the DB requests to fire with a stale JWT if a refresh is in flight.
   const { data: { user } } = await supabase.auth.getUser();
 
-  // Now run all three data fetches in parallel with a stable auth context.
+  // Run all data fetches in parallel with a stable auth context.
   const [
     { data: profile, error: profileError },
     { data: scoreRow },
     { data: reviews },
+    { count: givenCount },
   ] = await Promise.all([
     supabase
       .from("profiles")
@@ -37,12 +39,20 @@ export default async function ProfilePage({ params }: { params: { id: string } }
         "*, reviewer:profiles!reviewer_id(id, full_name, avatar_url, suburb), lease:leases(property_address, suburb, start_date, end_date)"
       )
       .eq("reviewee_id", id)
+      .in("status", ["published", "expired"])
       .order("created_at", { ascending: false }),
+    supabase
+      .from("reviews")
+      .select("*", { count: "exact", head: true })
+      .eq("reviewer_id", id)
+      .in("status", ["published", "expired"]),
   ]);
 
   // maybeSingle() returns { data: null, error: null } for 0 rows — no error code needed.
   // Only hard-404 when the profile genuinely doesn't exist.
   if (!profile && !profileError) notFound();
+
+  const badges = profile ? calculateBadges(profile, reviews ?? [], givenCount ?? 0) : [];
 
   return (
     <div className="screen">
@@ -50,6 +60,7 @@ export default async function ProfilePage({ params }: { params: { id: string } }
         profile={profile}
         score={scoreRow ?? null}
         reviews={reviews ?? []}
+        badges={badges}
         isOwner={user?.id === id}
         fetchError={profileError?.message ?? null}
       />
