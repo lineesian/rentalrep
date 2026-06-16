@@ -38,6 +38,8 @@ export type Profile = {
   verified: boolean;
   avatar_url: string | null;
   bio: string | null;
+  email: string | null;
+  is_guest: boolean;
   created_at: string;
   updated_at: string;
 };
@@ -58,8 +60,11 @@ export type Lease = {
 export type Review = {
   id: string;
   reviewer_id: string;
-  reviewee_id: string;
-  lease_id: string;
+  reviewee_id: string | null;
+  lease_id: string | null;
+  guest_name: string | null;
+  guest_email: string | null;
+  document_url: string | null;
   overall: number;
   communication: number;
   fairness: number;
