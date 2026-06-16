@@ -244,7 +244,7 @@ function ReviewFlow() {
       </p>
       {revieweeName && (
         <p className="text-xs text-sage-400 mb-8">
-          Once verified it will appear on {revieweeName}&apos;s profile.
+          Once verified it will appear on {revieweeName + "'s"} profile.
         </p>
       )}
       <button className="btn-primary w-full" onClick={() => router.push("/home")}>
