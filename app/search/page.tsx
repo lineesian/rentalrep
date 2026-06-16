@@ -132,26 +132,40 @@ export default function SearchPage() {
                 <p className="text-sm text-sage-400">No results found for &ldquo;{query}&rdquo;</p>
               </div>
             ) : (
-              results.map((p) => (
-                <Link
-                  key={p.id}
-                  href={`/profile/${p.id}`}
-                  className="card flex items-center gap-3 mb-3 active:scale-[0.98] transition-transform"
-                >
-                  <Avatar name={p.full_name} avatarUrl={p.avatar_url} size="md" />
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-1.5 mb-0.5">
-                      <p className="font-heading font-semibold text-[15px] text-petrol-400 truncate">{p.full_name}</p>
-                      {p.verified && <span className="text-teal-400 text-sm">✓</span>}
+              results.map((p) => {
+                const score       = p.reputation_scores?.overall;
+                const reviewCount = p.reputation_scores?.review_count ?? 0;
+                return (
+                  <Link
+                    key={p.id}
+                    href={`/profile/${p.id}`}
+                    className="card flex items-center gap-3 mb-3 active:scale-[0.98] transition-transform"
+                  >
+                    <Avatar name={p.full_name} avatarUrl={p.avatar_url} size="md" />
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-1.5 mb-0.5">
+                        <p className="font-heading font-semibold text-[15px] text-petrol-400 truncate">{p.full_name}</p>
+                        {p.verified && <span style={{ color: "#F4B53F" }} className="text-sm font-bold">✓</span>}
+                      </div>
+                      <div className="flex items-center gap-2 mt-0.5">
+                        <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full capitalize ${
+                          p.role === "landlord" ? "bg-teal-50 text-teal-400" :
+                          p.role === "agency"   ? "bg-petrol-400/10 text-petrol-400" :
+                                                  "bg-gold-50 text-gold-600"
+                        }`}>{p.role}</span>
+                        <span className="text-xs text-sage-400">{p.suburb ?? p.city ?? "South Africa"}</span>
+                      </div>
+                      <p className="text-xs text-sage-400 mt-0.5">
+                        {reviewCount > 0 ? `${reviewCount} review${reviewCount !== 1 ? "s" : ""}` : "No reviews yet"}
+                      </p>
                     </div>
-                    <p className="text-xs text-sage-400 mb-1 capitalize">{p.role} · {p.suburb ?? p.city}</p>
-                    {p.verified && <span className="badge-verified text-[10px]">✓ Verified Lease</span>}
-                  </div>
-                  <div className="score-badge flex-shrink-0">
-                    {p.reputation_scores?.overall?.toFixed(1) ?? "–"}
-                  </div>
-                </Link>
-              ))
+                    <div className="flex-shrink-0 text-right">
+                      <div className="score-badge">{score != null ? score.toFixed(1) : "–"}</div>
+                      <p className="text-[10px] text-sage-400 mt-1">/ 10</p>
+                    </div>
+                  </Link>
+                );
+              })
             )}
           </>
         )}
