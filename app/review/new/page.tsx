@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useTransition, Suspense } from "react";
+import { useState, useRef, useEffect, useTransition, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { Avatar } from "@/components/ui/Avatar";
@@ -201,6 +201,12 @@ function ReviewFlow() {
   const [submitting, setSubmitting] = useState(false);
   const [error,      setError]      = useState<string | null>(null);
   const [done,       setDone]       = useState(false);
+  const errorRef = useRef<HTMLDivElement>(null);
+
+  // Auto-scroll to error whenever one is set so it can't be missed
+  useEffect(() => {
+    if (error) errorRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+  }, [error]);
 
   // Derived
   const isProperty   = role === "property";
@@ -895,7 +901,16 @@ function ReviewFlow() {
         </button>
 
         {error && (
-          <div className="bg-red-50 border border-red-200 text-red-600 text-sm rounded-xl px-4 py-3 mb-4">{error}</div>
+          <div ref={errorRef} className="flex items-start gap-3 bg-red-50 border border-red-300 rounded-xl px-4 py-3 mb-4">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" className="flex-shrink-0 mt-0.5" aria-hidden="true">
+              <circle cx="12" cy="12" r="10" stroke="#ef4444" strokeWidth={1.8}/>
+              <path d="M15 9l-6 6M9 9l6 6" stroke="#ef4444" strokeWidth={1.8} strokeLinecap="round"/>
+            </svg>
+            <div>
+              <p className="text-sm font-semibold text-red-700 mb-0.5">Submission failed</p>
+              <p className="text-xs text-red-600 font-body leading-relaxed">{error}</p>
+            </div>
+          </div>
         )}
 
         {bodyOk
