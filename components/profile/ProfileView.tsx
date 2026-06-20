@@ -183,11 +183,10 @@ export function ProfileView({ profile, score, reviews, badges = [], isOwner, fet
                   <p className="text-xs text-sage-400 font-body">
                     {r.reviewer?.suburb} · {new Date(r.created_at).toLocaleDateString("en-ZA", { month: "short", year: "numeric" })}
                   </p>
-                  {r.lease_id && (
-                    <span className="inline-flex items-center gap-0.5 mt-0.5 text-[10px] font-semibold text-teal-400">
-                      <span style={{ color: "#0E9E92" }}>✓</span> Verified Tenancy
-                    </span>
-                  )}
+                  <span className="inline-flex items-center gap-1 mt-1 px-1.5 py-0.5 rounded-full text-[10px] font-semibold bg-teal-400 text-white">
+                    <svg width="9" height="9" viewBox="0 0 10 10" fill="none" aria-hidden="true"><path d="M1.5 5l2.5 2.5 4.5-4.5" stroke="white" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                    Verified Tenancy
+                  </span>
                 </div>
                 <StarRow value={r.overall} size="sm" />
               </div>
