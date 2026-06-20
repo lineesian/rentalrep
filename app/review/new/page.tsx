@@ -231,8 +231,7 @@ function ReviewFlow() {
     setReviewee(null);
     if (!q.trim()) { setSearchResults([]); return; }
     startSearch(async () => {
-      // For agent type, search profiles with role=agency (individual agents at agencies)
-      const searchRole = role === "agent" ? "agency" : role;
+      const searchRole = role;
       const safe = q.replace(/[%_]/g, "\\$&"); // escape ILIKE wildcards in user input
       const { data } = await supabase
         .from("profiles")
