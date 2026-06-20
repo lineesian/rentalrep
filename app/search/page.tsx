@@ -7,55 +7,84 @@ import { Avatar } from "@/components/ui/Avatar";
 import { BottomNav } from "@/components/layout/BottomNav";
 import type { Profile, ReputationScore, UserRole } from "@/lib/types";
 
-type Result = Profile & { score: ReputationScore | null };
+// ── Types ────────────────────────────────────────────────────────────────────
 
-const FILTERS: { label: string; value: UserRole | "all" }[] = [
-  { label: "All",       value: "all" },
-  { label: "Landlords", value: "landlord" },
-  { label: "Tenants",   value: "tenant" },
-  { label: "Agencies",  value: "agency" },
+type ProfileResult = Profile & { score: ReputationScore | null };
+
+type PropertyResult = {
+  id: string;
+  address: string;
+  normalized_address: string;
+  suburb: string | null;
+  city: string | null;
+  avg_score: number | null;
+  review_count: number;
+};
+
+type FilterValue = UserRole | "all" | "property";
+
+// ── Constants ────────────────────────────────────────────────────────────────
+
+const FILTERS: { label: string; value: FilterValue }[] = [
+  { label: "All",        value: "all" },
+  { label: "Landlords",  value: "landlord" },
+  { label: "Tenants",    value: "tenant" },
+  { label: "Agencies",   value: "agency" },
+  { label: "Properties", value: "property" },
 ];
 
 const ROLE_BADGE: Record<UserRole, string> = {
   tenant:   "bg-teal-50 text-teal-400",
   landlord: "bg-gold-50 text-gold-600",
   agency:   "bg-petrol-400/10 text-petrol-400",
+  agent:    "bg-sage-400/10 text-sage-400",
 };
 
+// ── Component ─────────────────────────────────────────────────────────────────
+
 export default function SearchPage() {
-  const [query,   setQuery]   = useState("");
-  const [filter,  setFilter]  = useState<UserRole | "all">("all");
-  const [results, setResults] = useState<Result[]>([]);
-  const [searched,setSearched]= useState(false);
+  const [query,           setQuery]           = useState("");
+  const [filter,          setFilter]          = useState<FilterValue>("all");
+  const [profileResults,  setProfileResults]  = useState<ProfileResult[]>([]);
+  const [propertyResults, setPropertyResults] = useState<PropertyResult[]>([]);
+  const [searched,        setSearched]        = useState(false);
   const [isPending, startTransition] = useTransition();
 
-  const supabase = createClient();
+  const supabase        = createClient();
+  const isPropertyMode  = filter === "property";
 
-  async function runSearch(q: string, f: UserRole | "all") {
+  // ── Search handlers ─────────────────────────────────────────────────────────
+
+  async function runSearch(q: string, f: FilterValue) {
+    if (f === "property") {
+      await runPropertySearch(q);
+    } else {
+      await runProfileSearch(q, f as UserRole | "all");
+    }
+  }
+
+  async function runProfileSearch(q: string, f: UserRole | "all") {
     const hasQuery  = q.trim().length > 0;
     const hasFilter = f !== "all";
 
-    // Show idle state only when nothing is active
     if (!hasQuery && !hasFilter) {
-      setResults([]);
+      setProfileResults([]);
       setSearched(false);
       return;
     }
 
     startTransition(async () => {
-      // 1. Query profiles — separate from reputation_scores to avoid view-join issues
       let profileQuery = supabase.from("profiles").select("*").order("full_name").limit(30);
       if (hasQuery)  profileQuery = profileQuery.ilike("full_name", `%${q.trim()}%`);
       if (hasFilter) profileQuery = profileQuery.eq("role", f);
 
       const { data: profiles, error } = await profileQuery;
       if (error || !profiles?.length) {
-        setResults([]);
+        setProfileResults([]);
         setSearched(true);
         return;
       }
 
-      // 2. Fetch scores for the matched profile IDs
       const ids = profiles.map((p) => p.id);
       const { data: scores } = await supabase
         .from("reputation_scores")
@@ -66,7 +95,57 @@ export default function SearchPage() {
         (scores ?? []).map((s) => [s.profile_id, s as ReputationScore])
       );
 
-      setResults(profiles.map((p) => ({ ...p, score: scoreMap[p.id] ?? null })) as Result[]);
+      setProfileResults(
+        profiles.map((p) => ({ ...p, score: scoreMap[p.id] ?? null })) as ProfileResult[]
+      );
+      setSearched(true);
+    });
+  }
+
+  async function runPropertySearch(q: string) {
+    startTransition(async () => {
+      // Search properties by address; empty query shows latest 30
+      let propQuery = supabase
+        .from("properties")
+        .select("*")
+        .order("address")
+        .limit(30);
+      if (q.trim()) {
+        const safe = q.trim().replace(/[%_]/g, "\\$&");
+        propQuery = propQuery.ilike("address", `%${safe}%`);
+      }
+
+      const { data: properties, error } = await propQuery;
+      if (error || !properties?.length) {
+        setPropertyResults([]);
+        setSearched(true);
+        return;
+      }
+
+      // Fetch per-property review stats
+      const propIds = properties.map((p) => p.id);
+      const { data: reviews } = await supabase
+        .from("reviews")
+        .select("property_id, overall")
+        .in("property_id", propIds)
+        .in("status", ["published", "expired"]);
+
+      // Aggregate client-side
+      const statsMap: Record<string, { sum: number; count: number }> = {};
+      for (const r of reviews ?? []) {
+        const pid = r.property_id as string;
+        if (!statsMap[pid]) statsMap[pid] = { sum: 0, count: 0 };
+        statsMap[pid].sum   += r.overall as number;
+        statsMap[pid].count += 1;
+      }
+
+      setPropertyResults(
+        properties.map((p) => ({
+          ...p,
+          avg_score:    statsMap[p.id] ? statsMap[p.id].sum / statsMap[p.id].count : null,
+          review_count: statsMap[p.id]?.count ?? 0,
+        }))
+      );
       setSearched(true);
     });
   }
@@ -76,14 +155,21 @@ export default function SearchPage() {
     runSearch(val, filter);
   }
 
-  function handleFilter(f: UserRole | "all") {
+  function handleFilter(f: FilterValue) {
     setFilter(f);
+    // Reset opposite result set so stale data never shows
+    if (f === "property") setProfileResults([]);
+    else                  setPropertyResults([]);
     runSearch(query, f);
   }
 
+  // Convenience
+  const currentResults  = isPropertyMode ? propertyResults : profileResults;
+  const hasResults      = currentResults.length > 0;
+
   return (
     <div className="screen">
-      {/* Header */}
+      {/* ── Header ── */}
       <div className="bg-petrol-400 px-5 pt-12 pb-5">
         <h1 className="font-heading font-bold text-2xl text-white mb-4">Explore</h1>
         <div className="flex items-center gap-3 bg-white/10 border border-white/15 rounded-xl px-4 py-3">
@@ -93,7 +179,11 @@ export default function SearchPage() {
           </svg>
           <input
             className="flex-1 bg-transparent text-white placeholder:text-white/40 text-sm outline-none font-body"
-            placeholder="Search landlords, tenants or agencies…"
+            placeholder={
+              isPropertyMode
+                ? "Search by property address…"
+                : "Search landlords, tenants or agencies…"
+            }
             value={query}
             onChange={(e) => handleQuery(e.target.value)}
             autoComplete="off"
@@ -104,7 +194,7 @@ export default function SearchPage() {
         </div>
       </div>
 
-      {/* Filter pills */}
+      {/* ── Filter pills ── */}
       <div
         className="flex gap-2 py-3"
         style={{
@@ -133,39 +223,101 @@ export default function SearchPage() {
       </div>
 
       <div className="px-4 pb-24">
-        {/* Idle */}
+
+        {/* ── Idle ── */}
         {!searched && !isPending && (
           <div className="text-center py-14">
-            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" className="mx-auto mb-3" aria-hidden="true">
-              <circle cx="10.5" cy="10.5" r="6.5" stroke="#0E9E92" strokeWidth={1.8}/>
-              <path d="M15.5 15.5L21 21" stroke="#0E9E92" strokeWidth={1.8} strokeLinecap="round"/>
-            </svg>
-            <p className="font-heading font-semibold text-petrol-400 mb-1">Search RentalRep</p>
-            <p className="text-xs text-sage-400">Find landlords, tenants and agencies across South Africa</p>
+            {isPropertyMode ? (
+              <>
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" className="mx-auto mb-3" aria-hidden="true">
+                  <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" stroke="#0E9E92" strokeWidth={1.8}/>
+                  <circle cx="12" cy="9" r="2.5" stroke="#0E9E92" strokeWidth={1.5}/>
+                </svg>
+                <p className="font-heading font-semibold text-petrol-400 mb-1">Search Properties</p>
+                <p className="text-xs text-sage-400">Find verified rental properties across South Africa</p>
+              </>
+            ) : (
+              <>
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" className="mx-auto mb-3" aria-hidden="true">
+                  <circle cx="10.5" cy="10.5" r="6.5" stroke="#0E9E92" strokeWidth={1.8}/>
+                  <path d="M15.5 15.5L21 21" stroke="#0E9E92" strokeWidth={1.8} strokeLinecap="round"/>
+                </svg>
+                <p className="font-heading font-semibold text-petrol-400 mb-1">Search RentalRep</p>
+                <p className="text-xs text-sage-400">Find landlords, tenants and agencies across South Africa</p>
+              </>
+            )}
           </div>
         )}
 
-        {/* Loading */}
+        {/* ── Loading ── */}
         {isPending && (
           <div className="text-center py-10 text-sage-400 text-sm font-body">Searching…</div>
         )}
 
-        {/* Results */}
+        {/* ── Results ── */}
         {searched && !isPending && (
           <>
             <p className="section-label mb-3">
-              {results.length} result{results.length !== 1 ? "s" : ""}
+              {currentResults.length} result{currentResults.length !== 1 ? "s" : ""}
             </p>
 
-            {results.length === 0 ? (
+            {!hasResults ? (
               <div className="text-center py-10">
                 <p className="text-3xl mb-2">😕</p>
                 <p className="text-sm text-sage-400 font-body">
-                  No results found{query ? ` for "${query}"` : ""}
+                  No {isPropertyMode ? "properties" : "people"} found{query ? ` for "${query}"` : ""}
                 </p>
               </div>
+            ) : isPropertyMode ? (
+              /* ── Property cards ── */
+              (propertyResults).map((p) => (
+                <Link
+                  key={p.id}
+                  href={`/property/${p.id}`}
+                  className="card flex items-center gap-3 mb-3 active:scale-[0.98] transition-transform"
+                >
+                  {/* House icon */}
+                  <div className="w-10 h-10 rounded-xl bg-teal-50 flex items-center justify-center flex-shrink-0">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                      <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" fill="#E6F9F8" stroke="#0E9E92" strokeWidth={1.8}/>
+                      <circle cx="12" cy="9" r="2.5" stroke="#0E9E92" strokeWidth={1.5}/>
+                    </svg>
+                  </div>
+
+                  <div className="flex-1 min-w-0">
+                    <p className="font-heading font-semibold text-[15px] text-petrol-400 leading-tight mb-1 line-clamp-2">
+                      {p.address}
+                    </p>
+                    {(p.suburb || p.city) && (
+                      <p className="text-xs text-sage-400 truncate mb-0.5">
+                        {[p.suburb, p.city].filter(Boolean).join(", ")}
+                      </p>
+                    )}
+                    <p className="text-xs text-sage-400 font-body">
+                      {p.review_count > 0
+                        ? `${p.review_count} review${p.review_count !== 1 ? "s" : ""}`
+                        : "No reviews yet"}
+                    </p>
+                  </div>
+
+                  {/* Score */}
+                  <div className="flex-shrink-0 text-right">
+                    {p.avg_score != null ? (
+                      <>
+                        <div className="score-badge">{p.avg_score.toFixed(1)}</div>
+                        <p className="text-[10px] text-sage-400 mt-1">/ 5</p>
+                      </>
+                    ) : (
+                      <span className="inline-flex items-center bg-teal-50 text-teal-400 text-[10px] font-semibold px-2 py-0.5 rounded-full">
+                        New
+                      </span>
+                    )}
+                  </div>
+                </Link>
+              ))
             ) : (
-              results.map((p) => {
+              /* ── Profile cards ── */
+              (profileResults).map((p) => {
                 const score       = p.score?.overall;
                 const reviewCount = p.score?.review_count ?? 0;
                 return (
@@ -195,7 +347,6 @@ export default function SearchPage() {
                       </p>
                     </div>
 
-                    {/* Score */}
                     <div className="flex-shrink-0 text-right">
                       {score != null ? (
                         <>
