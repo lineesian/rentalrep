@@ -19,6 +19,7 @@ import {
 import type { UserRole } from "@/lib/types";
 import type { Review } from "@/lib/types";
 import { NotificationBell } from "@/components/ui/NotificationBell";
+import Link from "next/link";
 import { calculateBadges } from "@/lib/badges";
 import { BadgePill } from "@/components/ui/BadgePill";
 
@@ -128,7 +129,22 @@ export default async function HomePage() {
         <div className="bg-petrol-400 rounded-3xl p-5 mb-4 border border-teal-400/20">
           <div className="flex items-start justify-between">
             <div>
-              <p className="text-mint-300 text-xs font-medium mb-1 font-body">Your Reputation</p>
+              <div className="flex items-center gap-2 mb-1">
+                <p className="text-mint-300 text-xs font-medium font-body">Your Reputation</p>
+                {/* Show upgrade nudge only for free users */}
+                {(!profile || (profile as unknown as { subscription_tier?: string }).subscription_tier === "free" || !(profile as unknown as { subscription_tier?: string }).subscription_tier) && (
+                  <Link
+                    href="/upgrade"
+                    className="inline-flex items-center gap-1 text-[10px] font-bold font-heading px-2 py-0.5 rounded-full flex-shrink-0"
+                    style={{ backgroundColor: "#F5C842", color: "#0D2B2A" }}
+                  >
+                    <svg width="9" height="9" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                      <path d="M8 1.5l1.9 4.8h5.1L11 9.3l1.6 4.9L8 11.5 3.4 14.2 5 9.3.9 6.3H6L8 1.5z" stroke="#0D2B2A" strokeWidth="1.5" fill="#0D2B2A" strokeLinejoin="round"/>
+                    </svg>
+                    Upgrade
+                  </Link>
+                )}
+              </div>
               <h2 className="font-heading font-bold text-xl text-white mb-2">{name}</h2>
               <span className="inline-flex items-center gap-1 bg-teal-400/20 text-mint-400 text-xs font-semibold px-2.5 py-1 rounded-full">
                 <span style={{ color: "#F4B53F" }}>✓</span> Verified {roleLabel}
