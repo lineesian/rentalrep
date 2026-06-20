@@ -24,12 +24,12 @@ const LANDLORD_CATS: Cat[] = [
 ];
 
 const TENANT_CATS: Cat[] = [
-  { key: "payment_history",       label: "Rent Payment",           placeholder: "e.g. Did they pay on time, every time?" },
-  { key: "property_care",         label: "Property Care",          placeholder: "e.g. Did they keep the property clean and in good condition?" },
-  { key: "communication",         label: "Communication",          placeholder: "e.g. Were they responsive and easy to reach?" },
-  { key: "compliance_with_lease", label: "Lease Compliance",       placeholder: "e.g. Did they follow the lease terms throughout?" },
-  { key: "vacating_conduct",      label: "Departure & Handover",   placeholder: "e.g. Did they leave the property clean and undamaged?" },
-  { key: "neighbour_relations",   label: "Neighbourly Conduct",    placeholder: "e.g. Were they considerate of neighbours?" },
+  { key: "payment_history",       label: "Rent Payment",       placeholder: "e.g. Did they pay on time, every time?" },
+  { key: "property_care",         label: "Property Care",      placeholder: "e.g. Did they keep the property clean and in good condition?" },
+  { key: "communication",         label: "Communication",      placeholder: "e.g. Were they responsive and easy to reach?" },
+  { key: "compliance_with_lease", label: "Lease Compliance",   placeholder: "e.g. Did they follow the lease terms throughout?" },
+  { key: "vacating_conduct",      label: "Move-out Condition", placeholder: "e.g. Did they leave the property clean and undamaged?" },
+  { key: "neighbour_relations",   label: "Neighbour Relations",placeholder: "e.g. Were they considerate of neighbours?" },
 ];
 
 const AGENCY_CATS: Cat[] = [
@@ -227,11 +227,12 @@ function ReviewFlow() {
     startSearch(async () => {
       // For agent type, search profiles with role=agency (individual agents at agencies)
       const searchRole = role === "agent" ? "agency" : role;
+      const safe = q.replace(/[%_]/g, "\\$&"); // escape ILIKE wildcards in user input
       const { data } = await supabase
         .from("profiles")
         .select("*, reputation_scores(*)")
         .eq("role", searchRole)
-        .ilike("full_name", `%${q}%`)
+        .or(`full_name.ilike.%${safe}%,email.ilike.%${safe}%`)
         .limit(15);
       setSearchResults((data ?? []) as ProfileWithScore[]);
     });
@@ -668,7 +669,7 @@ function ReviewFlow() {
               </svg>
               <input
                 className="flex-1 bg-transparent text-petrol-400 placeholder:text-sage-400 text-sm outline-none font-body"
-                placeholder={`Search for ${article(role)} ${roleLabel(role).toLowerCase()} by name…`}
+                placeholder={`Search for ${article(role)} ${roleLabel(role).toLowerCase()} by name or email…`}
                 value={searchQuery}
                 onChange={(e) => handleSearch(e.target.value)}
                 autoFocus
@@ -698,7 +699,7 @@ function ReviewFlow() {
                   <path d="M15.5 15.5L21 21" stroke="#0E9E92" strokeWidth={1.8} strokeLinecap="round"/>
                 </svg>
                 <p className="font-heading font-semibold text-petrol-400 mb-1">Find {article(role)} {roleLabel(role)}</p>
-                <p className="text-xs text-sage-400">Search by name to find who you&apos;d like to review</p>
+                <p className="text-xs text-sage-400">Search by name or email to find who you&apos;d like to review</p>
               </div>
             )}
 
