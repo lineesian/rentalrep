@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/ActionIcons";
 import type { UserRole } from "@/lib/types";
 import type { Review } from "@/lib/types";
+import { NotificationBell } from "@/components/ui/NotificationBell";
 import { calculateBadges } from "@/lib/badges";
 import { BadgePill } from "@/components/ui/BadgePill";
 
@@ -110,6 +111,8 @@ export default async function HomePage() {
         style={{ paddingTop: "max(10px, env(safe-area-inset-top))", paddingBottom: 10 }}
       >
         <Logo size={28} />
+        <div className="flex items-center gap-1">
+          <NotificationBell userId={user.id} />
           {/* Tappable avatar with white border + shadow — uploads photo */}
           <AvatarUpload
             userId={user.id}
@@ -117,6 +120,7 @@ export default async function HomePage() {
             avatarUrl={profile?.avatar_url}
             variant="header"
           />
+        </div>
       </div>
 
       <div className="px-4 pt-4">

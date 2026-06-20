@@ -453,6 +453,26 @@ function ReviewFlow() {
       }
     }
 
+    // ── 6. Create notifications (non-fatal) ─────────────────────
+    if (insertedId) {
+      try {
+        console.log("[submit] step 6 — creating notifications");
+        const notifRes = await fetch("/api/notifications", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ review_id: insertedId }),
+        });
+        if (!notifRes.ok) {
+          const nb = await notifRes.json().catch(() => ({}));
+          console.warn("[submit] step 6 — notification error (non-fatal):", nb);
+        } else {
+          console.log("[submit] step 6 — notifications created");
+        }
+      } catch (e) {
+        console.warn("[submit] step 6 — notifications threw (non-fatal):", e);
+      }
+    }
+
     console.log("[submit] done — showing success screen");
     setDone(true);
   }
