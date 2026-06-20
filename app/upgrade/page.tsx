@@ -89,7 +89,7 @@ function PlanCard({
         </div>
       ) : (
         /* Client component handles the Stripe redirect */
-        <UpgradeCard priceId={plan.priceId} label={`Upgrade to ${plan.name}`} recommended={isRecommended} />
+        <UpgradeCard planId={plan.id} label={`Upgrade to ${plan.name}`} recommended={isRecommended} />
       )}
     </div>
   );

@@ -3,12 +3,12 @@
 import { useState } from "react";
 
 interface Props {
-  priceId:     string;
+  planId:      string;
   label:       string;
   recommended: boolean;
 }
 
-export function UpgradeCard({ priceId, label, recommended }: Props) {
+export function UpgradeCard({ planId, label, recommended }: Props) {
   const [loading, setLoading] = useState(false);
   const [error,   setError]   = useState<string | null>(null);
 
@@ -16,18 +16,35 @@ export function UpgradeCard({ priceId, label, recommended }: Props) {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch("/api/stripe/checkout", {
+      const res = await fetch("/api/payfast/checkout", {
         method:  "POST",
         headers: { "Content-Type": "application/json" },
-        body:    JSON.stringify({ priceId }),
+        body:    JSON.stringify({ planId }),
       });
-      const data = await res.json();
-      if (!res.ok || !data.url) {
+      const data = await res.json() as { url?: string; params?: Record<string, string>; error?: string };
+
+      if (!res.ok || !data.url || !data.params) {
         setError(data.error ?? "Could not start checkout. Please try again.");
         setLoading(false);
         return;
       }
-      window.location.href = data.url;
+
+      // PayFast requires a form POST — build a hidden form, submit it
+      const form = document.createElement("form");
+      form.method = "POST";
+      form.action = data.url;
+
+      Object.entries(data.params).forEach(([key, value]) => {
+        const input    = document.createElement("input");
+        input.type     = "hidden";
+        input.name     = key;
+        input.value    = value;
+        form.appendChild(input);
+      });
+
+      document.body.appendChild(form);
+      form.submit();
+      // Note: loading stays true — the page navigates away
     } catch {
       setError("Network error. Please try again.");
       setLoading(false);
@@ -46,7 +63,7 @@ export function UpgradeCard({ priceId, label, recommended }: Props) {
             : { backgroundColor: "#0E9E92", color: "#ffffff" }
         }
       >
-        {loading ? "Redirecting…" : label}
+        {loading ? "Redirecting to PayFast…" : label}
       </button>
       {error && (
         <p className="text-xs text-red-400 font-body mt-2 text-center">{error}</p>
