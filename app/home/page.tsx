@@ -99,7 +99,7 @@ export default async function HomePage() {
   const cards     = actionCards(role, user.id);
   const statLabel = secondaryStat(role);
   const badges    = profile
-    ? calculateBadges(profile, (receivedReviews ?? []) as Review[], reviewCount ?? 0)
+    ? calculateBadges((receivedReviews ?? []) as Review[], profile.role)
     : [];
 
   return (

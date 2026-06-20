@@ -52,7 +52,7 @@ export default async function ProfilePage({ params }: { params: { id: string } }
   // Only hard-404 when the profile genuinely doesn't exist.
   if (!profile && !profileError) notFound();
 
-  const badges = profile ? calculateBadges(profile, reviews ?? [], givenCount ?? 0) : [];
+  const badges = profile ? calculateBadges(reviews ?? [], profile.role) : [];
 
   return (
     <div className="screen">

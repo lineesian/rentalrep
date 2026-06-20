@@ -1,17 +1,17 @@
 import type { Badge } from "@/lib/badges";
 
-// on light backgrounds (profile page white area)
-const LIGHT: Record<string, { bg: string; text: string; border: string }> = {
-  teal:   { bg: "#E6F7F5", text: "#0E9E92", border: "#0E9E92" },
-  gold:   { bg: "#FDF4E3", text: "#B8790A", border: "#F4B53F" },
-  petrol: { bg: "#07312C", text: "#2FD4C0", border: "#07312C" },
+// ── Colour palettes ───────────────────────────────────────────────────────────
+
+// Light backgrounds (profile page)
+const LIGHT = {
+  standard: { bg: "#A8F0E0", text: "#0D2B2A", border: "#7ADEC8" },
+  gold:     { bg: "#F5C842", text: "#0D2B2A", border: "#D4A500" },
 };
 
-// on dark (petrol-400) backgrounds (home dashboard card)
-const DARK: Record<string, { bg: string; text: string; border: string }> = {
-  teal:   { bg: "rgba(14,158,146,0.18)", text: "#2FD4C0", border: "#0E9E92" },
-  gold:   { bg: "rgba(244,181,63,0.18)",  text: "#F4B53F", border: "#F4B53F" },
-  petrol: { bg: "rgba(255,255,255,0.10)", text: "#2FD4C0", border: "rgba(255,255,255,0.20)" },
+// Dark (petrol-400) backgrounds (home dashboard card)
+const DARK = {
+  standard: { bg: "rgba(168,240,224,0.18)", text: "#A8F0E0", border: "rgba(168,240,224,0.35)" },
+  gold:     { bg: "rgba(245,200,66,0.18)",  text: "#F5C842", border: "rgba(245,200,66,0.40)" },
 };
 
 interface Props {
@@ -20,15 +20,21 @@ interface Props {
 }
 
 export function BadgePill({ badge, dark = false }: Props) {
-  const palette = dark ? DARK : LIGHT;
-  const c = palette[badge.colour];
+  const c = (dark ? DARK : LIGHT)[badge.tier];
   return (
     <span
-      className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold font-body whitespace-nowrap border flex-shrink-0"
+      className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold font-body whitespace-nowrap border flex-shrink-0"
       style={{ backgroundColor: c.bg, color: c.text, borderColor: c.border }}
     >
-      <span aria-hidden="true">{badge.icon}</span>
-      {badge.label}
+      <svg
+        width="12"
+        height="12"
+        viewBox="0 0 16 16"
+        fill="none"
+        aria-hidden="true"
+        dangerouslySetInnerHTML={{ __html: badge.icon }}
+      />
+      {badge.name}
     </span>
   );
 }
