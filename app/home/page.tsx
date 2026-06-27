@@ -19,7 +19,6 @@ import {
 import type { UserRole } from "@/lib/types";
 import type { Review } from "@/lib/types";
 import { NotificationBell } from "@/components/ui/NotificationBell";
-import Link from "next/link";
 import { calculateBadges } from "@/lib/badges";
 import { BadgePill } from "@/components/ui/BadgePill";
 
