@@ -6,7 +6,6 @@ export function RateLandlordIcon({ size = 28 }: IconProps) {
   return (
     <svg width={size} height={size} viewBox="0 0 32 32" fill="none" aria-hidden="true">
       <path d="M4 13L16 4l12 9V28H4V13z" fill="#E6F9F8" stroke="#0E9E92" strokeWidth={1.8} strokeLinejoin="round"/>
-      <polygon points="16,10 17.2,13.8 21.2,13.8 18,16.2 19.2,20 16,17.6 12.8,20 14,16.2 10.8,13.8 14.8,13.8" fill="#F4B53F"/>
     </svg>
   );
 }
@@ -16,8 +15,6 @@ export function RateTenantIcon({ size = 28 }: IconProps) {
     <svg width={size} height={size} viewBox="0 0 32 32" fill="none" aria-hidden="true">
       <circle cx="16" cy="11" r="5.5" stroke="#0E9E92" strokeWidth={1.8} fill="#E6F9F8"/>
       <path d="M6 27c0-5.523 4.477-10 10-10s10 4.477 10 10" stroke="#0E9E92" strokeWidth={1.8} strokeLinecap="round"/>
-      <circle cx="24" cy="10" r="4" fill="#F4B53F"/>
-      <path d="M24 8v2.5l1.5 1.5" stroke="#07312C" strokeWidth={1.3} strokeLinecap="round"/>
     </svg>
   );
 }
@@ -53,7 +50,6 @@ export function RateAgentIcon({ size = 28 }: IconProps) {
     <svg width={size} height={size} viewBox="0 0 32 32" fill="none" aria-hidden="true">
       <circle cx="16" cy="11" r="5.5" stroke="#0E9E92" strokeWidth={1.8} fill="#E6F9F8"/>
       <path d="M6 27c0-5.523 4.477-10 10-10s10 4.477 10 10" stroke="#0E9E92" strokeWidth={1.8} strokeLinecap="round"/>
-      <path d="M22 6l1.5 1.5 2.5-2.5" stroke="#F4B53F" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round"/>
     </svg>
   );
 }
