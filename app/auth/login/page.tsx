@@ -161,11 +161,17 @@ export default function LoginPage() {
           </button>
         </form>
 
-        <p className="text-center text-sm font-body mt-8 mb-4" style={{ color: "#5E7470" }}>
+        <p className="text-center text-sm font-body mt-8" style={{ color: "#5E7470" }}>
           Don&apos;t have an account?{" "}
           <Link href="/auth/register" className="font-semibold" style={{ color: "#0E9E92" }}>
             Sign up
           </Link>
+        </p>
+
+        <p className="text-center text-xs font-body mt-6 mb-4" style={{ color: "#9BA8A5" }}>
+          <Link href="/privacy" style={{ color: "#9BA8A5" }}>Privacy Policy</Link>
+          {" · "}
+          <Link href="/terms" style={{ color: "#9BA8A5" }}>Terms of Service</Link>
         </p>
       </div>
     </div>

@@ -158,17 +158,23 @@ export default function RegisterPage() {
         </form>
 
         <p className="text-center text-xs font-body mt-5" style={{ color: "#5E7470" }}>
-          By signing up you agree to our{" "}
-          <span className="font-semibold" style={{ color: "#0E9E92" }}>Terms of Service</span>{" "}
+          By creating an account you agree to our{" "}
+          <Link href="/terms" className="font-semibold" style={{ color: "#0E9E92" }}>Terms of Service</Link>{" "}
           and{" "}
-          <span className="font-semibold" style={{ color: "#0E9E92" }}>Privacy Policy</span>.
+          <Link href="/privacy" className="font-semibold" style={{ color: "#0E9E92" }}>Privacy Policy</Link>.
         </p>
 
-        <p className="text-center text-sm font-body mt-4 mb-2" style={{ color: "#5E7470" }}>
+        <p className="text-center text-sm font-body mt-4" style={{ color: "#5E7470" }}>
           Already have an account?{" "}
           <Link href="/auth/login" className="font-semibold" style={{ color: "#0E9E92" }}>
             Sign in
           </Link>
+        </p>
+
+        <p className="text-center text-xs font-body mt-6 mb-2" style={{ color: "#9BA8A5" }}>
+          <Link href="/privacy" style={{ color: "#9BA8A5" }}>Privacy Policy</Link>
+          {" · "}
+          <Link href="/terms" style={{ color: "#9BA8A5" }}>Terms of Service</Link>
         </p>
       </div>
     </div>
