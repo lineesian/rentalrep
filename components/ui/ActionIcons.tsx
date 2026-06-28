@@ -4,17 +4,20 @@ interface IconProps { size?: number }
 
 export function RateLandlordIcon({ size = 28 }: IconProps) {
   return (
-    <svg width={size} height={size} viewBox="0 0 32 32" fill="none" aria-hidden="true">
-      <path d="M4 13L16 4l12 9V28H4V13z" fill="#E6F9F8" stroke="#0E9E92" strokeWidth={1.8} strokeLinejoin="round"/>
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="#0E9E92" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <circle cx="12" cy="5" r="3"/>
+      <path d="M6 11c0-2.5 2.7-4 6-4s6 1.5 6 4"/>
+      <path d="M3 21l9-7 9 7"/>
+      <path d="M5 21v-5h14v5"/>
     </svg>
   );
 }
 
 export function RateTenantIcon({ size = 28 }: IconProps) {
   return (
-    <svg width={size} height={size} viewBox="0 0 32 32" fill="none" aria-hidden="true">
-      <circle cx="16" cy="11" r="5.5" stroke="#0E9E92" strokeWidth={1.8} fill="#E6F9F8"/>
-      <path d="M6 27c0-5.523 4.477-10 10-10s10 4.477 10 10" stroke="#0E9E92" strokeWidth={1.8} strokeLinecap="round"/>
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="#0E9E92" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <circle cx="12" cy="7" r="4"/>
+      <path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/>
     </svg>
   );
 }
@@ -47,9 +50,11 @@ export function ScreenTenantIcon({ size = 28 }: IconProps) {
 
 export function RateAgentIcon({ size = 28 }: IconProps) {
   return (
-    <svg width={size} height={size} viewBox="0 0 32 32" fill="none" aria-hidden="true">
-      <circle cx="16" cy="11" r="5.5" stroke="#0E9E92" strokeWidth={1.8} fill="#E6F9F8"/>
-      <path d="M6 27c0-5.523 4.477-10 10-10s10 4.477 10 10" stroke="#0E9E92" strokeWidth={1.8} strokeLinecap="round"/>
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="#0E9E92" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <circle cx="9" cy="7" r="3.5"/>
+      <path d="M2 21c0-3.5 3.1-6 7-6s7 2.5 7 6"/>
+      <circle cx="17" cy="8" r="2.5"/>
+      <path d="M17 14c2.5 0 5 1.5 5 4.5"/>
     </svg>
   );
 }
