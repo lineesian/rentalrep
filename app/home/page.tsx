@@ -35,9 +35,10 @@ function actionCards(role: UserRole, userId: string) {
 
   if (role === "landlord") {
     return [
-      { label: "Rate a Tenant",  Icon: RateTenantIcon,   href: "/review/new?type=tenant&from=landlord" },
-      { label: "Rate an Agency", Icon: RateAgencyIcon,   href: "/review/new?type=agency&from=landlord" },
-      { label: "Rate an Agent",  Icon: RateAgentIcon,    href: "/review/new?type=agent&from=landlord" },
+      { label: "Rate a Tenant",    Icon: RateTenantIcon,    href: "/review/new?type=tenant&from=landlord" },
+      { label: "Rate an Agency",   Icon: RateAgencyIcon,    href: "/review/new?type=agency&from=landlord" },
+      { label: "Rate an Agent",    Icon: RateAgentIcon,     href: "/review/new?type=agent&from=landlord" },
+      { label: "Rate a Property",  Icon: RatePropertyIcon,  href: "/review/new?type=property&from=landlord" },
       myProfile,
     ];
   }
@@ -204,12 +205,12 @@ export default async function HomePage() {
         </div>
 
         {/* ── Role-aware action cards ── */}
-        <div className={`grid gap-3 mb-8 ${cards.length === 4 ? "grid-cols-2" : "grid-cols-3"}`}>
-          {cards.map(({ label, Icon, href }) => (
+        <div className={`grid gap-3 mb-8 ${cards.length >= 4 ? "grid-cols-2" : "grid-cols-3"}`}>
+          {cards.map(({ label, Icon, href }, i) => (
             <Link
               key={label}
               href={href}
-              className="flex flex-col items-center gap-2 bg-white border border-gray-100 rounded-2xl py-4 px-2 transition-transform active:scale-95"
+              className={`flex flex-col items-center gap-2 bg-white border border-gray-100 rounded-2xl py-4 px-2 transition-transform active:scale-95${cards.length === 5 && i === 4 ? " col-span-2 max-w-[calc(50%-6px)] mx-auto w-full" : ""}`}
             >
               <Icon size={28} />
               <span className="font-body text-[11px] font-semibold text-petrol-400 text-center leading-tight">

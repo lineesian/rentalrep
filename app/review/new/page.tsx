@@ -95,13 +95,23 @@ function roleLabel(role: string) {
 
 function article(role: string) { return ["agency", "agent"].includes(role) ? "an" : "a"; }
 
-function wouldRentText(role: string) {
-  if (role === "tenant")   return "Would you rent to this tenant again?";
-  if (role === "agency")   return "Would you use this agency again?";
-  if (role === "agent")    return "Would you use this agent again?";
-  if (role === "property") return "Would you live here again?";
+function wouldRentText(role: string, reviewerRole?: string) {
+  if (role === "tenant")                                        return "Would you rent to this tenant again?";
+  if (role === "agency")                                        return "Would you use this agency again?";
+  if (role === "agent")                                         return "Would you use this agent again?";
+  if (role === "property" && reviewerRole === "landlord")       return "Would you relist this property?";
+  if (role === "property")                                      return "Would you live here again?";
   return "Would you rent from this landlord again?";
 }
+
+const LANDLORD_PROPERTY_CATS: Cat[] = [
+  { key: "condition_on_listing", label: "Condition on Listing",  placeholder: "What condition was the property in when you listed it for rent?" },
+  { key: "tenant_impact",        label: "Tenant Impact",         placeholder: "How did tenants affect the condition of the property over the tenancy?" },
+  { key: "maintenance_required", label: "Maintenance Required",  placeholder: "How much ongoing maintenance did the property require during the tenancy?" },
+  { key: "neighbourhood",        label: "Neighbourhood",         placeholder: "How would you rate the surrounding area — safety, noise, and amenities?" },
+  { key: "value_for_listing",    label: "Value for Listing",     placeholder: "Was the rental price fair relative to the property condition and location?" },
+  { key: "would_relist",         label: "Would Relist",          placeholder: "Would you list this property for rent again under the same terms?" },
+];
 
 const LANDLORD_AGENCY_CATS: Cat[] = [
   { key: "transparency",        label: "Transparency",        placeholder: "Was the agency upfront about fees, processes, and lease terms?" },
@@ -122,8 +132,9 @@ const LANDLORD_AGENT_CATS: Cat[] = [
 ];
 
 function catsForRole(role: string, reviewerRole: string): Cat[] {
-  if (role === "agency"  && reviewerRole === "landlord") return LANDLORD_AGENCY_CATS;
-  if (role === "agent"   && reviewerRole === "landlord") return LANDLORD_AGENT_CATS;
+  if (role === "property" && reviewerRole === "landlord") return LANDLORD_PROPERTY_CATS;
+  if (role === "agency"   && reviewerRole === "landlord") return LANDLORD_AGENCY_CATS;
+  if (role === "agent"    && reviewerRole === "landlord") return LANDLORD_AGENT_CATS;
   if (role === "agency")   return AGENCY_CATS;
   if (role === "agent")    return AGENT_CATS;
   if (role === "tenant")   return TENANT_CATS;
@@ -874,7 +885,7 @@ function ReviewFlow() {
           ))}
 
           <div className="pt-4 border-t border-gray-100">
-            <p className="text-sm font-semibold text-petrol-400 mb-3">{wouldRentText(role)}</p>
+            <p className="text-sm font-semibold text-petrol-400 mb-3">{wouldRentText(role, reviewerRole)}</p>
             <div className="flex gap-2">
               {(["yes", "no", "maybe"] as const).map((v) => (
                 <button key={v} onClick={() => setRecommend((r) => r === v ? null : v)}
