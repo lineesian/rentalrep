@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Avatar } from "@/components/ui/Avatar";
 import { ScoreRing } from "@/components/ui/ScoreRing";
 import { ScoreBar } from "@/components/ui/ScoreBar";
@@ -14,7 +14,67 @@ export default function AgencyPage() {
   const [searched, setSearched] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  // Lease upload form
+  const [isAgency, setIsAgency]       = useState(false);
+  const [agencyId, setAgencyId]       = useState<string | null>(null);
+  const [uploadOpen, setUploadOpen]   = useState(false);
+  const [tenantName, setTenantName]   = useState("");
+  const [landlordName, setLandlordName] = useState("");
+  const [leaseAddr, setLeaseAddr]     = useState("");
+  const [leaseStart, setLeaseStart]   = useState("");
+  const [leaseEnd, setLeaseEnd]       = useState("");
+  const [uploading, setUploading]     = useState(false);
+  const [uploadMsg, setUploadMsg]     = useState<{ ok: boolean; text: string } | null>(null);
+
   const supabase = createClient();
+
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      if (!user) return;
+      supabase
+        .from("profiles")
+        .select("role")
+        .eq("id", user.id)
+        .single()
+        .then(({ data }) => {
+          if (data?.role === "agency") {
+            setIsAgency(true);
+            setAgencyId(user.id);
+          }
+        });
+    });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  async function handleLeaseUpload(e: React.FormEvent) {
+    e.preventDefault();
+    if (!agencyId) return;
+    setUploading(true);
+    setUploadMsg(null);
+
+    const expiresAt = new Date();
+    expiresAt.setFullYear(expiresAt.getFullYear() + 3);
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { error } = await (supabase as any).from("private_lease_records").insert({
+      uploaded_by_agency_id: agencyId,
+      tenant_full_name:      tenantName.trim(),
+      landlord_full_name:    landlordName.trim(),
+      property_address:      leaseAddr.trim(),
+      lease_start_date:      leaseStart,
+      lease_end_date:        leaseEnd,
+      expires_at:            expiresAt.toISOString(),
+    });
+
+    if (error) {
+      setUploadMsg({ ok: false, text: "Upload failed. Please try again." });
+    } else {
+      setUploadMsg({ ok: true, text: "Lease record uploaded successfully." });
+      setTenantName(""); setLandlordName(""); setLeaseAddr("");
+      setLeaseStart(""); setLeaseEnd("");
+    }
+    setUploading(false);
+  }
 
   async function handleSearch(e: React.FormEvent) {
     e.preventDefault();
@@ -115,14 +175,84 @@ export default function AgencyPage() {
           )
         )}
 
-        <button className="w-full py-4 rounded-2xl border-2 border-dashed border-teal-400 bg-teal-50 text-teal-400 font-semibold text-sm mb-6 flex items-center justify-center gap-2">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" stroke="#0E9E92" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"/>
-            <polyline points="17 8 12 3 7 8" stroke="#0E9E92" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"/>
-            <line x1="12" y1="3" x2="12" y2="15" stroke="#0E9E92" strokeWidth={2} strokeLinecap="round"/>
-          </svg>
-          Bulk Upload Leases
-        </button>
+        {isAgency && (
+          <div className="mb-6">
+            <button
+              onClick={() => { setUploadOpen((o) => !o); setUploadMsg(null); }}
+              className="w-full py-4 rounded-2xl border-2 border-dashed border-teal-400 bg-teal-50 text-teal-400 font-semibold text-sm flex items-center justify-center gap-2"
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" stroke="#0E9E92" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"/>
+                <polyline points="17 8 12 3 7 8" stroke="#0E9E92" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"/>
+                <line x1="12" y1="3" x2="12" y2="15" stroke="#0E9E92" strokeWidth={2} strokeLinecap="round"/>
+              </svg>
+              Upload Lease Record
+            </button>
+
+            {uploadOpen && (
+              <form onSubmit={handleLeaseUpload} className="mt-3 card space-y-3">
+                <p className="text-xs text-sage-400 font-body leading-relaxed">
+                  Lease records are stored privately and used only to verify tenancies. No data is shown publicly.
+                </p>
+                <input
+                  className="input w-full"
+                  placeholder="Tenant full name"
+                  value={tenantName}
+                  onChange={(e) => setTenantName(e.target.value)}
+                  required
+                />
+                <input
+                  className="input w-full"
+                  placeholder="Landlord full name"
+                  value={landlordName}
+                  onChange={(e) => setLandlordName(e.target.value)}
+                  required
+                />
+                <input
+                  className="input w-full"
+                  placeholder="Property address"
+                  value={leaseAddr}
+                  onChange={(e) => setLeaseAddr(e.target.value)}
+                  required
+                />
+                <div className="flex gap-2">
+                  <div className="flex-1">
+                    <label className="text-[11px] text-sage-400 font-body mb-1 block">Lease start</label>
+                    <input
+                      type="date"
+                      className="input w-full"
+                      value={leaseStart}
+                      onChange={(e) => setLeaseStart(e.target.value)}
+                      required
+                    />
+                  </div>
+                  <div className="flex-1">
+                    <label className="text-[11px] text-sage-400 font-body mb-1 block">Lease end</label>
+                    <input
+                      type="date"
+                      className="input w-full"
+                      value={leaseEnd}
+                      onChange={(e) => setLeaseEnd(e.target.value)}
+                      required
+                    />
+                  </div>
+                </div>
+                {uploadMsg && (
+                  <p className={`text-xs font-body ${uploadMsg.ok ? "text-teal-400" : "text-red-400"}`}>
+                    {uploadMsg.text}
+                  </p>
+                )}
+                <button
+                  type="submit"
+                  disabled={uploading}
+                  className="w-full py-3 rounded-xl bg-teal-400 text-white font-semibold text-sm disabled:opacity-60"
+                >
+                  {uploading ? "Uploading…" : "Save Lease Record"}
+                </button>
+              </form>
+            )}
+          </div>
+        )}
 
         <p className="section-label">Recent Activity</p>
         {ACTIVITY.map((a, i) => (

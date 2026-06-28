@@ -439,6 +439,39 @@ function ReviewFlow() {
       return;
     }
 
+    // ── 4b. Tenancy verification (non-fatal) ────────────────────
+    // Only meaningful when a registered user (not a guest) is on one side.
+    if (insertedId && !isProperty && (reviewee?.full_name || guestName)) {
+      try {
+        console.log("[submit] step 4b — verifying tenancy");
+        const vRes = await fetch("/api/verify-tenancy", {
+          method:  "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            revieweeName:    reviewee?.full_name ?? guestName,
+            reviewerRole,
+            propertyAddress: address,
+            leaseStart,
+            leaseEnd,
+          }),
+        });
+        if (vRes.ok) {
+          const { verified } = await vRes.json() as { verified: boolean };
+          if (verified) {
+            console.log("[submit] step 4b — tenancy verified, setting flag on review");
+            await supabase
+              .from("reviews")
+              .update({ verified_tenancy: true } as never)
+              .eq("id", insertedId);
+          } else {
+            console.log("[submit] step 4b — no matching lease record found");
+          }
+        }
+      } catch (e) {
+        console.warn("[submit] step 4b — verification threw (non-fatal):", e);
+      }
+    }
+
     // ── 5. Publish check (non-fatal) ────────────────────────────
     if (insertedId) {
       try {
