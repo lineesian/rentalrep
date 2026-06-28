@@ -37,6 +37,7 @@ function actionCards(role: UserRole, userId: string) {
     return [
       { label: "Rate a Tenant",  Icon: RateTenantIcon,   href: "/review/new?type=tenant&from=landlord" },
       { label: "Rate an Agency", Icon: RateAgencyIcon,   href: "/review/new?type=agency&from=landlord" },
+      { label: "Rate an Agent",  Icon: RateAgentIcon,    href: "/review/new?type=agent&from=landlord" },
       myProfile,
     ];
   }

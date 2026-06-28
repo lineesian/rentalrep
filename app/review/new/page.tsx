@@ -103,7 +103,27 @@ function wouldRentText(role: string) {
   return "Would you rent from this landlord again?";
 }
 
-function catsForRole(role: string): Cat[] {
+const LANDLORD_AGENCY_CATS: Cat[] = [
+  { key: "transparency",        label: "Transparency",        placeholder: "Was the agency upfront about fees, processes, and lease terms?" },
+  { key: "communication",       label: "Communication",       placeholder: "How responsive and clear was the agency throughout?" },
+  { key: "professionalism",     label: "Professionalism",     placeholder: "Did all staff conduct themselves professionally?" },
+  { key: "fairness",            label: "Fairness",            placeholder: "Did the agency treat you and your tenant fairly when issues arose?" },
+  { key: "problem_resolution",  label: "Problem Resolution",  placeholder: "When issues occurred, how effectively did the agency resolve them?" },
+  { key: "mandate_performance", label: "Mandate Performance", placeholder: "Did the agency find quality tenants quickly and manage your property to a high standard?" },
+];
+
+const LANDLORD_AGENT_CATS: Cat[] = [
+  { key: "responsiveness",     label: "Responsiveness",    placeholder: "How quickly did the agent respond to your calls, messages, and queries?" },
+  { key: "knowledge",          label: "Knowledge",         placeholder: "Did the agent demonstrate strong knowledge of the property, area, and rental process?" },
+  { key: "honesty",            label: "Honesty",           placeholder: "Was the agent truthful and transparent throughout?" },
+  { key: "follow_through",     label: "Follow-through",    placeholder: "Did the agent do what they said they would do, and when they said they would?" },
+  { key: "empathy_fairness",   label: "Empathy & Fairness",placeholder: "Did the agent treat you respectfully and advocate fairly on your behalf?" },
+  { key: "mandate_performance",label: "Mandate Performance",placeholder: "Did the agent find quality tenants and manage the mandate to a high standard?" },
+];
+
+function catsForRole(role: string, reviewerRole: string): Cat[] {
+  if (role === "agency"  && reviewerRole === "landlord") return LANDLORD_AGENCY_CATS;
+  if (role === "agent"   && reviewerRole === "landlord") return LANDLORD_AGENT_CATS;
   if (role === "agency")   return AGENCY_CATS;
   if (role === "agent")    return AGENT_CATS;
   if (role === "tenant")   return TENANT_CATS;
@@ -169,7 +189,7 @@ function ReviewFlow() {
   const router        = useRouter();
   const role          = params.get("role") ?? params.get("type") ?? "landlord"; // reviewee type
   const reviewerRole  = params.get("from") ?? "tenant";                          // who is writing
-  const cats          = catsForRole(role);
+  const cats          = catsForRole(role, reviewerRole);
   const supabase = createClient();
   const fileRef  = useRef<HTMLInputElement>(null);
 
