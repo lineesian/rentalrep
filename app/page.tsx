@@ -99,7 +99,7 @@ export default function RootPage() {
         <div className="absolute pointer-events-none" style={{ top: "-10%", right: "-5%", width: 600, height: 600, background: "radial-gradient(circle, rgba(14,158,146,0.18) 0%, transparent 70%)", borderRadius: "50%" }} />
         <div className="absolute pointer-events-none" style={{ bottom: "0%", left: "-5%", width: 500, height: 500, background: "radial-gradient(circle, rgba(244,181,63,0.12) 0%, transparent 70%)", borderRadius: "50%" }} />
 
-        <div className="relative max-w-6xl mx-auto px-5 py-20 md:py-28">
+        <div className="relative max-w-4xl mx-auto px-5 py-20 md:py-28 text-center">
           {/* Eyebrow */}
           <div className="mb-6">
             <span
@@ -112,16 +112,16 @@ export default function RootPage() {
           </div>
 
           <h1
-            className="font-heading font-extrabold text-white leading-tight mb-6"
-            style={{ fontSize: "clamp(2.1rem, 5.5vw, 3.5rem)", maxWidth: 820 }}
+            className="font-heading font-extrabold text-white leading-tight mb-6 mx-auto"
+            style={{ fontSize: "clamp(1.9rem, 4vw, 2.75rem)", maxWidth: 760 }}
           >
-            Know who you&apos;re renting from<br className="hidden md:block" /> and to{" "}
+            Know who you&apos;re renting from and to{" "}
             <span style={{ color: "#0E9E92" }}>before</span> you sign.
           </h1>
 
           <p
-            className="text-base md:text-lg leading-relaxed mb-10"
-            style={{ color: "rgba(255,255,255,0.65)", maxWidth: 600 }}
+            className="text-base md:text-lg leading-relaxed mb-10 mx-auto"
+            style={{ color: "rgba(255,255,255,0.65)", maxWidth: 560 }}
           >
             RentalRep lets tenants, landlords, and estate agencies rate each other after every tenancy. Every review is tied to a real lease, so the scores you see are real.
           </p>
