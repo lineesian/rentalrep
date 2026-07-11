@@ -1,0 +1,1190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RentalRep: Rate. Trust. Rent with Confidence.</title>
+
+<!-- SEO Meta -->
+<meta name="description" content="RentalRep is South Africa's first verified, bidirectional rental reputation platform. Tenants rate landlords. Landlords rate tenants. Both rate estate agencies. Every review tied to a verified lease agreement. POPIA compliant.">
+<meta name="keywords" content="rental reputation South Africa, tenant reviews, landlord reviews, estate agency ratings, rental platform SA, verified rental reviews, RentalRep, rental trust score, Johannesburg rentals, South African property rental">
+<meta name="robots" content="index, follow">
+<meta name="author" content="RentalRep">
+<link rel="canonical" href="https://www.rentalrep.co.za/">
+
+<!-- Open Graph (Facebook, WhatsApp, LinkedIn) -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.rentalrep.co.za/">
+<meta property="og:title" content="RentalRep — South Africa's First Verified Rental Reputation Platform">
+<meta property="og:description" content="Know who you're renting from and to before you sign. Tenants rate landlords. Landlords rate tenants. Every review verified against a real lease agreement.">
+<meta property="og:image" content="https://www.rentalrep.co.za/og-image.png">
+<meta property="og:site_name" content="RentalRep">
+<meta property="og:locale" content="en_ZA">
+
+<!-- Twitter / X Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="RentalRep — South Africa's First Verified Rental Reputation Platform">
+<meta name="twitter:description" content="Know who you're renting from and to before you sign. Every review tied to a verified lease agreement.">
+<meta name="twitter:image" content="https://www.rentalrep.co.za/og-image.png">
+
+<!-- Schema.org Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "RentalRep",
+  "url": "https://www.rentalrep.co.za",
+  "description": "South Africa's first verified, bidirectional rental reputation platform. Tenants rate landlords, landlords rate tenants, both rate estate agencies.",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Web",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "ZAR",
+    "description": "Free tier available. Pro plans from R49/month."
+  },
+  "provider": {
+    "@type": "Organization",
+    "name": "RentalRep",
+    "url": "https://www.rentalrep.co.za",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Johannesburg",
+      "addressCountry": "ZA"
+    }
+  }
+}
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --dark:   #07312C;
+    --dark2:  #0a3f38;
+    --teal:   #0E9E92;
+    --teal-light: #E6F9F8;
+    --gold:   #F4B53F;
+    --gold-pale: #FEF6E4;
+    --white:  #ffffff;
+    --off-white: #F5F8F7;
+    --muted:  #8aa5a2;
+    --border: #d4e6e4;
+    --text:   #07312C;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background: var(--off-white);
+    color: var(--text);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(7,49,44,0.96);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    padding: 0 5%;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 64px;
+  }
+  .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+  .nav-logo-icon {
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    width: 36px; height: 36px;
+  }
+  .nav-logo-text {
+    font-family: 'Outfit', sans-serif;
+    font-size: 20px; font-weight: 700;
+    color: var(--white);
+    letter-spacing: -0.3px;
+  }
+  /* nav-logo-text span colour set inline */
+  .nav-links { display: flex; gap: 28px; align-items: center; }
+  .nav-links a {
+    text-decoration: none;
+    font-size: 14px; font-weight: 500;
+    color: rgba(255,255,255,0.75);
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--white); }
+  .nav-cta {
+    background: var(--teal);
+    color: var(--white) !important;
+    padding: 8px 18px;
+    border-radius: 8px;
+    font-weight: 600 !important;
+    font-size: 13px !important;
+  }
+  .nav-cta:hover { background: #0bb5a7 !important; }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    background: var(--dark);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center;
+    padding: 120px 5% 80px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 70% 60% at 80% 20%, rgba(14,158,146,0.18) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 50% at 20% 80%, rgba(244,181,63,0.10) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(14,158,146,0.15);
+    border: 1px solid rgba(14,158,146,0.35);
+    color: var(--teal);
+    font-size: 12px; font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 6px 14px; border-radius: 20px;
+    margin-bottom: 28px;
+  }
+  /* hero eyebrow no prefix */
+  .hero h1 {
+    font-family: 'Outfit', sans-serif;
+    font-size: clamp(40px, 6vw, 72px);
+    font-weight: 800;
+    color: var(--white);
+    line-height: 1.08;
+    letter-spacing: -1.5px;
+    max-width: 820px;
+    margin-bottom: 24px;
+  }
+  .hero h1 em {
+    font-style: normal;
+    color: var(--teal);
+  }
+  .hero-sub {
+    font-size: clamp(16px, 2vw, 20px);
+    color: rgba(255,255,255,0.65);
+    max-width: 560px;
+    margin: 0 auto 44px;
+    line-height: 1.65;
+    font-weight: 400;
+  }
+  .hero-form {
+    display: flex; gap: 10px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 14px;
+    padding: 8px;
+    max-width: 520px;
+    width: 100%;
+    margin: 0 auto 20px;
+  }
+  .hero-form input {
+    flex: 1;
+    background: none;
+    border: none;
+    outline: none;
+    color: var(--white);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 15px;
+    padding: 8px 12px;
+  }
+  .hero-form input::placeholder { color: rgba(255,255,255,0.4); }
+  .btn-primary {
+    background: var(--teal);
+    color: var(--white);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 600; font-size: 15px;
+    padding: 12px 24px;
+    border: none; border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    white-space: nowrap;
+  }
+  .btn-primary:hover { background: #0bb5a7; }
+  .btn-primary:active { transform: scale(0.97); }
+  .hero-note {
+    font-size: 13px;
+    color: rgba(255,255,255,0.4);
+  }
+  .hero-note strong { color: rgba(255,255,255,0.7); }
+
+  /* floating trust card */
+  .hero-cards {
+    display: flex; gap: 14px;
+    margin-top: 60px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .trust-card {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 14px;
+    padding: 18px 22px;
+    text-align: left;
+    width: 200px;
+    backdrop-filter: blur(4px);
+  }
+  .trust-card-icon { font-size: 24px; margin-bottom: 10px; }
+  .trust-card-val {
+    font-family: 'Outfit', sans-serif;
+    font-size: 28px; font-weight: 700;
+    color: var(--white);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .trust-card-val span { color: var(--gold); }
+  .trust-card-label { font-size: 12px; color: rgba(255,255,255,0.8); }
+
+  /* SECTIONS SHARED */
+  section { padding: 96px 5%; }
+  .section-eyebrow {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 14px;
+    display: block;
+  }
+  .section-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: clamp(28px, 4vw, 46px);
+    font-weight: 700;
+    color: var(--dark);
+    line-height: 1.12;
+    letter-spacing: -0.8px;
+    margin-bottom: 20px;
+  }
+  .section-body {
+    font-size: 17px;
+    color: #4a6b67;
+    max-width: 560px;
+    line-height: 1.7;
+  }
+  .section-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  /* PROBLEM */
+  .problem-section {
+    background: var(--white);
+  }
+  .problem-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .problem-quotes {
+    display: flex; flex-direction: column; gap: 16px;
+  }
+  .quote-card {
+    background: var(--off-white);
+    border-left: 3px solid var(--teal);
+    border-radius: 0 12px 12px 0;
+    padding: 18px 20px;
+    position: relative;
+  }
+  .quote-card.bad { border-left-color: #e05252; }
+  .quote-text {
+    font-size: 15px;
+    color: var(--dark);
+    font-style: italic;
+    line-height: 1.55;
+    margin-bottom: 8px;
+  }
+  .quote-role {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  /* HOW IT WORKS */
+  .how-section { background: var(--off-white); }
+  .how-header { text-align: center; margin-bottom: 64px; }
+  .how-header .section-body { margin: 0 auto; }
+  .how-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .how-card {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 36px 28px;
+    position: relative;
+    border: 1px solid var(--border);
+    transition: box-shadow 0.2s, transform 0.2s;
+  }
+  .how-card:hover {
+    box-shadow: 0 12px 40px rgba(7,49,44,0.10);
+    transform: translateY(-3px);
+  }
+  .how-card-num {
+    font-family: 'Outfit', sans-serif;
+    font-size: 11px; font-weight: 700;
+    color: var(--teal);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  .how-card-icon {
+    width: 52px; height: 52px;
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 26px;
+    margin-bottom: 20px;
+  }
+  .how-card-icon.green { background: var(--teal-light); }
+  .how-card-icon.gold  { background: var(--gold-pale); }
+  .how-card-icon.dark  { background: rgba(7,49,44,0.08); }
+  .how-card h3 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 20px; font-weight: 700;
+    color: var(--dark);
+    margin-bottom: 12px;
+    letter-spacing: 0.3px;
+  }
+  .how-card p {
+    font-size: 15px;
+    color: #4a6b67;
+    line-height: 1.65;
+  }
+  .how-card .tag-row {
+    display: flex; flex-wrap: wrap; gap: 6px;
+    margin-top: 20px;
+  }
+  .tag {
+    font-size: 11px; font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 20px;
+    background: var(--teal-light);
+    color: var(--teal);
+    letter-spacing: 0.04em;
+  }
+  .tag.gold { background: var(--gold-pale); color: #b8860b; }
+
+  /* rating visualiser */
+  .rating-vis {
+    max-width: 1100px;
+    margin: 56px auto 0;
+    background: var(--dark);
+    border-radius: 24px;
+    padding: 40px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .rating-vis-party {
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
+    flex: 1; min-width: 120px;
+  }
+  .party-icon {
+    width: 56px; height: 56px;
+    border-radius: 16px;
+    background: rgba(14,158,146,0.18);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 28px;
+  }
+  .party-name {
+    font-family: 'Outfit', sans-serif;
+    font-size: 14px; font-weight: 600;
+    color: var(--white);
+  }
+  .party-score {
+    background: var(--gold);
+    color: var(--dark);
+    font-family: 'Outfit', sans-serif;
+    font-size: 15px; font-weight: 700;
+    padding: 4px 12px; border-radius: 20px;
+  }
+  .arrow-block {
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    flex: 0.8;
+  }
+  .arrow-label {
+    font-size: 11px; font-weight: 600;
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 0.08em; text-transform: uppercase;
+  }
+  .arrow-line {
+    display: flex; align-items: center; gap: 4px;
+    color: var(--teal);
+    font-size: 18px; font-weight: 700;
+  }
+
+  /* WHY VERIFIED */
+  .verify-section {
+    background: var(--dark);
+    color: var(--white);
+  }
+  .verify-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .verify-section .section-title { color: var(--white); }
+  .verify-section .section-body  { color: rgba(255,255,255,0.6); }
+  .verify-steps {
+    display: flex; flex-direction: column; gap: 24px;
+    margin-top: 40px;
+  }
+  .verify-step {
+    display: flex; gap: 18px; align-items: flex-start;
+  }
+  .v-step-num {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    background: rgba(14,158,146,0.2);
+    border: 1px solid rgba(14,158,146,0.4);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Outfit', sans-serif;
+    font-size: 13px; font-weight: 700;
+    color: var(--teal);
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .v-step-content h4 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 16px; font-weight: 600;
+    color: var(--white);
+    margin-bottom: 4px;
+  }
+  .v-step-content p {
+    font-size: 14px;
+    color: rgba(255,255,255,0.5);
+    line-height: 1.6;
+  }
+  .verify-badges {
+    display: flex; flex-direction: column; gap: 20px;
+  }
+  .verify-badge-card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 16px;
+    padding: 24px 28px;
+    display: flex; gap: 20px; align-items: center;
+  }
+  .vb-icon { width: 36px; height: 36px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+  .vb-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 16px; font-weight: 600;
+    color: var(--white);
+    margin-bottom: 4px;
+  }
+  .vb-desc {
+    font-size: 14px;
+    color: rgba(255,255,255,0.5);
+    line-height: 1.5;
+  }
+
+  /* AGENCIES */
+  .agency-section { background: var(--white); }
+  .agency-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .pricing-cards { display: flex; flex-direction: column; gap: 14px; }
+  .pricing-card {
+    border-radius: 16px;
+    padding: 24px 28px;
+    display: flex; align-items: center; justify-content: space-between;
+    border: 1.5px solid var(--border);
+    transition: border-color 0.2s;
+    cursor: default;
+  }
+  .pricing-card:hover { border-color: var(--teal); }
+  .pricing-card.featured {
+    background: var(--dark);
+    border-color: var(--dark);
+  }
+  .pc-name {
+    font-family: 'Outfit', sans-serif;
+    font-size: 16px; font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .pricing-card.featured .pc-name { color: var(--white); }
+  .pc-desc {
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .pricing-card.featured .pc-desc { color: rgba(255,255,255,0.5); }
+  .pc-price {
+    text-align: right;
+  }
+  .pc-amount {
+    font-family: 'Outfit', sans-serif;
+    font-size: 22px; font-weight: 700;
+    color: var(--teal);
+    white-space: nowrap;
+  }
+  .pricing-card.featured .pc-amount { color: var(--gold); }
+  .pc-period {
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .pricing-card.featured .pc-period { color: rgba(255,255,255,0.4); }
+  .agency-benefits {
+    list-style: none;
+    display: flex; flex-direction: column; gap: 12px;
+    margin: 32px 0;
+  }
+  .agency-benefits li {
+    display: flex; align-items: flex-start; gap: 12px;
+    font-size: 15px; color: #4a6b67;
+    line-height: 1.55;
+  }
+  .agency-benefits li::before {
+    content: '✓';
+    color: var(--teal);
+    font-weight: 700;
+    font-size: 15px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .btn-dark {
+    background: var(--dark);
+    color: var(--white);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 600; font-size: 15px;
+    padding: 14px 28px;
+    border: none; border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.2s;
+    display: inline-block;
+    text-decoration: none;
+  }
+  .btn-dark:hover { background: var(--dark2); }
+
+  /* ── STATS BAR ── */
+  .stats-section {
+    background: var(--teal);
+    padding: 56px 5%;
+  }
+  .stats-inner {
+    max-width: 1000px;
+    margin: 0 auto;
+    display: flex; gap: 0;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 32px;
+  }
+  .stat-item { text-align: center; }
+  .stat-num {
+    font-family: 'Outfit', sans-serif;
+    font-size: clamp(36px, 5vw, 52px);
+    font-weight: 800;
+    color: var(--white);
+    letter-spacing: -1px;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .stat-num span { color: var(--gold); }
+  .stat-label {
+    font-size: 14px;
+    color: rgba(255,255,255,0.7);
+    font-weight: 500;
+  }
+
+  /* ── WAITLIST ── */
+  .waitlist-section {
+    background: var(--off-white);
+    text-align: center;
+  }
+  .waitlist-section .section-title { max-width: 600px; margin: 0 auto 16px; }
+  .waitlist-section .section-body { margin: 0 auto 48px; }
+  .waitlist-tabs {
+    display: flex; gap: 8px; justify-content: center;
+    margin-bottom: 32px;
+  }
+  .wl-tab {
+    padding: 10px 22px;
+    border-radius: 30px;
+    font-size: 14px; font-weight: 600;
+    cursor: pointer;
+    border: 1.5px solid var(--border);
+    background: var(--white);
+    color: var(--muted);
+    transition: all 0.2s;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+  .wl-tab.active {
+    background: var(--dark);
+    border-color: var(--dark);
+    color: var(--white);
+  }
+  .waitlist-form-wrap {
+    max-width: 480px;
+    margin: 0 auto;
+    background: var(--white);
+    border-radius: 20px;
+    padding: 36px;
+    box-shadow: 0 4px 32px rgba(7,49,44,0.08);
+    border: 1px solid var(--border);
+  }
+  .form-field {
+    margin-bottom: 16px;
+    text-align: left;
+  }
+  .form-field label {
+    display: block;
+    font-size: 13px; font-weight: 600;
+    color: var(--dark);
+    margin-bottom: 6px;
+    letter-spacing: 0.02em;
+  }
+  .form-field input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 15px;
+    color: var(--dark);
+    outline: none;
+    transition: border-color 0.2s;
+    background: var(--off-white);
+  }
+  .form-field input:focus { border-color: var(--teal); background: var(--white); }
+  .form-submit {
+    width: 100%;
+    background: var(--teal);
+    color: var(--white);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 700; font-size: 16px;
+    padding: 14px;
+    border: none; border-radius: 10px;
+    cursor: pointer;
+    margin-top: 8px;
+    transition: background 0.2s;
+  }
+  .form-submit:hover { background: #0bb5a7; }
+  .form-privacy {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 14px;
+    text-align: center;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--dark);
+    padding: 48px 5%;
+  }
+  .footer-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  .footer-logo {
+    font-family: 'Outfit', sans-serif;
+    font-size: 18px; font-weight: 700;
+    color: var(--white);
+  }
+  /* footer logo span colour set inline */
+  .footer-tagline {
+    font-size: 13px;
+    color: rgba(255,255,255,0.4);
+    margin-top: 4px;
+  }
+  .footer-links {
+    display: flex; gap: 24px;
+  }
+  .footer-links a {
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .footer-links a:hover { color: var(--white); }
+  .footer-copy {
+    font-size: 12px;
+    color: rgba(255,255,255,0.25);
+    width: 100%;
+    text-align: center;
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    nav { padding: 0 4%; }
+    .nav-links { display: none; }
+    section { padding: 64px 4%; }
+    .problem-grid,
+    .how-grid,
+    .verify-grid,
+    .agency-grid {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+    .rating-vis { padding: 32px 24px; }
+    .hero-cards { gap: 10px; }
+    .trust-card { width: 160px; padding: 16px; }
+    .hero-form { flex-direction: column; }
+    .hero-form input { padding: 12px; }
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .hero > * {
+    animation: fadeUp 0.6s ease both;
+  }
+  .hero > *:nth-child(1) { animation-delay: 0.1s; }
+  .hero > *:nth-child(2) { animation-delay: 0.2s; }
+  .hero > *:nth-child(3) { animation-delay: 0.3s; }
+  .hero > *:nth-child(4) { animation-delay: 0.4s; }
+  .hero > *:nth-child(5) { animation-delay: 0.5s; }
+  .hero > *:nth-child(6) { animation-delay: 0.6s; }
+
+  /* tab toggle JS */
+  .wl-pane { display: none; }
+  .wl-pane.active { display: block; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">
+    <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="logoGrad" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#0E9E92"/>
+          <stop offset="100%" stop-color="#07312C"/>
+        </linearGradient>
+      </defs>
+      <!-- Rounded square background -->
+      <rect width="40" height="40" rx="9" fill="url(#logoGrad)"/>
+      <!-- White house: pixel-traced from icon.png
+           Peak: (20, 10), Eave corners: (10, 17) and (30, 17), Base: y=29, walls x=10.8 to 29.2 -->
+      <path d="M20,10 L31,18 L29,18 L29,29 L11,29 L11,18 L9,18 Z" fill="white"/>
+      <!-- Gold star: centre (20, 20.5), sized to fill house body
+           5-point star with outer radius ~4.2, inner radius ~1.8 -->
+      <polygon points="
+        20,16.3
+        21.3,19.8 25.1,19.8
+        22.1,21.9 23.3,25.5
+        20,23.3 16.7,25.5
+        17.9,21.9 14.9,19.8
+        18.7,19.8
+      " fill="#F4B53F"/>
+    </svg>
+    <div style="display:flex;flex-direction:column;gap:1px">
+      <span class="nav-logo-text">Rental<span style="color:#2FD4C0">Rep</span></span>
+      <span style="font-family:'Plus Jakarta Sans',sans-serif;font-size:9px;color:#2FD4C0;letter-spacing:0.08em;font-weight:500;white-space:nowrap;">Rate. Trust. Rent with Confidence.</span>
+    </div>
+  </a>
+  <div class="nav-links">
+    <a href="#how">How it works</a>
+    <a href="#verification">Verification</a>
+    <a href="#agencies">For Agencies</a>
+    <a href="#waitlist" class="nav-cta">Join early access</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-eyebrow"><span style="font-size:15px;line-height:1">🇿🇦</span> South Africa's first verified rental reputation platform</div>
+  <h1>Know who you're renting<br>from and to <em>before</em> you sign.</h1>
+  <p class="hero-sub">RentalRep lets tenants, landlords, and estate agencies rate each other after every tenancy. Every review is tied to a real lease, so the scores you see are real.</p>
+
+  <div class="hero-form">
+    <input type="email" placeholder="Enter your email to join the waitlist" id="hero-email">
+    <button class="btn-primary" onclick="handleHeroSignup()">Get early access</button>
+  </div>
+  <p class="hero-note"><strong>Free to join.</strong> No card required. Launching in Johannesburg first.</p>
+
+  <div class="hero-cards">
+    <div class="trust-card">
+      <div class="trust-card-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#F4B53F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 9l5-5 5 5"/><path d="M6 4v12"/><path d="M3 21h6M13 9l5-5 5 5"/><path d="M18 4v12"/><path d="M15 21h6"/></svg></div>
+      <div class="trust-card-val">3.5<span>M</span></div>
+      <div class="trust-card-label">South African rental households</div>
+    </div>
+    <div class="trust-card">
+      <div class="trust-card-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="#F4B53F" stroke="#F4B53F" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+      <div class="trust-card-val"><span>0</span></div>
+      <div class="trust-card-label">Verified reputation platforms in SA, until now</div>
+    </div>
+    <div class="trust-card">
+      <div class="trust-card-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#F4B53F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+      <div class="trust-card-val">100<span>%</span></div>
+      <div class="trust-card-label">POPIA compliant by design</div>
+    </div>
+    <div class="trust-card">
+      <div class="trust-card-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#F4B53F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
+      <div class="trust-card-val">Lease<span style="color:var(--white)">-</span>tied</div>
+      <div class="trust-card-label">Every review verified against a real agreement</div>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section class="problem-section" id="problem">
+  <div class="problem-grid">
+    <div>
+      <span class="section-eyebrow">The problem</span>
+      <h2 class="section-title">SA's rental market runs on rumours and references.</h2>
+      <p class="section-body">TPN and TransUnion can blacklist a tenant. But neither tells a tenant whether their prospective landlord disappears when the geyser bursts. And neither helps an agency know if the applicant they're about to approve has trashed three properties.</p>
+      <p class="section-body" style="margin-top: 16px;">RentalRep closes that gap, for all three sides of every rental relationship.</p>
+    </div>
+    <div class="problem-quotes">
+      <div class="quote-card bad">
+        <p class="quote-text">"The landlord kept our deposit for 'repairs' that were never done. We had no way to warn anyone."</p>
+        <span class="quote-role">Tenant, Sandton, Johannesburg</span>
+      </div>
+      <div class="quote-card bad">
+        <p class="quote-text">"Our tenant left after three months owing two months' rent. Their reference checked out perfectly."</p>
+        <span class="quote-role">Landlord, Cape Town</span>
+      </div>
+      <div class="quote-card">
+        <p class="quote-text">"If I could see a tenant's actual payment and behaviour history from previous tenancies, I'd make better placements, and so would they."</p>
+        <span class="quote-role">Letting Agent, Pretoria</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how-section" id="how">
+  <div class="how-header">
+    <span class="section-eyebrow">How it works</span>
+    <h2 class="section-title">Mutual ratings. Verified by lease.</h2>
+    <p class="section-body">Like Uber's two-way rating system, but built specifically for the South African rental market, with one critical addition: every review is confirmed against a real lease agreement.</p>
+  </div>
+
+  <div class="how-grid">
+    <div class="how-card">
+      <div class="how-card-num">01 Tenants</div>
+      <div class="how-card-icon green"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0E9E92" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg></div>
+      <h3>Rate your landlord & property</h3>
+      <p>Review maintenance response, deposit fairness, communication, and overall experience. Your score helps future tenants choose wisely.</p>
+      <div class="tag-row">
+        <span class="tag">Maintenance</span>
+        <span class="tag">Deposit handling</span>
+        <span class="tag">Communication</span>
+      </div>
+    </div>
+    <div class="how-card">
+      <div class="how-card-num">02 Landlords</div>
+      <div class="how-card-icon gold"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#F4B53F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></div>
+      <h3>Rate your tenant</h3>
+      <p>Score tenants on rent reliability, property care, and conduct. A verified track record helps good tenants stand out from day one.</p>
+      <div class="tag-row">
+        <span class="tag">Rent reliability</span>
+        <span class="tag">Property care</span>
+        <span class="tag gold">Notice period</span>
+      </div>
+    </div>
+    <div class="how-card">
+      <div class="how-card-num">03 Estate agencies</div>
+      <div class="how-card-icon dark"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#07312C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="2" width="18" height="20" rx="1"/><path d="M9 22V12h6v10"/><rect x="7" y="5" width="2.5" height="2.5" rx="0.3"/><rect x="14.5" y="5" width="2.5" height="2.5" rx="0.3"/><rect x="7" y="9" width="2.5" height="2.5" rx="0.3"/><rect x="14.5" y="9" width="2.5" height="2.5" rx="0.3"/></svg></div>
+      <h3>Rate & be rated by clients</h3>
+      <p>Agencies earn verified scores from both tenants and landlords. Stand out on professionalism, transparency, and client satisfaction.</p>
+      <div class="tag-row">
+        <span class="tag">Professionalism</span>
+        <span class="tag">Transparency</span>
+        <span class="tag">Speed</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- mutual ratings diagram -->
+  <div class="rating-vis">
+    <div class="rating-vis-party">
+      <div class="party-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0E9E92" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></div>
+      <div class="party-name">Tenant</div>
+      <div class="party-score">8.4 / 10</div>
+    </div>
+    <div class="arrow-block">
+      <div class="arrow-label">rates</div>
+      <div class="arrow-line">⟵ ⟶</div>
+      <div class="arrow-label">rates</div>
+    </div>
+    <div class="rating-vis-party">
+      <div class="party-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0E9E92" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg></div>
+      <div class="party-name">Landlord</div>
+      <div class="party-score">9.1 / 10</div>
+    </div>
+    <div class="arrow-block">
+      <div class="arrow-label">rates</div>
+      <div class="arrow-line">⟵ ⟶</div>
+      <div class="arrow-label">rates</div>
+    </div>
+    <div class="rating-vis-party">
+      <div class="party-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0E9E92" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="2" width="18" height="20" rx="1"/><path d="M9 22V13h6v9"/><rect x="7" y="5" width="2" height="2" rx="0.3"/><rect x="15" y="5" width="2" height="2" rx="0.3"/><rect x="7" y="9" width="2" height="2" rx="0.3"/><rect x="15" y="9" width="2" height="2" rx="0.3"/></svg></div>
+      <div class="party-name">Agency</div>
+      <div class="party-score">7.8 / 10</div>
+    </div>
+  </div>
+</section>
+
+<!-- VERIFICATION -->
+<section class="verify-section" id="verification">
+  <div class="verify-grid">
+    <div>
+      <span class="section-eyebrow" style="color: var(--teal)">Why it's different</span>
+      <h2 class="section-title">No lease, no review. Simple.</h2>
+      <p class="section-body">Fake reviews undermine every rating platform. RentalRep solves this at the source, you can only review someone you've actually rented with, verified against a real lease agreement.</p>
+      <div class="verify-steps">
+        <div class="verify-step">
+          <div class="v-step-num">1</div>
+          <div class="v-step-content">
+            <h4>Submit your lease</h4>
+            <p>Either party uploads or links their signed lease agreement. Personal details are protected under POPIA.</p>
+          </div>
+        </div>
+        <div class="verify-step">
+          <div class="v-step-num">2</div>
+          <div class="v-step-content">
+            <h4>Both parties confirm</h4>
+            <p>The other party verifies the tenancy relationship. Both must agree before either can review.</p>
+          </div>
+        </div>
+        <div class="verify-step">
+          <div class="v-step-num">3</div>
+          <div class="v-step-content">
+            <h4>Reviews unlock at lease end</h4>
+            <p>Once a tenancy ends, the review window opens for both parties simultaneously, preventing early pressure or retaliation.</p>
+          </div>
+        </div>
+        <div class="verify-step">
+          <div class="v-step-num">4</div>
+          <div class="v-step-content">
+            <h4>Score builds your reputation</h4>
+            <p>Verified scores are cumulative. Your RentalRep score reflects your full rental history, not just one tenancy.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="verify-badges">
+      <div class="verify-badge-card">
+        <div class="vb-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0E9E92" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+        <div>
+          <div class="vb-title">POPIA Compliant</div>
+          <div class="vb-desc">All personal data is handled in line with South Africa's Protection of Personal Information Act. You control your data.</div>
+        </div>
+      </div>
+      <div class="verify-badge-card">
+        <div class="vb-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0E9E92" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
+        <div>
+          <div class="vb-title">Lease-Verified Reviews Only</div>
+          <div class="vb-desc">No anonymous reviews. No fake scores. Every rating is tied to a real, verified rental agreement.</div>
+        </div>
+      </div>
+      <div class="verify-badge-card">
+        <div class="vb-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="#F4B53F" stroke="#F4B53F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+        <div>
+          <div class="vb-title">Quality-Gated Advertising</div>
+          <div class="vb-desc">Only landlords and agencies with a 7.5+ RentalRep score can promote listings on the platform.</div>
+        </div>
+      </div>
+      <div class="verify-badge-card">
+        <div class="vb-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0E9E92" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+        <div>
+          <div class="vb-title">Dispute Resolution</div>
+          <div class="vb-desc">A fair, structured process for flagging inaccurate or unfair reviews, with human moderation oversight.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AGENCIES -->
+<section class="agency-section" id="agencies">
+  <div class="agency-grid">
+    <div>
+      <span class="section-eyebrow">For estate agencies</span>
+      <h2 class="section-title">Your agency's reputation, finally visible.</h2>
+      <p class="section-body">RentalRep gives your agency a verified public scorecard, built from real client reviews. Stand out from competitors who rely only on word-of-mouth and Google reviews that anyone can write.</p>
+      <ul class="agency-benefits">
+        <li>Verified agency profile with cumulative trust score</li>
+        <li>Individual agent profiles and ratings</li>
+        <li>Tenant and landlord review dashboard</li>
+        <li>Early access to tenant reputation scores before placement</li>
+        <li>Priority listing placement for high-rated agencies</li>
+        <li>Monthly performance reports and analytics</li>
+      </ul>
+      <a href="#waitlist" class="btn-dark">Request a demo</a>
+    </div>
+    <div>
+      <div class="pricing-cards">
+        <div class="pricing-card">
+          <div>
+            <div class="pc-name">Starter</div>
+            <div class="pc-desc">Up to 3 agents · Basic profile</div>
+          </div>
+          <div class="pc-price">
+            <div class="pc-amount">R999</div>
+            <div class="pc-period">/ month</div>
+          </div>
+        </div>
+        <div class="pricing-card featured">
+          <div>
+            <div class="pc-name">Professional</div>
+            <div class="pc-desc">Up to 10 agents · Full analytics · Priority listing</div>
+          </div>
+          <div class="pc-price">
+            <div class="pc-amount">R1,799</div>
+            <div class="pc-period">/ month</div>
+          </div>
+        </div>
+        <div class="pricing-card">
+          <div>
+            <div class="pc-name">Enterprise</div>
+            <div class="pc-desc">Unlimited agents · API access · Data licensing</div>
+          </div>
+          <div class="pc-price">
+            <div class="pc-amount">R2,499</div>
+            <div class="pc-period">/ month</div>
+          </div>
+        </div>
+        <div style="padding: 16px 4px;">
+          <p style="font-size: 13px; color: var(--muted); line-height: 1.6;">
+            <strong style="color: var(--dark);">For tenants and landlords:</strong> Free tier available. Pro plans from R49/month. Only users with a 7.5+ score can promote listings.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WAITLIST -->
+<section class="waitlist-section" id="waitlist">
+  <div class="section-inner">
+    <span class="section-eyebrow" style="display:block;text-align:center">Early access</span>
+    <h2 class="section-title">Be part of building trust in SA's rental market.</h2>
+    <p class="section-body">Join the waitlist and get early access when RentalRep launches in Johannesburg. Tell us who you are so we can show you what's built for you.</p>
+
+    <div class="waitlist-tabs">
+      <button class="wl-tab active" onclick="switchTab('tenant')">I'm a tenant</button>
+      <button class="wl-tab" onclick="switchTab('landlord')">I'm a landlord</button>
+      <button class="wl-tab" onclick="switchTab('agency')">I'm an agency</button>
+    </div>
+
+    <div class="waitlist-form-wrap">
+      <!-- Tenant -->
+      <div class="wl-pane active" id="pane-tenant">
+        <div class="form-field">
+          <label>Full name</label>
+          <input type="text" placeholder="Your name">
+        </div>
+        <div class="form-field">
+          <label>Email address</label>
+          <input type="email" placeholder="you@email.com">
+        </div>
+        <div class="form-field">
+          <label>Your city</label>
+          <input type="text" placeholder="e.g. Johannesburg">
+        </div>
+        <button class="form-submit" onclick="submitForm('tenant')">Join the waitlist as a tenant →</button>
+        <p class="form-privacy">POPIA compliant. Your details are never shared or sold.</p>
+      </div>
+      <!-- Landlord -->
+      <div class="wl-pane" id="pane-landlord">
+        <div class="form-field">
+          <label>Full name</label>
+          <input type="text" placeholder="Your name">
+        </div>
+        <div class="form-field">
+          <label>Email address</label>
+          <input type="email" placeholder="you@email.com">
+        </div>
+        <div class="form-field">
+          <label>Number of properties</label>
+          <input type="text" placeholder="e.g. 1, 5, 20+">
+        </div>
+        <button class="form-submit" onclick="submitForm('landlord')">Join the waitlist as a landlord →</button>
+        <p class="form-privacy">POPIA compliant. Your details are never shared or sold.</p>
+      </div>
+      <!-- Agency -->
+      <div class="wl-pane" id="pane-agency">
+        <div class="form-field">
+          <label>Agency name</label>
+          <input type="text" placeholder="Your agency's name">
+        </div>
+        <div class="form-field">
+          <label>Your name & role</label>
+          <input type="text" placeholder="e.g. Sarah, Rental Manager">
+        </div>
+        <div class="form-field">
+          <label>Work email</label>
+          <input type="email" placeholder="you@agency.co.za">
+        </div>
+        <button class="form-submit" onclick="submitForm('agency')" style="background: var(--dark);">Request a demo for your agency →</button>
+        <p class="form-privacy">POPIA compliant. We'll contact you to arrange a walkthrough.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-logo">Rental<span style="color:#2FD4C0">Rep</span></div>
+      <div class="footer-tagline">Rate. Trust. Rent with Confidence.</div>
+    </div>
+    <div class="footer-links">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Use</a>
+      <a href="#">POPIA Notice</a>
+      <a href="#agencies">For Agencies</a>
+      <a href="#waitlist">Early access</a>
+    </div>
+  </div>
+  <p class="footer-copy">© 2026 RentalRep. Johannesburg, South Africa. rentalrep.co.za · All rights reserved.</p>
+</footer>
+
+<script>
+  function switchTab(role) {
+    document.querySelectorAll('.wl-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.wl-pane').forEach(p => p.classList.remove('active'));
+    const tabs = document.querySelectorAll('.wl-tab');
+    const roles = ['tenant','landlord','agency'];
+    tabs[roles.indexOf(role)].classList.add('active');
+    document.getElementById('pane-' + role).classList.add('active');
+  }
+
+  function handleHeroSignup() {
+    const email = document.getElementById('hero-email').value;
+    if (email) {
+      document.getElementById('waitlist').scrollIntoView({ behavior: 'smooth' });
+    }
+  }
+
+  function submitForm(role) {
+    alert('Thanks for joining the RentalRep ' + role + ' waitlist! We\'ll be in touch when we launch in Johannesburg.');
+  }
+</script>
+</body>
+</html>
