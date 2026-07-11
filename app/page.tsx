@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 
-// ── Logo ─────────────────────────────────────────────────────────────────────
+// ─── Logo (unchanged — confirmed correct) ────────────────────────────────────
 function MarketingLogo() {
   return (
     <div className="flex items-center gap-2.5">
@@ -15,552 +15,553 @@ function MarketingLogo() {
           </linearGradient>
         </defs>
         <rect width="36" height="36" rx="8" fill="url(#logoGrad)"/>
-        <path d="M9 20L18 12L27 20V28H9V20Z" fill="white" fillOpacity="0.9"/>
-        <rect x="15" y="22" width="6" height="6" rx="0.5" fill="white" fillOpacity="0.5"/>
-        <polygon points="18,16 18.9,18.6 21.7,18.6 19.5,20.2 20.3,22.9 18,21.3 15.7,22.9 16.5,20.2 14.3,18.6 17.1,18.6" fill="#F4B53F"/>
+        <path d="M18,10 L28,17 L26,17 L26,28 L10,28 L10,17 L8,17 Z" fill="white"/>
+        <rect x="15" y="21" width="6" height="7" rx="0.5" fill="white" fillOpacity="0.5"/>
+        <polygon points="18,15 19.1,18.1 22.4,18.1 19.8,19.9 20.8,23.1 18,21.3 15.2,23.1 16.2,19.9 13.6,18.1 16.9,18.1" fill="#F4B53F"/>
       </svg>
-      <div>
-        <p className="font-heading font-bold text-lg leading-none">
-          <span className="text-white">Rental</span><span style={{ color: "#2FD4C0" }}>Rep</span>
-        </p>
-        <p className="text-[9px] font-heading tracking-wider" style={{ color: "#2FD4C0" }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: 1 }}>
+        <span className="font-heading font-bold text-lg leading-none text-white">
+          Rental<span style={{ color: "#2FD4C0" }}>Rep</span>
+        </span>
+        <span style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 9, color: "#2FD4C0", letterSpacing: "0.08em", fontWeight: 500, whiteSpace: "nowrap" }}>
           Rate. Trust. Rent with Confidence.
-        </p>
+        </span>
       </div>
     </div>
   );
 }
 
-function NavLink({ href, children }: { href: string; children: React.ReactNode }) {
-  return (
-    <a
-      href={href}
-      className="text-sm font-heading font-medium transition-colors hover:text-white"
-      style={{ color: "rgba(255,255,255,0.6)" }}
-    >
-      {children}
-    </a>
-  );
-}
+// ─── Hero email form ──────────────────────────────────────────────────────────
+function HeroForm() {
+  const [email, setEmail] = useState("");
+  const [done, setDone] = useState(false);
 
-function Tag({ children }: { children: React.ReactNode }) {
-  return (
-    <span
-      className="inline-block text-[11px] font-heading font-semibold px-2.5 py-1 rounded-full"
-      style={{ backgroundColor: "rgba(14,158,146,0.12)", color: "#2FD4C0", border: "1px solid rgba(14,158,146,0.25)" }}
-    >
-      {children}
-    </span>
-  );
-}
-
-export default function RootPage() {
-
-  return (
-    <div className="min-h-screen font-body" style={{ color: "#07312C" }}>
-
-      {/* ── Nav ── */}
-      <header
-        className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md"
-        style={{ backgroundColor: "rgba(7,49,44,0.92)", borderBottom: "1px solid rgba(47,212,192,0.1)" }}
-      >
-        <div className="max-w-6xl mx-auto px-5 h-16 flex items-center justify-between gap-6">
-          <MarketingLogo />
-          <nav className="hidden md:flex items-center gap-7">
-            <NavLink href="#how-it-works">How it works</NavLink>
-            <NavLink href="#why-verified">Verification</NavLink>
-            <NavLink href="#for-agencies">For Agencies</NavLink>
-          </nav>
-          <div className="flex items-center gap-3">
-            <Link
-              href="/auth/login"
-              className="hidden sm:block text-sm font-heading font-semibold transition-colors"
-              style={{ color: "rgba(255,255,255,0.65)" }}
-            >
-              Log in
-            </Link>
-            <Link
-              href="/auth/register"
-              className="text-sm font-heading font-bold px-4 py-2 rounded-xl text-white transition-opacity hover:opacity-90"
-              style={{ backgroundColor: "#0E9E92" }}
-            >
-              Sign up free
-            </Link>
-          </div>
-        </div>
-      </header>
-
-      {/* ── Hero ── */}
-      <section
-        className="relative min-h-screen flex flex-col justify-center pt-16 overflow-hidden"
-        style={{ background: "#07312C" }}
-      >
-        {/* Glow orbs */}
-        <div className="absolute pointer-events-none" style={{ top: "-10%", right: "-5%", width: 600, height: 600, background: "radial-gradient(circle, rgba(14,158,146,0.18) 0%, transparent 70%)", borderRadius: "50%" }} />
-        <div className="absolute pointer-events-none" style={{ bottom: "0%", left: "-5%", width: 500, height: 500, background: "radial-gradient(circle, rgba(244,181,63,0.12) 0%, transparent 70%)", borderRadius: "50%" }} />
-
-        <div className="relative max-w-4xl mx-auto px-5 py-20 md:py-28 text-center">
-          {/* Eyebrow */}
-          <div className="mb-6">
-            <span
-              className="inline-flex items-center gap-2 text-xs font-heading font-semibold tracking-widest uppercase px-4 py-2 rounded-full"
-              style={{ backgroundColor: "rgba(47,212,192,0.12)", color: "#2FD4C0", border: "1px solid rgba(47,212,192,0.25)" }}
-            >
-              <span>🇿🇦</span>
-              South Africa&apos;s first verified rental reputation platform
-            </span>
-          </div>
-
-          <h1
-            className="font-heading font-extrabold text-white leading-tight mb-6 mx-auto"
-            style={{ fontSize: "clamp(1.9rem, 4vw, 2.75rem)", maxWidth: 760 }}
-          >
-            Know who you&apos;re renting from and to{" "}
-            <span style={{ color: "#0E9E92" }}>before</span> you sign.
-          </h1>
-
-          <p
-            className="text-base md:text-lg leading-relaxed mb-10 mx-auto"
-            style={{ color: "rgba(255,255,255,0.65)", maxWidth: 560 }}
-          >
-            RentalRep lets tenants, landlords, and estate agencies rate each other after every tenancy. Every review is tied to a real lease, so the scores you see are real.
-          </p>
-
-          <div className="flex flex-wrap gap-3 mb-16">
-            <Link
-              href="/auth/register"
-              className="inline-flex items-center gap-2 font-heading font-bold text-sm px-6 py-3.5 rounded-xl text-white transition-opacity hover:opacity-90"
-              style={{ backgroundColor: "#0E9E92" }}
-            >
-              Create free account
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                <path d="M3 8h10M9 4l4 4-4 4" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </Link>
-            <a
-              href="#how-it-works"
-              className="inline-flex items-center gap-2 font-heading font-semibold text-sm px-6 py-3.5 rounded-xl transition-colors"
-              style={{ border: "1.5px solid rgba(47,212,192,0.35)", color: "#2FD4C0" }}
-            >
-              See how it works
-            </a>
-          </div>
-
-          {/* Stat cards */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-            {[
-              { figure: "3.5M",       label: "South African rental households" },
-              { figure: "0",          label: "Verified reputation platforms in SA, until now" },
-              { figure: "100%",       label: "POPIA compliant by design" },
-              { figure: "Lease-tied", label: "Every review verified against a real agreement" },
-            ].map(({ figure, label }) => (
-              <div key={figure} className="rounded-2xl p-4" style={{ backgroundColor: "rgba(255,255,255,0.05)", border: "1px solid rgba(47,212,192,0.12)" }}>
-                <p className="font-heading font-bold text-xl md:text-2xl mb-1.5" style={{ color: "#F4B53F" }}>{figure}</p>
-                <p className="text-xs leading-snug" style={{ color: "rgba(255,255,255,0.55)" }}>{label}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── The Problem ── */}
-      <section className="py-20 md:py-28 bg-white">
-        <div className="max-w-6xl mx-auto px-5">
-          <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-start">
-            <div>
-              <p className="text-xs font-heading font-semibold tracking-widest uppercase mb-3" style={{ color: "#0E9E92" }}>
-                The Problem
-              </p>
-              <h2 className="font-heading font-bold text-3xl md:text-4xl leading-tight mb-5" style={{ color: "#07312C" }}>
-                SA&apos;s rental market runs on rumours and references.
-              </h2>
-              <p className="text-sm md:text-base leading-relaxed" style={{ color: "#5E7470" }}>
-                TPN and TransUnion can blacklist a tenant. But neither tells a tenant whether their prospective landlord disappears when the geyser bursts. And neither helps an agency know if the applicant they&apos;re about to approve has trashed three properties. RentalRep closes that gap, for all three sides of every rental relationship.
-              </p>
-            </div>
-            <div className="space-y-4">
-              {[
-                {
-                  quote: "I signed a lease without knowing that three previous tenants had left because the landlord refused to fix a mould problem. There was no way to find out.",
-                  role: "Tenant, Sandton, Johannesburg",
-                  accent: "#0E9E92",
-                },
-                {
-                  quote: "A tenant I placed on a gut feel left my property with R40,000 in damage. His last landlord gave a glowing verbal reference. There was no record anywhere.",
-                  role: "Landlord, Cape Town, Western Cape",
-                  accent: "#E05252",
-                },
-                {
-                  quote: "Clients ask me to vouch for landlords I have never worked with. I have no tool to show them verified performance data. I am just guessing like everyone else.",
-                  role: "Letting Agent, Durban, KwaZulu-Natal",
-                  accent: "#F4B53F",
-                },
-              ].map(({ quote, role, accent }) => (
-                <div key={role} className="rounded-xl p-5" style={{ background: "#F5F8F7", borderLeft: `3px solid ${accent}` }}>
-                  <p className="text-sm italic leading-relaxed mb-3" style={{ color: "#2D3B39" }}>
-                    &ldquo;{quote}&rdquo;
-                  </p>
-                  <p className="text-[11px] font-heading font-semibold tracking-wide uppercase" style={{ color: accent }}>
-                    {role}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── How it works ── */}
-      <section id="how-it-works" className="py-20 md:py-28" style={{ background: "#F5F8F7" }}>
-        <div className="max-w-6xl mx-auto px-5">
-          <div className="text-center max-w-2xl mx-auto mb-14">
-            <p className="text-xs font-heading font-semibold tracking-widest uppercase mb-3" style={{ color: "#0E9E92" }}>How it works</p>
-            <h2 className="font-heading font-bold text-3xl md:text-4xl leading-tight" style={{ color: "#07312C" }}>
-              Mutual ratings. Verified by lease.
-            </h2>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-5 mb-10">
-            {[
-              {
-                num: "01", title: "Tenants", subtitle: "Rate your landlord and property",
-                tags: ["Maintenance", "Deposit handling", "Communication"],
-                iconBg: "#0E9E92",
-                icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="12" cy="7" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/></svg>,
-              },
-              {
-                num: "02", title: "Landlords", subtitle: "Rate your tenant",
-                tags: ["Rent reliability", "Property care", "Notice period"],
-                iconBg: "#F4B53F",
-                icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="12" cy="5" r="3"/><path d="M6 11c0-2.5 2.7-4 6-4s6 1.5 6 4"/><path d="M3 21l9-7 9 7"/><path d="M5 21v-5h14v5"/></svg>,
-              },
-              {
-                num: "03", title: "Estate Agencies", subtitle: "Rate and be rated by clients",
-                tags: ["Professionalism", "Transparency", "Speed"],
-                iconBg: "#07312C",
-                icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="20" rx="1.5"/><line x1="3" y1="7" x2="21" y2="7"/><rect x="6" y="9" width="4" height="4" rx="0.5"/><rect x="14" y="9" width="4" height="4" rx="0.5"/><rect x="6" y="14" width="4" height="4" rx="0.5"/><rect x="14" y="14" width="4" height="4" rx="0.5"/></svg>,
-              },
-            ].map(({ num, title, subtitle, tags, iconBg, icon }) => (
-              <div key={num} className="bg-white rounded-2xl p-6 transition-shadow hover:shadow-lg" style={{ border: "1px solid #E8EEEC" }}>
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style={{ backgroundColor: iconBg }}>
-                    {icon}
-                  </div>
-                  <span className="font-heading font-bold text-2xl tracking-wide" style={{ color: "#E0EBEA" }}>{num}</span>
-                </div>
-                <h3 className="font-heading font-bold text-lg tracking-wide mb-1" style={{ color: "#07312C" }}>{title}</h3>
-                <p className="text-sm mb-4" style={{ color: "#5E7470" }}>{subtitle}</p>
-                <div className="flex flex-wrap gap-1.5">{tags.map((t) => <Tag key={t}>{t}</Tag>)}</div>
-              </div>
-            ))}
-          </div>
-
-          {/* Mutual rating banner */}
-          <div className="rounded-2xl p-6 md:p-8" style={{ background: "#07312C" }}>
-            <p className="text-center text-xs font-heading font-semibold tracking-widest uppercase mb-8" style={{ color: "#2FD4C0" }}>
-              The mutual rating relationship
-            </p>
-            <div className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-0">
-              {[
-                { label: "Tenant",   score: "8.4", icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0E9E92" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="12" cy="7" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/></svg> },
-                { label: "Landlord", score: "7.1", icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0E9E92" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="12" cy="5" r="3"/><path d="M6 11c0-2.5 2.7-4 6-4s6 1.5 6 4"/><path d="M3 21l9-7 9 7"/><path d="M5 21v-5h14v5"/></svg> },
-                { label: "Agency",   score: "9.2", icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0E9E92" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="20" rx="1.5"/><line x1="3" y1="7" x2="21" y2="7"/><rect x="6" y="9" width="4" height="4" rx="0.5"/><rect x="14" y="9" width="4" height="4" rx="0.5"/></svg> },
-              ].map(({ label, score, icon }, i) => (
-                <div key={label} className="flex md:flex-row items-center">
-                  <div className="flex flex-col items-center">
-                    <div className="w-16 h-16 rounded-2xl flex items-center justify-center mb-2" style={{ backgroundColor: "rgba(14,158,146,0.1)", border: "1.5px solid rgba(14,158,146,0.3)" }}>
-                      {icon}
-                    </div>
-                    <span className="text-xs font-heading font-semibold text-white">{label}</span>
-                    <span className="text-xs font-heading font-bold mt-0.5" style={{ color: "#F4B53F" }}>{score} / 10</span>
-                  </div>
-                  {i < 2 && (
-                    <div className="flex md:flex-col gap-1.5 mx-5 md:mx-8 rotate-90 md:rotate-0">
-                      <svg width="36" height="12" viewBox="0 0 36 12" fill="none" aria-hidden="true">
-                        <path d="M0 6h36M30 2l6 4-6 4" stroke="#2FD4C0" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
-                      </svg>
-                      <svg width="36" height="12" viewBox="0 0 36 12" fill="none" style={{ transform: "scaleX(-1)" }} aria-hidden="true">
-                        <path d="M0 6h36M30 2l6 4-6 4" stroke="#2FD4C0" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
-                      </svg>
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── Why Verified ── */}
-      <section id="why-verified" className="py-20 md:py-28" style={{ background: "#07312C" }}>
-        <div className="max-w-6xl mx-auto px-5">
-          <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-start">
-            <div>
-              <p className="text-xs font-heading font-semibold tracking-widest uppercase mb-3" style={{ color: "#2FD4C0" }}>
-                Why verified
-              </p>
-              <h2 className="font-heading font-bold text-3xl md:text-4xl leading-tight mb-4 text-white">
-                No lease, no review. Simple.
-              </h2>
-              <p className="text-sm leading-relaxed mb-8" style={{ color: "rgba(255,255,255,0.55)" }}>
-                Every review on RentalRep is tied to a real lease agreement. No lease, no review. This means every score you see was written by someone who actually lived or worked through that tenancy.
-              </p>
-              <div className="space-y-5">
-                {[
-                  { n: "1", title: "Submit your lease",           body: "Upload your signed lease when submitting a review. No lease, no review." },
-                  { n: "2", title: "Both parties confirm",        body: "Reviews are held privately until both sides submit, or 90 days pass." },
-                  { n: "3", title: "Reviews unlock at lease end", body: "The review window opens 14 days before lease end and closes 90 days after." },
-                  { n: "4", title: "Score builds your reputation", body: "Every published review contributes to your verified reputation score." },
-                ].map(({ n, title, body }) => (
-                  <div key={n} className="flex gap-4">
-                    <div className="w-7 h-7 rounded-full flex-shrink-0 flex items-center justify-center text-xs font-bold font-heading mt-0.5" style={{ backgroundColor: "rgba(14,158,146,0.2)", color: "#2FD4C0" }}>
-                      {n}
-                    </div>
-                    <div>
-                      <p className="font-heading font-semibold text-sm text-white mb-0.5">{title}</p>
-                      <p className="text-xs leading-relaxed" style={{ color: "rgba(255,255,255,0.5)" }}>{body}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              {[
-                {
-                  icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2FD4C0" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 2L4 6v6c0 5.25 3.5 9.74 8 11 4.5-1.26 8-5.75 8-11V6l-8-4z"/></svg>,
-                  title: "POPIA Compliant",
-                  body: "All personal data is processed in accordance with South African privacy law.",
-                },
-                {
-                  icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2FD4C0" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M9 12l2 2 4-4"/><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v3z"/></svg>,
-                  title: "Lease-Verified Reviews Only",
-                  body: "No anonymous or unverified reviews. Every score has a lease behind it.",
-                },
-                {
-                  icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2FD4C0" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>,
-                  title: "Quality-Gated Advertising",
-                  body: "Promoted listings require a minimum score of 7.5 out of 10.",
-                },
-                {
-                  icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2FD4C0" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>,
-                  title: "Dispute Resolution",
-                  body: "Factually inaccurate reviews can be disputed. Our team reviews within 14 working days.",
-                },
-              ].map(({ icon, title, body }) => (
-                <div key={title} className="rounded-2xl p-5" style={{ backgroundColor: "rgba(255,255,255,0.05)", border: "1px solid rgba(47,212,192,0.15)" }}>
-                  <div className="mb-3">{icon}</div>
-                  <p className="font-heading font-semibold text-sm tracking-wide text-white mb-1.5">{title}</p>
-                  <p className="text-xs leading-relaxed" style={{ color: "rgba(255,255,255,0.5)" }}>{body}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── For Agencies ── */}
-      <section id="for-agencies" className="py-20 md:py-28 bg-white">
-        <div className="max-w-6xl mx-auto px-5">
-          <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-start">
-            <div>
-              <p className="text-xs font-heading font-semibold tracking-widest uppercase mb-3" style={{ color: "#0E9E92" }}>For Agencies</p>
-              <h2 className="font-heading font-bold text-3xl md:text-4xl leading-tight mb-5" style={{ color: "#07312C" }}>
-                Your agency&apos;s reputation, finally visible.
-              </h2>
-              <ul className="space-y-3.5 mb-8">
-                {[
-                  "A verified public performance profile your clients can trust",
-                  "Screen tenants using RentalRep reputation scores before placement",
-                  "Upload historical lease records to power the verification engine",
-                  "Respond to client reviews directly on your public profile",
-                  "Quality-gated promoted listings for agencies with a 7.5 or higher score",
-                  "Detailed analytics dashboard showing score trends over time",
-                ].map((b) => (
-                  <li key={b} className="flex items-start gap-3 text-sm" style={{ color: "#2D3B39" }}>
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="flex-shrink-0 mt-0.5" aria-hidden="true">
-                      <circle cx="8" cy="8" r="7" stroke="#0E9E92" strokeWidth="1.3"/>
-                      <path d="M5 8l2.5 2.5 3.5-4" stroke="#0E9E92" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                    {b}
-                  </li>
-                ))}
-              </ul>
-              <Link
-                href="/auth/register?role=agency"
-                className="inline-flex items-center gap-2 font-heading font-bold text-sm px-6 py-3.5 rounded-xl text-white transition-opacity hover:opacity-90"
-                style={{ backgroundColor: "#07312C" }}
-              >
-                Request a demo
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                  <path d="M3 8h10M9 4l4 4-4 4" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </Link>
-            </div>
-            <div className="space-y-4">
-              {[
-                {
-                  name: "Starter",
-                  price: "R999",
-                  note: "Up to 3 agents, basic profile",
-                  highlight: false,
-                  features: ["Public agency profile", "Up to 3 agent sub-profiles", "Lease record uploads", "Review responses"],
-                },
-                {
-                  name: "Professional",
-                  price: "R1,799",
-                  note: "Up to 10 agents, full analytics, priority listing",
-                  highlight: true,
-                  features: ["Everything in Starter", "Up to 10 agent sub-profiles", "Full analytics dashboard", "Priority promoted listing", "Priority support"],
-                },
-                {
-                  name: "Enterprise",
-                  price: "R2,499",
-                  note: "Unlimited agents, API access, data licensing",
-                  highlight: false,
-                  features: ["Everything in Professional", "Unlimited agent profiles", "API access", "Data licensing", "Dedicated account manager"],
-                },
-              ].map(({ name, price, note, highlight, features }) => (
-                <div
-                  key={name}
-                  className="rounded-2xl p-5"
-                  style={highlight
-                    ? { background: "#07312C", border: "1.5px solid rgba(47,212,192,0.3)" }
-                    : { background: "#F5F8F7", border: "1px solid #E0EBEA" }
-                  }
-                >
-                  <div className="flex items-start justify-between mb-1">
-                    <p className={`font-heading font-bold text-base tracking-wide ${highlight ? "text-white" : ""}`} style={highlight ? {} : { color: "#07312C" }}>{name}</p>
-                    <p className="font-heading font-bold text-lg" style={{ color: highlight ? "#F4B53F" : "#0E9E92" }}>
-                      {price}<span className="text-xs font-normal opacity-60">/mo</span>
-                    </p>
-                  </div>
-                  <p className="text-[11px] mb-3" style={{ color: highlight ? "rgba(255,255,255,0.45)" : "#9BA8A5" }}>{note}</p>
-                  <ul className="space-y-1.5">
-                    {features.map((f) => (
-                      <li key={f} className="flex items-center gap-2 text-xs" style={{ color: highlight ? "rgba(255,255,255,0.75)" : "#5E7470" }}>
-                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
-                          <path d="M2 6l3 3 5-5" stroke={highlight ? "#2FD4C0" : "#0E9E92"} strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
-                        </svg>
-                        {f}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-              <p className="text-xs text-center pt-1" style={{ color: "#9BA8A5" }}>
-                For tenants and landlords: Free tier available. Pro plans from R49/month.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── Get started ── */}
-      <GetStartedSection />
-
-      {/* ── Footer ── */}
-      <footer style={{ background: "#07312C" }}>
-        <div className="max-w-6xl mx-auto px-5 py-10 flex flex-col md:flex-row items-center md:items-start justify-between gap-6">
-          <MarketingLogo />
-          <div className="flex gap-6 text-sm">
-            <Link href="/privacy" className="font-body transition-colors hover:text-white" style={{ color: "rgba(168,240,224,0.6)" }}>Privacy Policy</Link>
-            <Link href="/terms"   className="font-body transition-colors hover:text-white" style={{ color: "rgba(168,240,224,0.6)" }}>Terms of Service</Link>
-          </div>
-        </div>
-        <div style={{ borderTop: "1px solid rgba(47,212,192,0.08)" }}>
-          <p className="text-center text-xs py-4 font-body" style={{ color: "rgba(168,240,224,0.35)" }}>
-            RentalRep 2026. Johannesburg, South Africa. rentalrep.co.za
-          </p>
-        </div>
-      </footer>
+  if (done) return (
+    <div className="mb-5 text-center">
+      <p className="font-heading font-semibold text-white text-base">You&apos;re on the list.</p>
+      <p style={{ fontSize: 13, color: "rgba(255,255,255,0.55)" }}>We&apos;ll be in touch when RentalRep launches in Johannesburg.</p>
     </div>
   );
+
+  return (
+    <form
+      onSubmit={(e) => { e.preventDefault(); if (email) setDone(true); }}
+      style={{
+        display: "flex", gap: 10,
+        background: "rgba(255,255,255,0.08)",
+        border: "1px solid rgba(255,255,255,0.15)",
+        borderRadius: 14, padding: 8,
+        maxWidth: 520, width: "100%",
+        margin: "0 auto 20px",
+      }}
+    >
+      <input
+        type="email" required value={email} onChange={(e) => setEmail(e.target.value)}
+        placeholder="Enter your email to join the waitlist"
+        style={{
+          flex: 1, background: "none", border: "none", outline: "none",
+          color: "white", fontFamily: "'Plus Jakarta Sans', sans-serif",
+          fontSize: 15, padding: "8px 12px",
+        }}
+      />
+      <button
+        type="submit"
+        style={{
+          background: "#0E9E92", color: "white",
+          fontFamily: "'Plus Jakarta Sans', sans-serif",
+          fontWeight: 600, fontSize: 15,
+          padding: "12px 24px", border: "none", borderRadius: 10,
+          cursor: "pointer", whiteSpace: "nowrap",
+        }}
+      >
+        Get early access
+      </button>
+    </form>
+  );
 }
 
-// ── Get Started tabs (client component) ──────────────────────────────────────
-const TABS = [
+// ─── Waitlist section tabs ────────────────────────────────────────────────────
+const WAITLIST_TABS = [
   {
     id: "tenant" as const,
     label: "I'm a tenant",
-    heading: "Find out who you're renting from.",
-    body: "Read verified reviews of landlords, properties, and estate agencies before you sign your next lease.",
-    cta: "Create tenant account",
-    ctaBg: "#0E9E92",
-    href: "/auth/register?role=tenant",
+    fields: [
+      { label: "Full name", type: "text", placeholder: "Your name" },
+      { label: "Email address", type: "email", placeholder: "you@email.com" },
+      { label: "Your city", type: "text", placeholder: "e.g. Johannesburg" },
+    ],
+    submitLabel: "Join the waitlist as a tenant",
+    privacy: "POPIA compliant. Your details are never shared or sold.",
+    submitBg: "#0E9E92",
   },
   {
     id: "landlord" as const,
     label: "I'm a landlord",
-    heading: "Know your tenant before they move in.",
-    body: "Check verified tenant reputation scores before placing an applicant. Rate your tenants after every lease.",
-    cta: "Create landlord account",
-    ctaBg: "#0E9E92",
-    href: "/auth/register?role=landlord",
+    fields: [
+      { label: "Full name", type: "text", placeholder: "Your name" },
+      { label: "Email address", type: "email", placeholder: "you@email.com" },
+      { label: "Number of properties", type: "text", placeholder: "e.g. 1, 5, 20+" },
+    ],
+    submitLabel: "Join the waitlist as a landlord",
+    privacy: "POPIA compliant. Your details are never shared or sold.",
+    submitBg: "#0E9E92",
   },
   {
     id: "agency" as const,
     label: "I'm an agency",
-    heading: "Build a verified public profile your clients trust.",
-    body: "Get rated by landlords and tenants. Screen applicants. Promote your agency to quality-verified clients.",
-    cta: "Create agency account",
-    ctaBg: "#07312C",
-    href: "/auth/register?role=agency",
+    fields: [
+      { label: "Agency name", type: "text", placeholder: "Your agency's name" },
+      { label: "Your name and role", type: "text", placeholder: "e.g. Sarah, Rental Manager" },
+      { label: "Work email", type: "email", placeholder: "you@agency.co.za" },
+    ],
+    submitLabel: "Request a demo for your agency",
+    privacy: "POPIA compliant. We'll contact you to arrange a walkthrough.",
+    submitBg: "#07312C",
   },
 ];
 
-function GetStartedSection() {
-  const [active, setActive] = useState<"tenant" | "landlord" | "agency">("tenant");
-  const tab = TABS.find((t) => t.id === active)!;
+function WaitlistSection() {
+  const [active, setActive] = useState<"tenant"|"landlord"|"agency">("tenant");
+  const [submitted, setSubmitted] = useState(false);
+  const tab = WAITLIST_TABS.find(t => t.id === active)!;
+
+  function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setSubmitted(true);
+  }
+
+  function switchTab(id: "tenant"|"landlord"|"agency") {
+    setActive(id);
+    setSubmitted(false);
+  }
 
   return (
-    <section className="py-20 md:py-28" style={{ background: "#F5F8F7" }}>
-      <div className="max-w-xl mx-auto px-5 text-center">
-        <p className="text-xs font-heading font-semibold tracking-widest uppercase mb-3" style={{ color: "#0E9E92" }}>
-          Get started free
-        </p>
-        <h2 className="font-heading font-bold text-3xl md:text-4xl leading-tight mb-3" style={{ color: "#07312C" }}>
-          Be part of building trust<br className="hidden sm:block" /> in SA&apos;s rental market.
+    <section id="waitlist" style={{ background: "#F5F8F7", padding: "96px 5%", textAlign: "center" }}>
+      <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+        <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#0E9E92", display: "block", marginBottom: 14 }}>
+          Early access
+        </span>
+        <h2 className="font-heading" style={{ fontSize: "clamp(28px, 4vw, 46px)", fontWeight: 700, color: "#07312C", lineHeight: 1.12, letterSpacing: "-0.8px", maxWidth: 600, margin: "0 auto 16px" }}>
+          Be part of building trust in SA&apos;s rental market.
         </h2>
-        <p className="text-sm mb-10" style={{ color: "#5E7470" }}>
-          No credit card required. Free accounts available for all roles.
+        <p style={{ fontSize: 17, color: "#4a6b67", maxWidth: 560, margin: "0 auto 48px", lineHeight: 1.7 }}>
+          Join the waitlist and get early access when RentalRep launches in Johannesburg. Tell us who you are so we can show you what&apos;s built for you.
         </p>
 
-        {/* Tab buttons */}
-        <div className="flex rounded-xl overflow-hidden mb-6" style={{ background: "white", border: "1px solid #E0EBEA" }}>
-          {TABS.map((t) => (
+        {/* Tabs */}
+        <div style={{ display: "flex", gap: 8, justifyContent: "center", marginBottom: 32 }}>
+          {WAITLIST_TABS.map(t => (
             <button
               key={t.id}
-              onClick={() => setActive(t.id)}
-              className="flex-1 py-3 text-xs font-heading font-semibold transition-colors"
-              style={active === t.id
-                ? { background: "#07312C", color: "white" }
-                : { color: "#5E7470", background: "transparent" }
-              }
+              onClick={() => switchTab(t.id)}
+              style={{
+                padding: "10px 22px", borderRadius: 30,
+                fontSize: 14, fontWeight: 600,
+                cursor: "pointer",
+                border: `1.5px solid ${active === t.id ? "#07312C" : "#d4e6e4"}`,
+                background: active === t.id ? "#07312C" : "white",
+                color: active === t.id ? "white" : "#8aa5a2",
+                fontFamily: "'Plus Jakarta Sans', sans-serif",
+                transition: "all 0.2s",
+              }}
             >
               {t.label}
             </button>
           ))}
         </div>
 
-        {/* CTA card */}
-        <div className="bg-white rounded-2xl p-6 text-left shadow-sm" style={{ border: "1px solid #E0EBEA" }}>
-          <h3 className="font-heading font-bold text-lg mb-2" style={{ color: "#07312C" }}>{tab.heading}</h3>
-          <p className="text-sm mb-6 leading-relaxed" style={{ color: "#5E7470" }}>{tab.body}</p>
-          <Link
-            href={tab.href}
-            className="block w-full py-3.5 rounded-xl font-heading font-bold text-sm text-center text-white transition-opacity hover:opacity-90"
-            style={{ backgroundColor: tab.ctaBg }}
-          >
-            {tab.cta}
-          </Link>
-          <p className="text-xs text-center mt-3" style={{ color: "#9BA8A5" }}>
-            By signing up you agree to our{" "}
-            <Link href="/terms" style={{ color: "#0E9E92" }}>Terms of Service</Link>
-            {" "}and{" "}
-            <Link href="/privacy" style={{ color: "#0E9E92" }}>Privacy Policy</Link>.
-          </p>
+        {/* Form card */}
+        <div style={{ maxWidth: 480, margin: "0 auto", background: "white", borderRadius: 20, padding: 36, boxShadow: "0 4px 32px rgba(7,49,44,0.08)", border: "1px solid #d4e6e4" }}>
+          {submitted ? (
+            <div style={{ padding: "20px 0" }}>
+              <p className="font-heading" style={{ fontSize: 20, fontWeight: 700, color: "#07312C", marginBottom: 8 }}>You&apos;re on the list.</p>
+              <p style={{ fontSize: 14, color: "#4a6b67" }}>We&apos;ll be in touch when RentalRep launches in Johannesburg.</p>
+            </div>
+          ) : (
+            <form onSubmit={handleSubmit}>
+              {tab.fields.map(f => (
+                <div key={f.label} style={{ marginBottom: 16, textAlign: "left" }}>
+                  <label style={{ display: "block", fontSize: 13, fontWeight: 600, color: "#07312C", marginBottom: 6, letterSpacing: "0.02em" }}>
+                    {f.label}
+                  </label>
+                  <input
+                    type={f.type} placeholder={f.placeholder} required
+                    style={{ width: "100%", padding: "12px 16px", border: "1.5px solid #d4e6e4", borderRadius: 10, fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 15, color: "#07312C", outline: "none", background: "#F5F8F7" }}
+                    onFocus={e => { e.target.style.borderColor = "#0E9E92"; e.target.style.background = "white"; }}
+                    onBlur={e => { e.target.style.borderColor = "#d4e6e4"; e.target.style.background = "#F5F8F7"; }}
+                  />
+                </div>
+              ))}
+              <button
+                type="submit"
+                style={{ width: "100%", background: tab.submitBg, color: "white", fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 700, fontSize: 16, padding: 14, border: "none", borderRadius: 10, cursor: "pointer", marginTop: 8 }}
+              >
+                {tab.submitLabel} →
+              </button>
+              <p style={{ fontSize: 12, color: "#8aa5a2", marginTop: 14, textAlign: "center" }}>{tab.privacy}</p>
+            </form>
+          )}
         </div>
       </div>
     </section>
+  );
+}
+
+// ─── Main page ────────────────────────────────────────────────────────────────
+export default function RootPage() {
+  return (
+    <div style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", color: "#07312C", lineHeight: 1.6, overflowX: "hidden" }}>
+
+      {/* ── NAV ── */}
+      <nav style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 100, background: "rgba(7,49,44,0.96)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)", borderBottom: "1px solid rgba(255,255,255,0.08)", padding: "0 5%", display: "flex", alignItems: "center", justifyContent: "space-between", height: 64 }}>
+        <MarketingLogo />
+        <div style={{ display: "flex", gap: 28, alignItems: "center" }}>
+          <a href="#how" style={{ textDecoration: "none", fontSize: 14, fontWeight: 500, color: "rgba(255,255,255,0.75)" }}>How it works</a>
+          <a href="#verification" style={{ textDecoration: "none", fontSize: 14, fontWeight: 500, color: "rgba(255,255,255,0.75)" }}>Verification</a>
+          <a href="#agencies" style={{ textDecoration: "none", fontSize: 14, fontWeight: 500, color: "rgba(255,255,255,0.75)" }}>For Agencies</a>
+          <a href="#waitlist" style={{ textDecoration: "none", background: "#0E9E92", color: "white", padding: "8px 18px", borderRadius: 8, fontWeight: 600, fontSize: 13 }}>Join early access</a>
+        </div>
+      </nav>
+
+      {/* ── HERO ── */}
+      <section style={{ minHeight: "100vh", background: "#07312C", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center", padding: "120px 5% 80px", position: "relative", overflow: "hidden" }}>
+        <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse 70% 60% at 80% 20%, rgba(14,158,146,0.18) 0%, transparent 60%), radial-gradient(ellipse 50% 50% at 20% 80%, rgba(244,181,63,0.10) 0%, transparent 50%)", pointerEvents: "none" }} />
+
+        <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(14,158,146,0.15)", border: "1px solid rgba(14,158,146,0.35)", color: "#0E9E92", fontSize: 12, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", padding: "6px 14px", borderRadius: 20, marginBottom: 28 }}>
+          <span style={{ fontSize: 15, lineHeight: 1 }}>🇿🇦</span> South Africa&apos;s first verified rental reputation platform
+        </div>
+
+        <h1 className="font-heading" style={{ fontSize: "clamp(40px, 6vw, 72px)", fontWeight: 800, color: "white", lineHeight: 1.08, letterSpacing: "-1.5px", maxWidth: 820, marginBottom: 24 }}>
+          Know who you&apos;re renting<br />
+          from and to <em style={{ fontStyle: "normal", color: "#0E9E92" }}>before</em> you sign.
+        </h1>
+
+        <p style={{ fontSize: "clamp(16px, 2vw, 20px)", color: "rgba(255,255,255,0.65)", maxWidth: 560, margin: "0 auto 44px", lineHeight: 1.65, fontWeight: 400 }}>
+          RentalRep lets tenants, landlords, and estate agencies rate each other after every tenancy. Every review is tied to a real lease, so the scores you see are real.
+        </p>
+
+        <HeroForm />
+
+        <p style={{ fontSize: 13, color: "rgba(255,255,255,0.4)" }}>
+          <strong style={{ color: "rgba(255,255,255,0.7)" }}>Free to join.</strong> No card required. Launching in Johannesburg first.
+        </p>
+
+        {/* Trust cards */}
+        <div style={{ display: "flex", gap: 14, marginTop: 60, flexWrap: "wrap", justifyContent: "center" }}>
+          {[
+            {
+              icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#F4B53F" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M1 9l5-5 5 5"/><path d="M6 4v12"/><path d="M3 21h6M13 9l5-5 5 5"/><path d="M18 4v12"/><path d="M15 21h6"/></svg>,
+              val: <><span style={{ color: "#07312C" }}>3.5</span><span style={{ color: "#F4B53F" }}>M</span></>,
+              label: "South African rental households",
+            },
+            {
+              icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="#F4B53F" stroke="#F4B53F" strokeWidth="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>,
+              val: <span style={{ color: "#F4B53F" }}>0</span>,
+              label: "Verified reputation platforms in SA, until now",
+            },
+            {
+              icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#F4B53F" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>,
+              val: <>100<span style={{ color: "#F4B53F" }}>%</span></>,
+              label: "POPIA compliant by design",
+            },
+            {
+              icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#F4B53F" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>,
+              val: <>Lease<span style={{ color: "white" }}>-</span>tied</>,
+              label: "Every review verified against a real agreement",
+            },
+          ].map(({ icon, val, label }, i) => (
+            <div key={i} style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 14, padding: "18px 22px", textAlign: "left", width: 200 }}>
+              <div style={{ fontSize: 24, marginBottom: 10 }}>{icon}</div>
+              <div className="font-heading" style={{ fontSize: 28, fontWeight: 700, color: "white", lineHeight: 1, marginBottom: 4 }}>{val}</div>
+              <div style={{ fontSize: 12, color: "rgba(255,255,255,0.8)" }}>{label}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ── PROBLEM ── */}
+      <section id="problem" style={{ background: "white", padding: "96px 5%" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 60, alignItems: "center", maxWidth: 1100, margin: "0 auto" }}>
+          <div>
+            <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#0E9E92", display: "block", marginBottom: 14 }}>The problem</span>
+            <h2 className="font-heading" style={{ fontSize: "clamp(28px, 4vw, 46px)", fontWeight: 700, color: "#07312C", lineHeight: 1.12, letterSpacing: "-0.8px", marginBottom: 20 }}>
+              SA&apos;s rental market runs on rumours and references.
+            </h2>
+            <p style={{ fontSize: 17, color: "#4a6b67", maxWidth: 560, lineHeight: 1.7 }}>
+              TPN and TransUnion can blacklist a tenant. But neither tells a tenant whether their prospective landlord disappears when the geyser bursts. And neither helps an agency know if the applicant they&apos;re about to approve has trashed three properties.
+            </p>
+            <p style={{ fontSize: 17, color: "#4a6b67", maxWidth: 560, lineHeight: 1.7, marginTop: 16 }}>
+              RentalRep closes that gap, for all three sides of every rental relationship.
+            </p>
+          </div>
+          <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+            {[
+              { quote: "The landlord kept our deposit for 'repairs' that were never done. We had no way to warn anyone.", role: "Tenant, Sandton, Johannesburg", bad: true },
+              { quote: "Our tenant left after three months owing two months' rent. Their reference checked out perfectly.", role: "Landlord, Cape Town", bad: true },
+              { quote: "If I could see a tenant's actual payment and behaviour history from previous tenancies, I'd make better placements, and so would they.", role: "Letting Agent, Pretoria", bad: false },
+            ].map(({ quote, role, bad }) => (
+              <div key={role} style={{ background: "#F5F8F7", borderLeft: `3px solid ${bad ? "#e05252" : "#0E9E92"}`, borderRadius: "0 12px 12px 0", padding: "18px 20px" }}>
+                <p style={{ fontSize: 15, color: "#07312C", fontStyle: "italic", lineHeight: 1.55, marginBottom: 8 }}>&ldquo;{quote}&rdquo;</p>
+                <span style={{ fontSize: 12, fontWeight: 600, color: "#8aa5a2", textTransform: "uppercase", letterSpacing: "0.06em" }}>{role}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── HOW IT WORKS ── */}
+      <section id="how" style={{ background: "#F5F8F7", padding: "96px 5%" }}>
+        <div style={{ textAlign: "center", marginBottom: 64 }}>
+          <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#0E9E92", display: "block", marginBottom: 14 }}>How it works</span>
+          <h2 className="font-heading" style={{ fontSize: "clamp(28px, 4vw, 46px)", fontWeight: 700, color: "#07312C", lineHeight: 1.12, letterSpacing: "-0.8px", marginBottom: 20 }}>
+            Mutual ratings. Verified by lease.
+          </h2>
+          <p style={{ fontSize: 17, color: "#4a6b67", maxWidth: 560, margin: "0 auto", lineHeight: 1.7 }}>
+            Like Uber&apos;s two-way rating system, but built specifically for the South African rental market, with one critical addition: every review is confirmed against a real lease agreement.
+          </p>
+        </div>
+
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 28, maxWidth: 1100, margin: "0 auto" }}>
+          {[
+            {
+              num: "01 Tenants",
+              iconBg: "#E6F9F8",
+              icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0E9E92" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg>,
+              heading: "Rate your landlord & property",
+              body: "Review maintenance response, deposit fairness, communication, and overall experience. Your score helps future tenants choose wisely.",
+              tags: [
+                { label: "Maintenance", gold: false },
+                { label: "Deposit handling", gold: false },
+                { label: "Communication", gold: false },
+              ],
+            },
+            {
+              num: "02 Landlords",
+              iconBg: "#FEF6E4",
+              icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#F4B53F" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>,
+              heading: "Rate your tenant",
+              body: "Score tenants on rent reliability, property care, and conduct. A verified track record helps good tenants stand out from day one.",
+              tags: [
+                { label: "Rent reliability", gold: false },
+                { label: "Property care", gold: false },
+                { label: "Notice period", gold: true },
+              ],
+            },
+            {
+              num: "03 Estate agencies",
+              iconBg: "rgba(7,49,44,0.08)",
+              icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#07312C" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="2" width="18" height="20" rx="1"/><path d="M9 22V12h6v10"/><rect x="7" y="5" width="2.5" height="2.5" rx="0.3"/><rect x="14.5" y="5" width="2.5" height="2.5" rx="0.3"/><rect x="7" y="9" width="2.5" height="2.5" rx="0.3"/><rect x="14.5" y="9" width="2.5" height="2.5" rx="0.3"/></svg>,
+              heading: "Rate & be rated by clients",
+              body: "Agencies earn verified scores from both tenants and landlords. Stand out on professionalism, transparency, and client satisfaction.",
+              tags: [
+                { label: "Professionalism", gold: false },
+                { label: "Transparency", gold: false },
+                { label: "Speed", gold: false },
+              ],
+            },
+          ].map(({ num, iconBg, icon, heading, body, tags }) => (
+            <div key={num} style={{ background: "white", borderRadius: 20, padding: "36px 28px", border: "1px solid #d4e6e4", transition: "box-shadow 0.2s, transform 0.2s" }}
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.boxShadow = "0 12px 40px rgba(7,49,44,0.10)"; (e.currentTarget as HTMLElement).style.transform = "translateY(-3px)"; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.boxShadow = "none"; (e.currentTarget as HTMLElement).style.transform = "none"; }}
+            >
+              <div className="font-heading" style={{ fontSize: 11, fontWeight: 700, color: "#0E9E92", letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: 20 }}>{num}</div>
+              <div style={{ width: 52, height: 52, borderRadius: 14, background: iconBg, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 20 }}>{icon}</div>
+              <h3 className="font-heading" style={{ fontSize: 20, fontWeight: 700, color: "#07312C", marginBottom: 12, letterSpacing: 0.3 }}>{heading}</h3>
+              <p style={{ fontSize: 15, color: "#4a6b67", lineHeight: 1.65 }}>{body}</p>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginTop: 20 }}>
+                {tags.map(t => (
+                  <span key={t.label} style={{ fontSize: 11, fontWeight: 600, padding: "4px 10px", borderRadius: 20, background: t.gold ? "#FEF6E4" : "#E6F9F8", color: t.gold ? "#b8860b" : "#0E9E92", letterSpacing: "0.04em" }}>
+                    {t.label}
+                  </span>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Mutual ratings diagram */}
+        <div style={{ maxWidth: 1100, margin: "56px auto 0", background: "#07312C", borderRadius: 24, padding: "40px 48px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 24, flexWrap: "wrap" }}>
+          {/* Tenant */}
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 10, flex: 1, minWidth: 120 }}>
+            <div style={{ width: 56, height: 56, borderRadius: 16, background: "rgba(14,158,146,0.18)", display: "flex", alignItems: "center", justifyContent: "center" }}><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0E9E92" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></div>
+            <div className="font-heading" style={{ fontSize: 14, fontWeight: 600, color: "white" }}>Tenant</div>
+            <div className="font-heading" style={{ background: "#F4B53F", color: "#07312C", fontSize: 15, fontWeight: 700, padding: "4px 12px", borderRadius: 20 }}>8.4 / 10</div>
+          </div>
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 8, flex: 0.8 }}>
+            <span style={{ fontSize: 11, fontWeight: 600, color: "rgba(255,255,255,0.4)", letterSpacing: "0.08em", textTransform: "uppercase" }}>rates</span>
+            <span style={{ color: "#0E9E92", fontSize: 18, fontWeight: 700 }}>&#x27F5; &#x27F6;</span>
+            <span style={{ fontSize: 11, fontWeight: 600, color: "rgba(255,255,255,0.4)", letterSpacing: "0.08em", textTransform: "uppercase" }}>rates</span>
+          </div>
+          {/* Landlord */}
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 10, flex: 1, minWidth: 120 }}>
+            <div style={{ width: 56, height: 56, borderRadius: 16, background: "rgba(14,158,146,0.18)", display: "flex", alignItems: "center", justifyContent: "center" }}><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0E9E92" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg></div>
+            <div className="font-heading" style={{ fontSize: 14, fontWeight: 600, color: "white" }}>Landlord</div>
+            <div className="font-heading" style={{ background: "#F4B53F", color: "#07312C", fontSize: 15, fontWeight: 700, padding: "4px 12px", borderRadius: 20 }}>9.1 / 10</div>
+          </div>
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 8, flex: 0.8 }}>
+            <span style={{ fontSize: 11, fontWeight: 600, color: "rgba(255,255,255,0.4)", letterSpacing: "0.08em", textTransform: "uppercase" }}>rates</span>
+            <span style={{ color: "#0E9E92", fontSize: 18, fontWeight: 700 }}>&#x27F5; &#x27F6;</span>
+            <span style={{ fontSize: 11, fontWeight: 600, color: "rgba(255,255,255,0.4)", letterSpacing: "0.08em", textTransform: "uppercase" }}>rates</span>
+          </div>
+          {/* Agency */}
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 10, flex: 1, minWidth: 120 }}>
+            <div style={{ width: 56, height: 56, borderRadius: 16, background: "rgba(14,158,146,0.18)", display: "flex", alignItems: "center", justifyContent: "center" }}><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0E9E92" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="2" width="18" height="20" rx="1"/><path d="M9 22V13h6v9"/><rect x="7" y="5" width="2" height="2" rx="0.3"/><rect x="15" y="5" width="2" height="2" rx="0.3"/><rect x="7" y="9" width="2" height="2" rx="0.3"/><rect x="15" y="9" width="2" height="2" rx="0.3"/></svg></div>
+            <div className="font-heading" style={{ fontSize: 14, fontWeight: 600, color: "white" }}>Agency</div>
+            <div className="font-heading" style={{ background: "#F4B53F", color: "#07312C", fontSize: 15, fontWeight: 700, padding: "4px 12px", borderRadius: 20 }}>7.8 / 10</div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── VERIFICATION ── */}
+      <section id="verification" style={{ background: "#07312C", color: "white", padding: "96px 5%" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 80, alignItems: "center", maxWidth: 1100, margin: "0 auto" }}>
+          <div>
+            <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#0E9E92", display: "block", marginBottom: 14 }}>Why it&apos;s different</span>
+            <h2 className="font-heading" style={{ fontSize: "clamp(28px, 4vw, 46px)", fontWeight: 700, color: "white", lineHeight: 1.12, letterSpacing: "-0.8px", marginBottom: 20 }}>
+              No lease, no review. Simple.
+            </h2>
+            <p style={{ fontSize: 17, color: "rgba(255,255,255,0.6)", maxWidth: 560, lineHeight: 1.7 }}>
+              Fake reviews undermine every rating platform. RentalRep solves this at the source, you can only review someone you&apos;ve actually rented with, verified against a real lease agreement.
+            </p>
+            <div style={{ display: "flex", flexDirection: "column", gap: 24, marginTop: 40 }}>
+              {[
+                { n: "1", title: "Submit your lease",            body: "Either party uploads or links their signed lease agreement. Personal details are protected under POPIA." },
+                { n: "2", title: "Both parties confirm",         body: "The other party verifies the tenancy relationship. Both must agree before either can review." },
+                { n: "3", title: "Reviews unlock at lease end",  body: "Once a tenancy ends, the review window opens for both parties simultaneously, preventing early pressure or retaliation." },
+                { n: "4", title: "Score builds your reputation", body: "Verified scores are cumulative. Your RentalRep score reflects your full rental history, not just one tenancy." },
+              ].map(({ n, title, body }) => (
+                <div key={n} style={{ display: "flex", gap: 18, alignItems: "flex-start" }}>
+                  <div className="font-heading" style={{ width: 32, height: 32, borderRadius: 8, background: "rgba(14,158,146,0.2)", border: "1px solid rgba(14,158,146,0.4)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13, fontWeight: 700, color: "#0E9E92", flexShrink: 0, marginTop: 2 }}>{n}</div>
+                  <div>
+                    <h4 className="font-heading" style={{ fontSize: 16, fontWeight: 600, color: "white", marginBottom: 4 }}>{title}</h4>
+                    <p style={{ fontSize: 14, color: "rgba(255,255,255,0.5)", lineHeight: 1.6 }}>{body}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+            {[
+              {
+                icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0E9E92" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>,
+                title: "POPIA Compliant",
+                desc: "All personal data is handled in line with South Africa's Protection of Personal Information Act. You control your data.",
+              },
+              {
+                icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0E9E92" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>,
+                title: "Lease-Verified Reviews Only",
+                desc: "No anonymous reviews. No fake scores. Every rating is tied to a real, verified rental agreement.",
+              },
+              {
+                icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="#F4B53F" stroke="#F4B53F" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>,
+                title: "Quality-Gated Advertising",
+                desc: "Only landlords and agencies with a 7.5+ RentalRep score can promote listings on the platform.",
+              },
+              {
+                icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0E9E92" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>,
+                title: "Dispute Resolution",
+                desc: "A fair, structured process for flagging inaccurate or unfair reviews, with human moderation oversight.",
+              },
+            ].map(({ icon, title, desc }) => (
+              <div key={title} style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 16, padding: "24px 28px", display: "flex", gap: 20, alignItems: "center" }}>
+                <div style={{ width: 36, height: 36, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>{icon}</div>
+                <div>
+                  <div className="font-heading" style={{ fontSize: 16, fontWeight: 600, color: "white", marginBottom: 4 }}>{title}</div>
+                  <div style={{ fontSize: 14, color: "rgba(255,255,255,0.5)", lineHeight: 1.5 }}>{desc}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── AGENCIES ── */}
+      <section id="agencies" style={{ background: "white", padding: "96px 5%" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 80, alignItems: "center", maxWidth: 1100, margin: "0 auto" }}>
+          <div>
+            <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#0E9E92", display: "block", marginBottom: 14 }}>For estate agencies</span>
+            <h2 className="font-heading" style={{ fontSize: "clamp(28px, 4vw, 46px)", fontWeight: 700, color: "#07312C", lineHeight: 1.12, letterSpacing: "-0.8px", marginBottom: 20 }}>
+              Your agency&apos;s reputation, finally visible.
+            </h2>
+            <p style={{ fontSize: 17, color: "#4a6b67", maxWidth: 560, lineHeight: 1.7 }}>
+              RentalRep gives your agency a verified public scorecard, built from real client reviews. Stand out from competitors who rely only on word-of-mouth and Google reviews that anyone can write.
+            </p>
+            <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: 12, margin: "32px 0" }}>
+              {[
+                "Verified agency profile with cumulative trust score",
+                "Individual agent profiles and ratings",
+                "Tenant and landlord review dashboard",
+                "Early access to tenant reputation scores before placement",
+                "Priority listing placement for high-rated agencies",
+                "Monthly performance reports and analytics",
+              ].map(b => (
+                <li key={b} style={{ display: "flex", alignItems: "flex-start", gap: 12, fontSize: 15, color: "#4a6b67", lineHeight: 1.55 }}>
+                  <span style={{ color: "#0E9E92", fontWeight: 700, fontSize: 15, flexShrink: 0, marginTop: 1 }}>✓</span>
+                  {b}
+                </li>
+              ))}
+            </ul>
+            <a href="#waitlist" style={{ background: "#07312C", color: "white", fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600, fontSize: 15, padding: "14px 28px", border: "none", borderRadius: 10, cursor: "pointer", display: "inline-block", textDecoration: "none" }}>
+              Request a demo
+            </a>
+          </div>
+          <div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+              {[
+                { name: "Starter",      desc: "Up to 3 agents · Basic profile",                          price: "R999",   period: "/ month", featured: false },
+                { name: "Professional", desc: "Up to 10 agents · Full analytics · Priority listing",      price: "R1,799", period: "/ month", featured: true  },
+                { name: "Enterprise",   desc: "Unlimited agents · API access · Data licensing",           price: "R2,499", period: "/ month", featured: false },
+              ].map(({ name, desc, price, period, featured }) => (
+                <div key={name} style={{ borderRadius: 16, padding: "24px 28px", display: "flex", alignItems: "center", justifyContent: "space-between", border: `1.5px solid ${featured ? "#07312C" : "#d4e6e4"}`, background: featured ? "#07312C" : "white", cursor: "default" }}>
+                  <div>
+                    <div className="font-heading" style={{ fontSize: 16, fontWeight: 700, marginBottom: 4, color: featured ? "white" : "#07312C" }}>{name}</div>
+                    <div style={{ fontSize: 13, color: featured ? "rgba(255,255,255,0.5)" : "#8aa5a2" }}>{desc}</div>
+                  </div>
+                  <div style={{ textAlign: "right" }}>
+                    <div className="font-heading" style={{ fontSize: 22, fontWeight: 700, color: featured ? "#F4B53F" : "#0E9E92", whiteSpace: "nowrap" }}>{price}</div>
+                    <div style={{ fontSize: 12, color: featured ? "rgba(255,255,255,0.4)" : "#8aa5a2" }}>{period}</div>
+                  </div>
+                </div>
+              ))}
+              <div style={{ padding: "16px 4px" }}>
+                <p style={{ fontSize: 13, color: "#8aa5a2", lineHeight: 1.6 }}>
+                  <strong style={{ color: "#07312C" }}>For tenants and landlords:</strong> Free tier available. Pro plans from R49/month. Only users with a 7.5+ score can promote listings.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── WAITLIST ── */}
+      <WaitlistSection />
+
+      {/* ── FOOTER ── */}
+      <footer style={{ background: "#07312C", padding: "48px 5%" }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 20 }}>
+          <div>
+            <div className="font-heading" style={{ fontSize: 18, fontWeight: 700, color: "white" }}>
+              Rental<span style={{ color: "#2FD4C0" }}>Rep</span>
+            </div>
+            <div style={{ fontSize: 13, color: "rgba(255,255,255,0.4)", marginTop: 4 }}>Rate. Trust. Rent with Confidence.</div>
+          </div>
+          <div style={{ display: "flex", gap: 24 }}>
+            {[
+              { label: "Privacy Policy",  href: "/privacy" },
+              { label: "Terms of Use",    href: "/terms"   },
+              { label: "POPIA Notice",    href: "/privacy" },
+              { label: "For Agencies",    href: "#agencies" },
+              { label: "Early access",    href: "#waitlist" },
+            ].map(({ label, href }) => (
+              <a key={label} href={href} style={{ fontSize: 13, color: "rgba(255,255,255,0.5)", textDecoration: "none" }}>{label}</a>
+            ))}
+          </div>
+        </div>
+        <p style={{ fontSize: 12, color: "rgba(255,255,255,0.25)", width: "100%", textAlign: "center", marginTop: 24, paddingTop: 24, borderTop: "1px solid rgba(255,255,255,0.08)", maxWidth: 1100, marginLeft: "auto", marginRight: "auto" }}>
+          &copy; 2026 RentalRep. Johannesburg, South Africa. rentalrep.co.za &middot; All rights reserved.
+        </p>
+      </footer>
+
+    </div>
   );
 }
