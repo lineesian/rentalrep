@@ -1,7 +1,7 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
-const PUBLIC_PATHS = ["/auth/login", "/auth/register", "/auth/verify-otp"];
+const PUBLIC_PATHS = ["/auth/login", "/auth/register", "/auth/verify-otp", "/privacy", "/terms"];
 
 export async function middleware(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request });
@@ -30,9 +30,12 @@ export async function middleware(request: NextRequest) {
   const { data: { user } } = await supabase.auth.getUser();
   const pathname = request.nextUrl.pathname;
 
+  // "/" is always public — never redirect away from the marketing homepage
+  if (pathname === "/") return supabaseResponse;
+
   const isPublic = PUBLIC_PATHS.some((p) => pathname.startsWith(p));
 
-  if (!user && !isPublic && pathname !== "/") {
+  if (!user && !isPublic) {
     return NextResponse.redirect(new URL("/auth/login", request.url));
   }
 
