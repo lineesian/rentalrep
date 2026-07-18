@@ -5,6 +5,7 @@ import {
   verifyPayFastSignature,
 }                                    from "@/lib/payfast";
 import { ITEM_NAME_TO_TIER }         from "@/lib/plans";
+import { LEASE_CHECK_ITEM_NAME }     from "@/lib/leaseCheckPricing";
 
 /**
  * POST /api/payfast/webhook  (PayFast ITN — Instant Transaction Notification)
@@ -63,6 +64,24 @@ export async function POST(req: NextRequest) {
   }
 
   const svc = createServiceClient();
+
+  // ── Lease Check once-off credit ─────────────────────────────────────────
+  if (itemName === LEASE_CHECK_ITEM_NAME) {
+    if (paymentStatus === "COMPLETE") {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const { error } = await (svc as any).from("lease_check_credits").insert({
+        user_id:           userId,
+        payfast_reference: params.pf_payment_id ?? null,
+        consumed:           false,
+      });
+      if (error) {
+        console.error("[payfast/webhook] lease check credit insert error:", error.message);
+      } else {
+        console.log("[payfast/webhook] lease check credit granted — userId:", userId);
+      }
+    }
+    return new NextResponse("ok", { status: 200 });
+  }
 
   // ── COMPLETE ─────────────────────────────────────────────────────────────
   if (paymentStatus === "COMPLETE") {
