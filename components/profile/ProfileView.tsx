@@ -12,6 +12,15 @@ import { createClient } from "@/lib/supabase/client";
 import type { Profile, ReputationScore, ReviewWithReviewer } from "@/lib/types";
 import type { Badge } from "@/lib/badges";
 import { BadgePill } from "@/components/ui/BadgePill";
+import { FLAG_LABELS } from "@/lib/leaseCheck";
+
+type ClauseWarning = {
+  id:          string;
+  flag_type:   string;
+  note:        string | null;
+  reviewee_id: string | null;
+  created_at:  string;
+};
 
 interface Props {
   profile: Profile | null;
@@ -20,6 +29,7 @@ interface Props {
   badges?: Badge[];
   isOwner: boolean;
   fetchError?: string | null;
+  clauseWarnings?: ClauseWarning[];
 }
 
 const LANDLORD_CATS = [
@@ -46,7 +56,7 @@ function SignOutIcon() {
   );
 }
 
-export function ProfileView({ profile, score, reviews, badges = [], isOwner, fetchError }: Props) {
+export function ProfileView({ profile, score, reviews, badges = [], isOwner, fetchError, clauseWarnings = [] }: Props) {
   const router    = useRouter();
   const supabase  = createClient();
   const [signingOut, setSigningOut] = useState(false);
@@ -152,6 +162,23 @@ export function ProfileView({ profile, score, reviews, badges = [], isOwner, fet
               if (typeof val !== "number") return null;
               return <ScoreBar key={key} label={label} score={val} />;
             })}
+          </div>
+        )}
+
+        {/* ── Clause warnings ── */}
+        {clauseWarnings.length > 0 && (
+          <div className="card mb-4 border-2 border-[#F4B53F]">
+            <p className="section-label mb-2">Lease clause warnings from past tenants</p>
+            {clauseWarnings.map((w) => (
+              <div key={w.id} className="mb-2 pb-2 border-b border-gray-100 last:border-0 last:mb-0 last:pb-0">
+                <span className="inline-block text-xs font-semibold text-[#92400E] bg-[#FEF3C7] px-2.5 py-0.5 rounded-full">
+                  {FLAG_LABELS[w.flag_type as keyof typeof FLAG_LABELS] ?? w.flag_type}
+                </span>
+                {w.note && (
+                  <p className="text-xs text-sage-400 font-body mt-1 leading-relaxed">{w.note}</p>
+                )}
+              </div>
+            ))}
           </div>
         )}
 

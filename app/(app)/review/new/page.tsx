@@ -7,6 +7,7 @@ import { Avatar } from "@/components/ui/Avatar";
 import { StarRow } from "@/components/ui/StarRow";
 import { getReviewWindowStatus, formatDateZA } from "@/lib/reviewWindow";
 import type { Profile, ProfileWithScore } from "@/lib/types";
+import { FLAG_LABELS } from "@/lib/leaseCheck";
 
 type Step = 1 | 2 | 3 | 4;
 
@@ -234,6 +235,10 @@ function ReviewFlow() {
   const [done,       setDone]       = useState(false);
   const errorRef = useRef<HTMLDivElement>(null);
 
+  // Clause warnings
+  const [clauseFlags,     setClauseFlags]     = useState<{ flag_type: string; note: string; lease_check_flag_id?: string }[]>([]);
+  const [importedChecked, setImportedChecked] = useState(false);
+
   // Auto-scroll to error whenever one is set so it can't be missed
   useEffect(() => {
     if (error) errorRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -272,6 +277,24 @@ function ReviewFlow() {
         .limit(15);
       setSearchResults((data ?? []) as ProfileWithScore[]);
     });
+  }
+
+  // ── Clause flag helpers ────────────────────────────────────
+
+  async function importFromLeaseCheck() {
+    const res = await fetch("/api/lease-check/latest-flags");
+    if (!res.ok) return;
+    const { flags } = await res.json() as { flags: { id: string; flag_type: string; clause_excerpt: string }[] };
+    setClauseFlags(flags.map((f) => ({ flag_type: f.flag_type, note: f.clause_excerpt.slice(0, 200), lease_check_flag_id: f.id })));
+    setImportedChecked(true);
+  }
+
+  function toggleFlag(flag_type: string) {
+    setClauseFlags((prev) =>
+      prev.some((f) => f.flag_type === flag_type)
+        ? prev.filter((f) => f.flag_type !== flag_type)
+        : [...prev, { flag_type, note: "" }],
+    );
   }
 
   // ── Final submit (step 4) — all DB writes happen here ─────
@@ -500,6 +523,23 @@ function ReviewFlow() {
         }
       } catch (e) {
         console.warn("[submit] step 4b — verification threw (non-fatal):", e);
+      }
+    }
+
+    // ── 4c. Clause warnings (non-fatal) ─────────────────────────
+    if (insertedId && clauseFlags.length > 0) {
+      try {
+        console.log("[submit] step 4c — inserting clause flags:", clauseFlags.length);
+        await supabase.from("review_clause_flags").insert(
+          clauseFlags.map((f) => ({
+            review_id:           insertedId,
+            flag_type:           f.flag_type,
+            note:                f.note || null,
+            lease_check_flag_id: f.lease_check_flag_id ?? null,
+          })) as never,
+        );
+      } catch (e) {
+        console.warn("[submit] step 4c — clause flag insert threw (non-fatal):", e);
       }
     }
 
@@ -971,6 +1011,53 @@ function ReviewFlow() {
             </span>
           </div>
         </div>
+
+        {(isProperty || role === "landlord") && (
+          <div className="card mb-4">
+            <p className="section-label mb-2">Warn future tenants about lease clauses</p>
+            <p className="text-xs text-sage-400 font-body mb-3">
+              Flag anything in the lease that surprised you — future tenants researching this{" "}
+              {isProperty ? "property" : "landlord"} will see it alongside your review.
+            </p>
+            <button
+              type="button"
+              onClick={importFromLeaseCheck}
+              className="text-xs font-semibold text-teal-400 mb-3 underline underline-offset-2"
+            >
+              {importedChecked ? "Re-import from Lease Check" : "Import from your Lease Check"}
+            </button>
+            <div className="flex flex-wrap gap-2 mb-3">
+              {(Object.entries(FLAG_LABELS) as [string, string][]).map(([key, label]) => (
+                <button
+                  type="button"
+                  key={key}
+                  onClick={() => toggleFlag(key)}
+                  className={`text-xs px-3 py-1.5 rounded-full border transition-colors ${
+                    clauseFlags.some((f) => f.flag_type === key)
+                      ? "bg-teal-400 text-white border-teal-400"
+                      : "bg-white text-petrol-400 border-gray-200"
+                  }`}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+            {clauseFlags.map((f, i) => (
+              <textarea
+                key={f.flag_type}
+                value={f.note}
+                onChange={(e) => {
+                  const next = [...clauseFlags];
+                  next[i] = { ...next[i], note: e.target.value };
+                  setClauseFlags(next);
+                }}
+                rows={2}
+                placeholder={`What happened with "${FLAG_LABELS[f.flag_type as keyof typeof FLAG_LABELS] ?? f.flag_type}"?`}
+                className="w-full border border-gray-200 rounded-xl px-3 py-2 text-xs font-body mb-2 focus:outline-none focus:border-teal-400 transition-colors resize-none"
+              />
+            ))}
+          </div>
+        )}
 
         <button onClick={() => setAnonymous((a) => !a)}
           className="card w-full flex items-center justify-between mb-4 text-left">

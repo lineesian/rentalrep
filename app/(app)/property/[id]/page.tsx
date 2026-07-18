@@ -6,6 +6,7 @@ import { StarRow } from "@/components/ui/StarRow";
 import { ScoreBar } from "@/components/ui/ScoreBar";
 import { BottomNav } from "@/components/layout/BottomNav";
 import type { Review } from "@/lib/types";
+import { FLAG_LABELS } from "@/lib/leaseCheck";
 
 export const dynamic = "force-dynamic";
 
@@ -34,11 +35,16 @@ export default async function PropertyPage({ params }: { params: { id: string } 
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
-  const [{ data: property }, { data: reviews }] = await Promise.all([
+  const [{ data: property }, { data: reviews }, { data: clauseWarnings }] = await Promise.all([
     supabase.from("properties").select("*").eq("id", params.id).maybeSingle(),
     supabase
       .from("reviews")
       .select("*, reviewer:profiles!reviewer_id(id, full_name, avatar_url, suburb)")
+      .eq("property_id", params.id)
+      .order("created_at", { ascending: false }),
+    (supabase as any)
+      .from("review_clause_warnings")
+      .select("*")
       .eq("property_id", params.id)
       .order("created_at", { ascending: false }),
   ]);
@@ -93,6 +99,23 @@ export default async function PropertyPage({ params }: { params: { id: string } 
               if (avg == null) return null;
               return <ScoreBar key={key} label={label} score={avg} />;
             })}
+          </div>
+        )}
+
+        {/* Clause warnings */}
+        {clauseWarnings && clauseWarnings.length > 0 && (
+          <div className="card mb-4 border-2 border-[#F4B53F]">
+            <p className="section-label mb-2">Lease clause warnings from past tenants</p>
+            {clauseWarnings.map((w: any) => (
+              <div key={w.id} className="mb-2 pb-2 border-b border-gray-100 last:border-0 last:mb-0 last:pb-0">
+                <span className="inline-block text-xs font-semibold text-[#92400E] bg-[#FEF3C7] px-2.5 py-0.5 rounded-full">
+                  {FLAG_LABELS[w.flag_type as keyof typeof FLAG_LABELS] ?? w.flag_type}
+                </span>
+                {w.note && (
+                  <p className="text-xs text-sage-400 font-body mt-1 leading-relaxed">{w.note}</p>
+                )}
+              </div>
+            ))}
           </div>
         )}
 

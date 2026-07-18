@@ -22,6 +22,7 @@ export default async function ProfilePage({ params }: { params: { id: string } }
     { data: scoreRow },
     { data: reviews },
     { count: givenCount },
+    { data: clauseWarnings },
   ] = await Promise.all([
     supabase
       .from("profiles")
@@ -46,6 +47,11 @@ export default async function ProfilePage({ params }: { params: { id: string } }
       .select("*", { count: "exact", head: true })
       .eq("reviewer_id", id)
       .in("status", ["published", "expired"]),
+    (supabase as any)
+      .from("review_clause_warnings")
+      .select("*")
+      .eq("reviewee_id", id)
+      .order("created_at", { ascending: false }),
   ]);
 
   // maybeSingle() returns { data: null, error: null } for 0 rows — no error code needed.
@@ -63,6 +69,7 @@ export default async function ProfilePage({ params }: { params: { id: string } }
         badges={badges}
         isOwner={user?.id === id}
         fetchError={profileError?.message ?? null}
+        clauseWarnings={clauseWarnings ?? []}
       />
       <BottomNav profileId={user?.id} />
     </div>

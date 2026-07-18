@@ -1,5 +1,15 @@
 import Anthropic from "@anthropic-ai/sdk";
 
+export const FLAG_LABELS: Record<FlagType, string> = {
+  reletting_fee:      "Reletting / vacancy fee after notice",
+  excessive_notice:   "Excessive notice period",
+  deposit_overreach:  "Deposit deductions beyond fair wear and tear",
+  maintenance_waiver: "Landlord maintenance obligations waived",
+  auto_renewal:       "Automatic renewal / lock-in",
+  rent_increase:      "Unilateral rent increase",
+  other:              "Other unusual or unfair clause",
+};
+
 export type FlagType =
   | "reletting_fee"
   | "excessive_notice"
