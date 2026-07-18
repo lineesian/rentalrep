@@ -221,6 +221,7 @@ export default function RootPage() {
         {/* Desktop links — hidden below md, shown from md up */}
         <div className="hidden md:flex" style={{ gap: 28, alignItems: "center" }}>
           <a href="#how" style={{ textDecoration: "none", fontSize: 14, fontWeight: 500, color: "rgba(255,255,255,0.75)" }}>How it works</a>
+          <a href="/lease-check" style={{ textDecoration: "none", fontSize: 14, fontWeight: 500, color: "rgba(255,255,255,0.75)" }}>Lease Check</a>
           <a href="#verification" style={{ textDecoration: "none", fontSize: 14, fontWeight: 500, color: "rgba(255,255,255,0.75)" }}>Verification</a>
           <a href="#agencies" style={{ textDecoration: "none", fontSize: 14, fontWeight: 500, color: "rgba(255,255,255,0.75)" }}>For Agencies</a>
           <a href="#waitlist" style={{ textDecoration: "none", background: "#0E9E92", color: "white", padding: "8px 18px", borderRadius: 8, fontWeight: 600, fontSize: 13 }}>Join early access</a>
@@ -246,6 +247,7 @@ export default function RootPage() {
           style={{ position: "fixed", top: 64, left: 0, right: 0, zIndex: 99, background: "#07312C", borderBottom: "1px solid rgba(255,255,255,0.08)", padding: "18px 5% 26px", display: "flex", flexDirection: "column", gap: 18 }}
         >
           <a href="#how" onClick={() => setMenuOpen(false)} style={{ textDecoration: "none", fontSize: 15, fontWeight: 500, color: "rgba(255,255,255,0.85)" }}>How it works</a>
+          <a href="/lease-check" onClick={() => setMenuOpen(false)} style={{ textDecoration: "none", fontSize: 15, fontWeight: 500, color: "rgba(255,255,255,0.85)" }}>Lease Check</a>
           <a href="#verification" onClick={() => setMenuOpen(false)} style={{ textDecoration: "none", fontSize: 15, fontWeight: 500, color: "rgba(255,255,255,0.85)" }}>Verification</a>
           <a href="#agencies" onClick={() => setMenuOpen(false)} style={{ textDecoration: "none", fontSize: 15, fontWeight: 500, color: "rgba(255,255,255,0.85)" }}>For Agencies</a>
           <a href="#waitlist" onClick={() => setMenuOpen(false)} style={{ textDecoration: "none", background: "#0E9E92", color: "white", padding: "10px 18px", borderRadius: 8, fontWeight: 600, fontSize: 14, textAlign: "center" }}>Join early access</a>
