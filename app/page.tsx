@@ -355,8 +355,8 @@ export default function RootPage() {
               num: "01 Tenants",
               iconBg: "#E6F9F8",
               icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0E9E92" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg>,
-              heading: "Protect your deposit, from day one",
-              body: "Log your deposit and every maintenance request the moment they happen, a timestamped paper trail that protects you even before anyone else has joined. Then rate your landlord and property once the lease ends.",
+              heading: "Build proof, from day one",
+              body: "Log your deposit and every maintenance request the moment they happen, a timestamped paper trail that backs you up if things go wrong, even before anyone else has joined. Then rate your landlord and property once the lease ends.",
               tags: [
                 { label: "Deposit tracker", gold: false },
                 { label: "Maintenance log", gold: false },
