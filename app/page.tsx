@@ -324,7 +324,7 @@ export default function RootPage() {
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
             {[
-              { quote: "The landlord kept our deposit for 'repairs' that were never done. We had no way to warn anyone.", role: "Tenant, Sandton, Johannesburg", bad: true },
+              { quote: "My lease had a clause letting the landlord charge up to three months' rent if I cancelled early, even with proper notice, if they couldn't relet the place fast enough. I only found out after I'd already lost my deposit.", role: "Tenant, KwaZulu-Natal", bad: true },
               { quote: "Our tenant left after three months owing two months' rent. Their reference checked out perfectly.", role: "Landlord, Cape Town", bad: true },
               { quote: "If I could see a tenant's actual payment and behaviour history from previous tenancies, I'd make better placements, and so would they.", role: "Letting Agent, Pretoria", bad: false },
             ].map(({ quote, role, bad }) => (
