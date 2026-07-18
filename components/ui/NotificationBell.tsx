@@ -104,6 +104,23 @@ function NotifIcon({ type }: { type: Notification["type"] }) {
         <path d="M7 12.5l3.5 3.5 6.5-7" stroke="#0E9E92" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"/>
       </svg>
     ),
+    lease_check_complete: (
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" stroke="#0E9E92" strokeWidth={1.8} strokeLinejoin="round"/>
+        <path d="M14 2v6h6M9 13l2 2 4-4" stroke="#0E9E92" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round"/>
+      </svg>
+    ),
+    move_in_report_shared: (
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13" stroke="#0E9E92" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round"/>
+      </svg>
+    ),
+    move_in_report_acknowledged: (
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M22 11.08V12a10 10 0 11-5.93-9.14" stroke="#0E9E92" strokeWidth={1.8} strokeLinecap="round"/>
+        <path d="M22 4L12 14.01l-3-3" stroke="#0E9E92" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round"/>
+      </svg>
+    ),
   };
   return <>{icons[type]}</>;
 }

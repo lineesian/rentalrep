@@ -9,7 +9,10 @@ export type NotificationType =
   | "deposit_disputed"
   | "maintenance_logged"
   | "maintenance_acknowledged"
-  | "maintenance_resolved";
+  | "maintenance_resolved"
+  | "lease_check_complete"
+  | "move_in_report_shared"
+  | "move_in_report_acknowledged";
 
 export type Notification = {
   id:                string;

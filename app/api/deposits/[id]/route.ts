@@ -12,11 +12,12 @@ export async function PATCH(
   if (!user) return NextResponse.json({ error: "unauthenticated" }, { status: 401 });
 
   let body: {
-    status?:           string;
-    amount_returned?:  number;
-    amount_withheld?:  number;
-    deduction_reason?: string;
-    evidence_url?:     string;
+    status?:            string;
+    amount_returned?:   number;
+    amount_withheld?:   number;
+    deduction_reason?:  string;
+    evidence_url?:      string;
+    move_in_report_id?: string;
   };
   try { body = await req.json(); } catch {
     return NextResponse.json({ error: "invalid_body" }, { status: 400 });
@@ -32,7 +33,8 @@ export async function PATCH(
   if (body.amount_returned !== undefined)  updates.amount_returned  = body.amount_returned;
   if (body.amount_withheld !== undefined)  updates.amount_withheld  = body.amount_withheld;
   if (body.deduction_reason !== undefined) updates.deduction_reason = body.deduction_reason;
-  if (body.evidence_url !== undefined)     updates.evidence_url     = body.evidence_url;
+  if (body.evidence_url      !== undefined) updates.evidence_url      = body.evidence_url;
+  if (body.move_in_report_id !== undefined) updates.move_in_report_id = body.move_in_report_id;
 
   const resolved = body.status && body.status !== "held";
   if (resolved) updates.resolved_at = new Date().toISOString();

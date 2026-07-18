@@ -32,11 +32,18 @@ export default async function DepositPage() {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/auth/login");
 
-  const { data: deposits } = await (supabase as any)
-    .from("deposits")
-    .select("*")
-    .eq("tenant_id", user.id)
-    .order("created_at", { ascending: false });
+  const [{ data: deposits }, { data: moveInReports }] = await Promise.all([
+    (supabase as any)
+      .from("deposits")
+      .select("*")
+      .eq("tenant_id", user.id)
+      .order("created_at", { ascending: false }),
+    (supabase as any)
+      .from("move_in_reports")
+      .select("id, property_address, created_at")
+      .eq("tenant_id", user.id)
+      .order("created_at", { ascending: false }),
+  ]);
 
   const health = computeDepositHealth((deposits ?? []) as Deposit[]);
 
@@ -129,7 +136,7 @@ export default async function DepositPage() {
             {d.status === "held" && (
               <div className="mt-3 pt-3 border-t border-[#F0F4F3] flex gap-2">
                 <UpdateDepositButton id={d.id} action="returned_full" label="Mark returned" />
-                <UpdateDepositButton id={d.id} action="disputed" label="Flag dispute" danger />
+                <DisputeDepositButton id={d.id} moveInReports={moveInReports ?? []} />
               </div>
             )}
 
@@ -147,5 +154,5 @@ export default async function DepositPage() {
   );
 }
 
-// Inline client action component — avoids a separate file for simple status updates
 import { UpdateDepositButton } from "./UpdateDepositButton";
+import { DisputeDepositButton } from "./DisputeDepositButton";
