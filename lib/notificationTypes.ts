@@ -3,7 +3,13 @@ export type NotificationType =
   | "review_published"
   | "review_auto_published"
   | "pending_nudge"
-  | "window_open";
+  | "window_open"
+  | "deposit_logged"
+  | "deposit_returned"
+  | "deposit_disputed"
+  | "maintenance_logged"
+  | "maintenance_acknowledged"
+  | "maintenance_resolved";
 
 export type Notification = {
   id:                string;

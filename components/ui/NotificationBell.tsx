@@ -70,6 +70,40 @@ function NotifIcon({ type }: { type: Notification["type"] }) {
         <path d="M16 2v4M8 2v4M3 10h18" stroke="#0E9E92" strokeWidth={1.8} strokeLinecap="round"/>
       </svg>
     ),
+    deposit_logged: (
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14H11v-2h2v2zm0-4H11V7h2v5z" fill="#F4B53F"/>
+      </svg>
+    ),
+    deposit_returned: (
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <circle cx="12" cy="12" r="10" stroke="#0E9E92" strokeWidth={1.8}/>
+        <path d="M7 12.5l3.5 3.5 6.5-7" stroke="#0E9E92" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"/>
+      </svg>
+    ),
+    deposit_disputed: (
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <circle cx="12" cy="12" r="10" stroke="#EF4444" strokeWidth={1.8}/>
+        <path d="M12 8v4M12 16h.01" stroke="#EF4444" strokeWidth={2} strokeLinecap="round"/>
+      </svg>
+    ),
+    maintenance_logged: (
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z" stroke="#F4B53F" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round"/>
+      </svg>
+    ),
+    maintenance_acknowledged: (
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <circle cx="12" cy="12" r="10" stroke="#1D4ED8" strokeWidth={1.8}/>
+        <path d="M7 12.5l3.5 3.5 6.5-7" stroke="#1D4ED8" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"/>
+      </svg>
+    ),
+    maintenance_resolved: (
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <circle cx="12" cy="12" r="10" stroke="#0E9E92" strokeWidth={1.8}/>
+        <path d="M7 12.5l3.5 3.5 6.5-7" stroke="#0E9E92" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"/>
+      </svg>
+    ),
   };
   return <>{icons[type]}</>;
 }
