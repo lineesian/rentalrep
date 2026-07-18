@@ -209,19 +209,48 @@ function WaitlistSection() {
 
 // ─── Main page ────────────────────────────────────────────────────────────────
 export default function RootPage() {
+  const [menuOpen, setMenuOpen] = useState(false);
+
   return (
     <div style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", color: "#07312C", lineHeight: 1.6, overflowX: "hidden" }}>
 
       {/* ── NAV ── */}
       <nav style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 100, background: "rgba(7,49,44,0.96)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)", borderBottom: "1px solid rgba(255,255,255,0.08)", padding: "0 5%", display: "flex", alignItems: "center", justifyContent: "space-between", height: 64 }}>
         <MarketingLogo />
-        <div style={{ display: "flex", gap: 28, alignItems: "center" }}>
+
+        {/* Desktop links — hidden below md, shown from md up */}
+        <div className="hidden md:flex" style={{ gap: 28, alignItems: "center" }}>
           <a href="#how" style={{ textDecoration: "none", fontSize: 14, fontWeight: 500, color: "rgba(255,255,255,0.75)" }}>How it works</a>
           <a href="#verification" style={{ textDecoration: "none", fontSize: 14, fontWeight: 500, color: "rgba(255,255,255,0.75)" }}>Verification</a>
           <a href="#agencies" style={{ textDecoration: "none", fontSize: 14, fontWeight: 500, color: "rgba(255,255,255,0.75)" }}>For Agencies</a>
           <a href="#waitlist" style={{ textDecoration: "none", background: "#0E9E92", color: "white", padding: "8px 18px", borderRadius: 8, fontWeight: 600, fontSize: 13 }}>Join early access</a>
         </div>
+
+        {/* Hamburger — shown below md, hidden from md up */}
+        <button
+          className="flex md:hidden"
+          aria-label="Toggle menu"
+          onClick={() => setMenuOpen((o) => !o)}
+          style={{ background: "none", border: "none", padding: 8, cursor: "pointer" }}
+        >
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round">
+            {menuOpen ? <path d="M6 6l12 12M6 18L18 6" /> : <path d="M4 7h16M4 12h16M4 17h16" />}
+          </svg>
+        </button>
       </nav>
+
+      {/* Mobile dropdown panel */}
+      {menuOpen && (
+        <div
+          className="md:hidden"
+          style={{ position: "fixed", top: 64, left: 0, right: 0, zIndex: 99, background: "#07312C", borderBottom: "1px solid rgba(255,255,255,0.08)", padding: "18px 5% 26px", display: "flex", flexDirection: "column", gap: 18 }}
+        >
+          <a href="#how" onClick={() => setMenuOpen(false)} style={{ textDecoration: "none", fontSize: 15, fontWeight: 500, color: "rgba(255,255,255,0.85)" }}>How it works</a>
+          <a href="#verification" onClick={() => setMenuOpen(false)} style={{ textDecoration: "none", fontSize: 15, fontWeight: 500, color: "rgba(255,255,255,0.85)" }}>Verification</a>
+          <a href="#agencies" onClick={() => setMenuOpen(false)} style={{ textDecoration: "none", fontSize: 15, fontWeight: 500, color: "rgba(255,255,255,0.85)" }}>For Agencies</a>
+          <a href="#waitlist" onClick={() => setMenuOpen(false)} style={{ textDecoration: "none", background: "#0E9E92", color: "white", padding: "10px 18px", borderRadius: 8, fontWeight: 600, fontSize: 14, textAlign: "center" }}>Join early access</a>
+        </div>
+      )}
 
       {/* ── HERO ── */}
       <section style={{ minHeight: "100vh", background: "#07312C", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center", padding: "120px 5% 80px", position: "relative", overflow: "hidden" }}>
