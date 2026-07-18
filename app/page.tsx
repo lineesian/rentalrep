@@ -309,7 +309,7 @@ export default function RootPage() {
 
       {/* ── PROBLEM ── */}
       <section id="problem" style={{ background: "white", padding: "96px 5%" }}>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 60, alignItems: "center", maxWidth: 1100, margin: "0 auto" }}>
+        <div className="grid grid-cols-1 md:grid-cols-2" style={{ gap: 60, alignItems: "center", maxWidth: 1100, margin: "0 auto" }}>
           <div>
             <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#0E9E92", display: "block", marginBottom: 14 }}>The problem</span>
             <h2 className="font-heading" style={{ fontSize: "clamp(28px, 4vw, 46px)", fontWeight: 700, color: "#07312C", lineHeight: 1.12, letterSpacing: "-0.8px", marginBottom: 20 }}>
@@ -349,7 +349,7 @@ export default function RootPage() {
           </p>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 28, maxWidth: 1100, margin: "0 auto" }}>
+        <div className="grid grid-cols-1 md:grid-cols-3" style={{ gap: 28, maxWidth: 1100, margin: "0 auto" }}>
           {[
             {
               num: "01 Tenants",
@@ -443,7 +443,7 @@ export default function RootPage() {
 
       {/* ── VERIFICATION ── */}
       <section id="verification" style={{ background: "#07312C", color: "white", padding: "96px 5%" }}>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 80, alignItems: "center", maxWidth: 1100, margin: "0 auto" }}>
+        <div className="grid grid-cols-1 md:grid-cols-2" style={{ gap: 80, alignItems: "center", maxWidth: 1100, margin: "0 auto" }}>
           <div>
             <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#0E9E92", display: "block", marginBottom: 14 }}>Why it&apos;s different</span>
             <h2 className="font-heading" style={{ fontSize: "clamp(28px, 4vw, 46px)", fontWeight: 700, color: "white", lineHeight: 1.12, letterSpacing: "-0.8px", marginBottom: 20 }}>
@@ -506,7 +506,7 @@ export default function RootPage() {
 
       {/* ── AGENCIES ── */}
       <section id="agencies" style={{ background: "white", padding: "96px 5%" }}>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 80, alignItems: "center", maxWidth: 1100, margin: "0 auto" }}>
+        <div className="grid grid-cols-1 md:grid-cols-2" style={{ gap: 80, alignItems: "center", maxWidth: 1100, margin: "0 auto" }}>
           <div>
             <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#0E9E92", display: "block", marginBottom: 14 }}>For estate agencies</span>
             <h2 className="font-heading" style={{ fontSize: "clamp(28px, 4vw, 46px)", fontWeight: 700, color: "#07312C", lineHeight: 1.12, letterSpacing: "-0.8px", marginBottom: 20 }}>
