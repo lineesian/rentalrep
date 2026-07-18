@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { BottomNav } from "@/components/layout/BottomNav";
 import { LeaseCheckPayButton } from "@/components/ui/LeaseCheckPayButton";
@@ -12,6 +12,14 @@ type Eligibility = {
 };
 
 export default function LeaseCheckPage() {
+  return (
+    <Suspense fallback={null}>
+      <LeaseCheckPageContent />
+    </Suspense>
+  );
+}
+
+function LeaseCheckPageContent() {
   const router       = useRouter();
   const searchParams = useSearchParams();
   const justPaid     = searchParams.get("paid") === "1";
