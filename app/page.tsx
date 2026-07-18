@@ -261,12 +261,11 @@ export default function RootPage() {
         </div>
 
         <h1 className="font-heading" style={{ fontSize: "clamp(40px, 6vw, 72px)", fontWeight: 800, color: "white", lineHeight: 1.08, letterSpacing: "-1.5px", maxWidth: 820, marginBottom: 24 }}>
-          Know who you&apos;re renting<br />
-          from and to <em style={{ fontStyle: "normal", color: "#0E9E92" }}>before</em> you sign.
+          Renting in South Africa runs on trust <em style={{ fontStyle: "normal", color: "#0E9E92" }}>no one can verify.</em> Until now.
         </h1>
 
         <p style={{ fontSize: "clamp(16px, 2vw, 20px)", color: "rgba(255,255,255,0.65)", maxWidth: 560, margin: "0 auto 44px", lineHeight: 1.65, fontWeight: 400 }}>
-          RentalRep lets tenants, landlords, and estate agencies rate each other after every tenancy. Every review is tied to a real lease, so the scores you see are real.
+          Deposit disputes. Tenants who trash a place and vanish. Landlords who ghost when the geyser bursts. RentalRep fixes the one thing every lease is missing: proof of what actually happened.
         </p>
 
         <HeroForm />
@@ -356,11 +355,11 @@ export default function RootPage() {
               num: "01 Tenants",
               iconBg: "#E6F9F8",
               icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0E9E92" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg>,
-              heading: "Rate your landlord & property",
-              body: "Review maintenance response, deposit fairness, communication, and overall experience. Your score helps future tenants choose wisely.",
+              heading: "Protect your deposit, from day one",
+              body: "Log your deposit and every maintenance request the moment they happen, a timestamped paper trail that protects you even before anyone else has joined. Then rate your landlord and property once the lease ends.",
               tags: [
-                { label: "Maintenance", gold: false },
-                { label: "Deposit handling", gold: false },
+                { label: "Deposit tracker", gold: false },
+                { label: "Maintenance log", gold: false },
                 { label: "Communication", gold: false },
               ],
             },
@@ -523,6 +522,7 @@ export default function RootPage() {
                 "Early access to tenant reputation scores before placement",
                 "Priority listing placement for high-rated agencies",
                 "Monthly performance reports and analytics",
+                "Fewer disputes to mediate, with timestamped deposit and maintenance records for every tenancy",
               ].map(b => (
                 <li key={b} style={{ display: "flex", alignItems: "flex-start", gap: 12, fontSize: 15, color: "#4a6b67", lineHeight: 1.55 }}>
                   <span style={{ color: "#0E9E92", fontWeight: 700, fontSize: 15, flexShrink: 0, marginTop: 1 }}>✓</span>
