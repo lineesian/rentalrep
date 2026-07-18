@@ -70,6 +70,34 @@ export function RatePropertyIcon({ size = 28 }: IconProps) {
   );
 }
 
+export function DepositTrackerIcon({ size = 28 }: IconProps) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="#0E9E92" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6l7-3z"/>
+      <path d="M9 12l2 2 4-4"/>
+    </svg>
+  );
+}
+
+export function MaintenanceLogIcon({ size = 28 }: IconProps) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="#0E9E92" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M14.7 6.3a3 3 0 0 1-4.24 4.24L5 16v3h3l5.46-5.46a3 3 0 0 1 4.24-4.24l-2.2 2.2-1.5-1.5 2.2-2.2z"/>
+    </svg>
+  );
+}
+
+export function LeaseCheckIcon({ size = 28 }: IconProps) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="#0E9E92" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M13 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V9l-6-6z"/>
+      <path d="M13 3v6h6"/>
+      <circle cx="10.5" cy="15.5" r="2.5"/>
+      <path d="M12.3 17.3L15 20"/>
+    </svg>
+  );
+}
+
 export function MyProfileIcon({ size = 28 }: IconProps) {
   return (
     <svg width={size} height={size} viewBox="0 0 32 32" fill="none" aria-hidden="true">

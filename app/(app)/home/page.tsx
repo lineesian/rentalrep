@@ -15,6 +15,9 @@ import {
   RatePropertyIcon,
   ScreenTenantIcon,
   MyProfileIcon,
+  DepositTrackerIcon,
+  MaintenanceLogIcon,
+  LeaseCheckIcon,
 } from "@/components/ui/ActionIcons";
 import type { UserRole } from "@/lib/types";
 import type { Review } from "@/lib/types";
@@ -218,6 +221,44 @@ export default async function HomePage() {
             </Link>
           ))}
         </div>
+
+        {/* ── Tenant tools ── */}
+        {role === "tenant" && (
+          <div className="mb-8">
+            <p className="font-heading text-xs font-semibold text-petrol-400 tracking-widest mb-3">
+              Your Tools
+            </p>
+            <div className="grid grid-cols-3 gap-3">
+              <Link
+                href="/lease-check"
+                className="flex flex-col items-center gap-2 bg-white border border-gray-100 rounded-2xl py-4 px-2 transition-transform active:scale-95"
+              >
+                <LeaseCheckIcon size={28} />
+                <span className="font-body text-[11px] font-semibold text-petrol-400 text-center leading-tight">
+                  Lease Check
+                </span>
+              </Link>
+              <Link
+                href="/deposit"
+                className="flex flex-col items-center gap-2 bg-white border border-gray-100 rounded-2xl py-4 px-2 transition-transform active:scale-95"
+              >
+                <DepositTrackerIcon size={28} />
+                <span className="font-body text-[11px] font-semibold text-petrol-400 text-center leading-tight">
+                  Deposit Tracker
+                </span>
+              </Link>
+              <Link
+                href="/maintenance"
+                className="flex flex-col items-center gap-2 bg-white border border-gray-100 rounded-2xl py-4 px-2 transition-transform active:scale-95"
+              >
+                <MaintenanceLogIcon size={28} />
+                <span className="font-body text-[11px] font-semibold text-petrol-400 text-center leading-tight">
+                  Maintenance Log
+                </span>
+              </Link>
+            </div>
+          </div>
+        )}
 
         {/* ── Pending Reviews nudge ── */}
         {pendingReviews && pendingReviews.length > 0 && (
