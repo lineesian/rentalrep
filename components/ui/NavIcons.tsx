@@ -29,6 +29,14 @@ export function ProfileIcon({ size = 22, color = "currentColor" }: IconProps) {
   );
 }
 
+export function WatchlistIcon({ size = 22, color = "currentColor" }: IconProps) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z" stroke={color} strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  );
+}
+
 export function AgencyIcon({ size = 22, color = "currentColor" }: IconProps) {
   // Building: body y=3..22, parapet at y=7, floor-1 windows y=9..12, floor-2 windows y=14..17, door y=18..22
   return (

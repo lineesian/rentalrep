@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { HomeIcon, SearchIcon, ProfileIcon, AgencyIcon } from "@/components/ui/NavIcons";
+import { HomeIcon, SearchIcon, ProfileIcon, WatchlistIcon, AgencyIcon } from "@/components/ui/NavIcons";
 
 interface BottomNavProps {
   profileId?: string;
@@ -12,10 +12,11 @@ export function BottomNav({ profileId }: BottomNavProps) {
   const pathname = usePathname();
 
   const NAV = [
-    { href: "/home",   label: "Home",    Icon: HomeIcon,    match: "/home" },
-    { href: "/search", label: "Explore", Icon: SearchIcon,  match: "/search" },
+    { href: "/home",      label: "Home",      Icon: HomeIcon,      match: "/home" },
+    { href: "/search",    label: "Explore",   Icon: SearchIcon,    match: "/search" },
+    { href: "/watchlist", label: "Saved",     Icon: WatchlistIcon, match: "/watchlist" },
     { href: profileId ? `/profile/${profileId}` : "/profile", label: "Profile", Icon: ProfileIcon, match: "/profile" },
-    { href: "/agency", label: "Agency",  Icon: AgencyIcon,  match: "/agency" },
+    { href: "/agency",    label: "Agency",    Icon: AgencyIcon,    match: "/agency" },
   ];
 
   return (
