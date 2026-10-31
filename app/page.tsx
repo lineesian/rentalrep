@@ -222,7 +222,7 @@ export default function RootPage() {
         <div className="hidden md:flex" style={{ gap: 28, alignItems: "center" }}>
           <a href="#how" style={{ textDecoration: "none", fontSize: 14, fontWeight: 500, color: "rgba(255,255,255,0.75)" }}>How it works</a>
           <a href="/lease-check" style={{ textDecoration: "none", fontSize: 14, fontWeight: 500, color: "rgba(255,255,255,0.75)" }}>Lease Check</a>
-          <a href="#verification" style={{ textDecoration: "none", fontSize: 14, fontWeight: 500, color: "rgba(255,255,255,0.75)" }}>Verification</a>
+          <a href="/insights" style={{ textDecoration: "none", fontSize: 14, fontWeight: 500, color: "rgba(255,255,255,0.75)" }}>Market Insights</a>
           <a href="#agencies" style={{ textDecoration: "none", fontSize: 14, fontWeight: 500, color: "rgba(255,255,255,0.75)" }}>For Agencies</a>
           <a href="#waitlist" style={{ textDecoration: "none", background: "#0E9E92", color: "white", padding: "8px 18px", borderRadius: 8, fontWeight: 600, fontSize: 13 }}>Join early access</a>
         </div>
@@ -579,11 +579,12 @@ export default function RootPage() {
           </div>
           <div style={{ display: "flex", gap: 24 }}>
             {[
-              { label: "Privacy Policy",  href: "/privacy" },
-              { label: "Terms of Use",    href: "/terms"   },
-              { label: "POPIA Notice",    href: "/privacy" },
-              { label: "For Agencies",    href: "#agencies" },
-              { label: "Early access",    href: "#waitlist" },
+              { label: "Privacy Policy",   href: "/privacy"   },
+              { label: "Terms of Use",     href: "/terms"     },
+              { label: "POPIA Notice",     href: "/privacy"   },
+              { label: "Market Insights",  href: "/insights"  },
+              { label: "For Agencies",     href: "#agencies"  },
+              { label: "Early access",     href: "#waitlist"  },
             ].map(({ label, href }) => (
               <a key={label} href={href} style={{ fontSize: 13, color: "rgba(255,255,255,0.5)", textDecoration: "none" }}>{label}</a>
             ))}
